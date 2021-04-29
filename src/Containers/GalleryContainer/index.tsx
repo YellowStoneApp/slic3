@@ -4,9 +4,11 @@ import { useHistory } from "react-router-dom";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
+import { useCurrentUser } from "../../Hooks/currentUser.hook";
 
 const GalleryContainer = () => {
   const history = useHistory();
+  const customer = useCurrentUser();
 
   const signout = async () => {
     console.log("signing out");
@@ -26,10 +28,15 @@ const GalleryContainer = () => {
 
   return (
     <div>
-      <h1>You in a private spot motha fucka</h1>
-      <Button onClick={signout}>SIGN OUT</Button>
-      <Button onClick={healthCheck}>GET HEALTH</Button>
-      <Button onClick={getShouts}>GET SHOUTS</Button>
+      <div>
+        <h1>You in a private spot motha fucka</h1>
+        <Button onClick={signout}>SIGN OUT</Button>
+        <Button onClick={healthCheck}>GET HEALTH</Button>
+        <Button onClick={getShouts}>GET SHOUTS</Button>
+      </div>
+      <div>
+        <span>{customer.addr}</span>
+      </div>
     </div>
   );
 };

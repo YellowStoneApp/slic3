@@ -8,6 +8,7 @@ import SignUpContainer from "../Containers/SignUpContainer";
 import ConfirmEmailContainer from "../Containers/ConfirmEmailContainer";
 import ForgotPasswordContainer from "../Containers/ForgotPasswordContainer";
 import ResetPasswordContainer from "../Containers/ResetPasswordContainer";
+import WalletLoginContainer from "../Containers/WalletLoginContainer";
 
 /** private route component */
 import PrivateRoute from "./PrivateRoute";
@@ -19,6 +20,7 @@ export enum Routes {
   Signup = "/signup",
   ResetPassword = "/reset-password",
   ForgotPassword = "/forgot-password",
+  WalletLogin = "/wallet-login",
 }
 
 class AppRouter extends React.Component {
@@ -30,6 +32,11 @@ class AppRouter extends React.Component {
             exact={true}
             path={Routes.Gallery}
             component={GalleryContainer}
+          />
+          <Route
+            exact={true}
+            path={Routes.WalletLogin}
+            component={WalletLoginContainer}
           />
           <Route exact={true} path={Routes.Login} component={LoginContainer} />
           <Route

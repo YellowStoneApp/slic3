@@ -37,7 +37,7 @@ const ConfirmEmailContainer = () => {
   }, []);
 
   if (redirect) {
-    return <Redirect to={{ pathname: Routes.Login }} />;
+    return <Redirect to={{ pathname: Routes.WalletLogin }} />;
   }
 
   // todo resend verification code.

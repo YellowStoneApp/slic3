@@ -11,7 +11,10 @@ const options: logdna.ConstructorOptions = {
 
 const logToConsole = true;
 
-const logger = logdna.createLogger("3997c1853e84dbaebe671044f1bf861e", options);
+const logger = logdna.createLogger(
+  process.env.REACT_APP_LOG_DNA_INGESTION_KEY ?? "",
+  options
+);
 
 const info = (message: any) => {
   logger.info(message);

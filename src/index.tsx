@@ -4,14 +4,20 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Amplify from "aws-amplify";
+import { RecoilRoot } from "recoil";
+import { CurrentUserSubscription } from "./Hooks/currentUser.hook";
 
 import awsconfig from "./aws-exports";
+import "./config";
 
 Amplify.configure(awsconfig);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <CurrentUserSubscription />
+      <App />
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
 );

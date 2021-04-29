@@ -54,9 +54,7 @@ const confirmSignup = async (username: string, validationCode: string) => {
 
 const forgotPassword = async (email: string) => {
   return await apiErrorHandlingWithLogs(async () => {
-    return await Auth.forgotPassword(email).then((data) => {
-      console.log(data);
-    });
+    return await Auth.forgotPassword(email).then((data) => {});
   }, "Auth.forgotPassword");
 };
 
