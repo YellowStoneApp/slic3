@@ -3,10 +3,6 @@ import logdna from "@logdna/logger";
 // todo get client ip address for logs.
 const options: logdna.ConstructorOptions = {
   app: "SLIC3",
-  //   hostname: "cat",
-  //   ip: "",
-  //   mac: "",
-  //   env: "",
 };
 
 const logToConsole = true;
