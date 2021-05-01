@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Routes } from "../../Navigation/Routes";
@@ -30,9 +29,9 @@ const GalleryContainer = () => {
     <div className="container">
       <div>
         <h1>You in a private spot motha fucka</h1>
-        <Button onClick={signout}>SIGN OUT</Button>
+        {/* <Button onClick={signout}>SIGN OUT</Button>
         <Button onClick={healthCheck}>GET HEALTH</Button>
-        <Button onClick={getShouts}>GET SHOUTS</Button>
+        <Button onClick={getShouts}>GET SHOUTS</Button> */}
       </div>
       <div>
         <span>{customer.addr}</span>

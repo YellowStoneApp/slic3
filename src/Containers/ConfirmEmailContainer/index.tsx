@@ -1,26 +1,20 @@
-import { Button } from "@material-ui/core";
-import { Form, Formik } from "formik";
-import { TextField } from "material-ui";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
+import Form from "../../Components/Form";
+import FormInput from "../../Components/FormInput";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
-
-interface IConfirmEmailValues {
-  verificationCode?: string;
-}
 
 const ConfirmEmailContainer = () => {
   const [userName, setUserName] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
-  const confirmEmailFormValues: IConfirmEmailValues = {};
-
-  const handleSubmit = async (values: IConfirmEmailValues) => {
-    if (values.verificationCode) {
+  const handleSubmit = async () => {
+    if (verificationCode) {
       // todo error handling with verification code.
       identityService
-        .confirmSignup(userName, values.verificationCode)
+        .confirmSignup(userName, verificationCode)
         .then((response) => {
           console.log(response);
           setRedirect(true);
@@ -43,22 +37,19 @@ const ConfirmEmailContainer = () => {
   // todo resend verification code.
   return (
     <div>
-      <Formik initialValues={confirmEmailFormValues} onSubmit={handleSubmit}>
-        {({ values, handleChange, handleBlur }) => (
-          <Form>
-            <div>
-              <TextField
-                name="verificationCode"
-                value={values.verificationCode}
-                placeholder="VERIFICATION CODE"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
-            <Button type="submit">VERIFY</Button>
-          </Form>
-        )}
-      </Formik>
+      <Form
+        onSubmit={handleSubmit}
+        title="Reset Password"
+        subtitle="Check your email for the verification code and enter below"
+        submitButtonTitle="Confirm"
+      >
+        <FormInput
+          onValueChange={setVerificationCode}
+          name="verificationCode"
+          type="name"
+          placeholder="Verification Code"
+        />
+      </Form>
     </div>
   );
 };

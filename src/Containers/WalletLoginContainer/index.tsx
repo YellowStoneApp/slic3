@@ -1,4 +1,3 @@
-import { ContactlessOutlined } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import { useCurrentUser } from "../../Hooks/currentUser.hook";

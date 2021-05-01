@@ -1,17 +1,12 @@
-import { Button } from "@material-ui/core";
-import { Form, Formik } from "formik";
-import { TextField } from "material-ui";
 import React, { useEffect, useState } from "react";
+import Form from "../../Components/Form";
+import FormInput from "../../Components/FormInput";
 import { identityService } from "../../Utils/Apis/Identity.service";
 
-interface IResetPasswordValues {
-  verificationCode?: string;
-  newPassword?: string;
-}
-
 const ResetPasswordContainer = () => {
-  const resetPasswordValues: IResetPasswordValues = {};
+  const [verificationCode, setVerificationCode] = useState("");
   const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -20,11 +15,14 @@ const ResetPasswordContainer = () => {
     setEmail(userName.trim());
   }, []);
 
-  const handleSubmit = async (values: IResetPasswordValues) => {
+  /**
+   * Open question should this log you in automatically after you reset your password?
+   */
+  const handleSubmit = async () => {
     console.log("submitting");
-    if (values.verificationCode && values.newPassword) {
+    if (verificationCode && newPassword) {
       const response = await identityService
-        .resetPassword(email, values.verificationCode, values.newPassword)
+        .resetPassword(email, verificationCode, newPassword)
         .then((data) => {
           return data;
         })
@@ -38,31 +36,25 @@ const ResetPasswordContainer = () => {
 
   return (
     <div>
-      <Formik initialValues={resetPasswordValues} onSubmit={handleSubmit}>
-        {({ values, handleChange, handleBlur }) => (
-          <Form>
-            <div>
-              <TextField
-                name="verificationCode"
-                value={values.verificationCode}
-                placeholder="VERIFICATION CODE"
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <TextField
-                name="newPassword"
-                value={values.newPassword}
-                placeholder="PASSWORD"
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
-            </div>
-            <Button type="submit">SUBMIT</Button>
-          </Form>
-        )}
-      </Formik>
+      <Form
+        onSubmit={handleSubmit}
+        title="Reset Password"
+        subtitle="Check your email for the verification code and enter below"
+        submitButtonTitle="Submit"
+      >
+        <FormInput
+          onValueChange={setVerificationCode}
+          name="verificationCode"
+          type="name"
+          placeholder="Verification Code"
+        />
+        <FormInput
+          onValueChange={setNewPassword}
+          name="password"
+          type="password"
+          placeholder="New Password"
+        />
+      </Form>
     </div>
   );
 };

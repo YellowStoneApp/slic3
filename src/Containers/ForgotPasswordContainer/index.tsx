@@ -1,25 +1,19 @@
-import { Button } from "@material-ui/core";
-import { Form, Formik } from "formik";
-import { TextField } from "material-ui";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import Form from "../../Components/Form";
+import FormInput from "../../Components/FormInput";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 
-interface IForgotPasswordValues {
-  email?: string;
-}
-
 const ForgotPasswordContainer = () => {
-  const forgotPasswordValues: IForgotPasswordValues = {};
   const [redirect, setRedirect] = useState(false);
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async (values: IForgotPasswordValues) => {
-    if (values.email) {
-      setEmail(values.email);
+  const handleSubmit = async () => {
+    if (email) {
+      setEmail(email);
       const response = await identityService
-        .forgotPassword(values.email)
+        .forgotPassword(email)
         .then((data) => {
           setRedirect(true);
         })
@@ -32,21 +26,24 @@ const ForgotPasswordContainer = () => {
   // todo field validation on form
   return (
     <div>
-      <Formik initialValues={forgotPasswordValues} onSubmit={handleSubmit}>
-        {({ values, handleChange, handleBlur }) => (
-          <Form>
-            <div>
-              <TextField
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
-            <Button type="submit">CONFIRM EMAIL</Button>
-          </Form>
-        )}
-      </Formik>
+      <Form
+        onSubmit={handleSubmit}
+        title="Forgot Password"
+        subtitle="Enter your email below and we'll send you a verification code."
+        submitButtonTitle="Submit"
+        leftRedirect={{ name: "Log In", destination: Routes.Login }}
+        rightRedirect={{
+          name: "Sign Up",
+          destination: Routes.Signup,
+        }}
+      >
+        <FormInput
+          onValueChange={setEmail}
+          name="email"
+          type="email"
+          placeholder="Email"
+        />
+      </Form>
       {redirect && (
         <Redirect
           to={{ pathname: Routes.ResetPassword, search: `?email=${email}` }}
