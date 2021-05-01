@@ -15,8 +15,8 @@ interface iFlowUser {
 
 const defaultState: iFlowUser = { loggedIn: false };
 
-export const $currentUser = atom({
-  key: "CURRENT_USER",
+export const $currentWalletUser = atom({
+  key: "CURRENT_WALLET_USER",
   default: defaultState,
 });
 
@@ -24,8 +24,8 @@ export const $currentUser = atom({
  * Subscribe to changes in the currentUser actor.
  * @returns
  */
-export const CurrentUserSubscription = () => {
-  const setCurrentUser = useSetRecoilState($currentUser);
+export const CurrentWalletUserSubscription = () => {
+  const setCurrentUser = useSetRecoilState($currentWalletUser);
   useEffect(() => fcl.currentUser().subscribe(setCurrentUser), [
     setCurrentUser,
   ]);
@@ -37,8 +37,8 @@ export const CurrentUserSubscription = () => {
  *
  * @returns
  */
-export const useCurrentUser = () => {
-  const currentUser = useRecoilValue($currentUser);
+export const useCurrentWalletUser = () => {
+  const currentUser = useRecoilValue($currentWalletUser);
   return {
     ...currentUser,
     logOut: fcl.unauthenticate,

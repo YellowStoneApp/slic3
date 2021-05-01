@@ -4,8 +4,9 @@ import { Route, Redirect } from "react-router-dom";
 import { validateToken } from "../Utils/validate.token";
 
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../Utils/constants";
-import { useCurrentUser } from "../Hooks/currentUser.hook";
+import { useCurrentWalletUser } from "../Hooks/currentWalletUser.hook";
 import { Routes } from "./Routes";
+import { useIdentityCustomer } from "../Hooks/currentIdentityCustomer.hook";
 
 /**
  * This route blocks access to places where you need to be logged in with our IdentityProvider to use
@@ -18,7 +19,8 @@ const PrivateRoute = ({
 }: any & { component: any }) => {
   const token = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
   const checkUserAuth = validateToken(token);
-  const customerLoggedIntoWallet = useCurrentUser().loggedIn;
+  const identityCustomer = useIdentityCustomer().loggedIn;
+  const customerLoggedIntoWallet = useCurrentWalletUser().loggedIn;
 
   const RouteTo = (props: any) => {
     if (checkUserAuth && customerLoggedIntoWallet) {

@@ -3,11 +3,11 @@ import { useHistory } from "react-router-dom";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
-import { useCurrentUser } from "../../Hooks/currentUser.hook";
+import { useCurrentWalletUser } from "../../Hooks/currentWalletUser.hook";
 
 const GalleryContainer = () => {
   const history = useHistory();
-  const customer = useCurrentUser();
+  const customer = useCurrentWalletUser();
 
   const signout = async () => {
     console.log("signing out");

@@ -4,11 +4,17 @@ import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
+import { $identityCustomer } from "../../Hooks/currentIdentityCustomer.hook";
+import { useRecoilState } from "recoil";
 
 const LoginContainer = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
+  //const identityCustomer = useIdentityCustomer();
+  const [identityCustomer, setIdentityCustomer] = useRecoilState(
+    $identityCustomer
+  );
 
   const login = async () => {
     console.log("clicked");
@@ -16,6 +22,7 @@ const LoginContainer = () => {
     if (email && password) {
       try {
         const response = await identityService.login(email, password);
+        setIdentityCustomer({ loggedIn: true });
         console.log("user logged in", response);
         setLoggedIn(true);
       } catch (error) {

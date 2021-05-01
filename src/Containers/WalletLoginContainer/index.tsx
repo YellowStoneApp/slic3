@@ -1,20 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
-import { useCurrentUser } from "../../Hooks/currentUser.hook";
+import { useCurrentWalletUser } from "../../Hooks/currentWalletUser.hook";
 import { Routes } from "../../Navigation/Routes";
 
 const LoggedIn = () => {
-  const cu = useCurrentUser();
+  const cu = useCurrentWalletUser();
   return !cu.loggedIn ? null : <Redirect to={{ pathname: Routes.Gallery }} />;
 };
 
 const NotLoggedIn = () => {
-  const cu = useCurrentUser();
+  const cu = useCurrentWalletUser();
   console.log(cu);
   return cu.loggedIn ? null : (
     <div>
-      <button onClick={cu.logIn}>Log In</button>
-      <button onClick={cu.signUp}>Sign Up</button>
+      <div className="page-content header-clear-medium">
+        <div className="card card-style">
+          <div className="content mt-4 mb-0">
+            <h1 className="text-center font-900 font-40 text-uppercase mb-0">
+              Wallet Sign In
+            </h1>
+            <p className="bottom-0 text-center color-highlight font-11">
+              You need to sign into a wallet provider to use FLOW on our
+              platform.
+            </p>
+            <a
+              onClick={cu.logIn}
+              className="btn btn-icon btn-m btn-full shadow-l rounded-s bg-facebook text-uppercase font-900 text-start"
+            >
+              <i className="fab text-center"></i>Login to Wallet
+            </a>
+            <a
+              onClick={cu.signUp}
+              className="btn btn-icon btn-m btn-full shadow-l rounded-s bg-twitter text-uppercase font-900 text-start mt-2 "
+            >
+              <i className="fab text-center"></i>Sign up for Wallet
+            </a>
+            <div className="divider mt-3"></div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
