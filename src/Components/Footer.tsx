@@ -36,7 +36,7 @@ const Footer = (props: FooterProps) => {
         <div className="menu-title mt-0 pt-0">
           <h1>Settings</h1>
           <p className="color-highlight">Flexible and Easy to Use</p>
-          <a href="#" className="close-menu">
+          <a className="close-menu">
             <i className="fa fa-times"></i>
           </a>
         </div>
@@ -44,7 +44,6 @@ const Footer = (props: FooterProps) => {
         <div className="content">
           <div className="list-group list-custom-small">
             <a
-              href="#"
               data-toggle-theme
               data-trigger-switch="switch-dark-mode"
               className="pb-2 ms-n1"

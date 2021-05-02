@@ -61,7 +61,7 @@ class AppRouter extends React.Component {
           />
         </React.Fragment>
       </Router>
-    );
+    )
   }
 }
 

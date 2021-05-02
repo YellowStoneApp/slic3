@@ -3,7 +3,21 @@ import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 
-const url = "http://localhost:5100";
+//const url = "http://localhost:5100";
+const url = "https://mainservice.yellowstoneapp.io";
+
+export interface iUser {
+  avatar: string;
+  userName: string;
+  id: number;
+  identityKey: string;
+}
+
+export interface iShout {
+  likes: number;
+  url: string;
+  user: iUser;
+}
 
 const dummyCall = async () => {
   const response = await apiErrorHandlingWithLogs(async () => {
@@ -12,7 +26,7 @@ const dummyCall = async () => {
   console.log(response);
 };
 
-const getShouts = async () => {
+const getShouts = async (): Promise<iShout[]> => {
   const response = await secureClient.get(url, "/api/shout");
   console.log(response, "tam");
   return response.data;

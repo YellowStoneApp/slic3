@@ -6,6 +6,7 @@
     "@logdna/logger": "^2.3.2",
     "@onflow/fcl": "0.0.67",
     "@onflow/types": "0.0.4",
+    "@splidejs/react-splide": "^0.4.4",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
