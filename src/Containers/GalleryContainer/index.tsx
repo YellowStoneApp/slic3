@@ -11,17 +11,6 @@ const GalleryContainer = () => {
   const customer = useCurrentWalletUser();
   const [shouts, setShouts] = useState<iShout[] | undefined>(undefined);
 
-  const signout = async () => {
-    console.log("signing out");
-    await identityService.signOut();
-    console.log("redirecting");
-    history.push(Routes.Login);
-  };
-
-  const healthCheck = async () => {
-    await tamarakService.dummyCall();
-  };
-
   const getShouts = async () => {
     try {
       const response = await tamarakService.getShouts();

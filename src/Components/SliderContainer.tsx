@@ -2,6 +2,7 @@ import React from "react";
 import { iShout } from "../Utils/Apis/tamarak.service";
 import SliderCard from "./SliderCard";
 import { Splide } from "@splidejs/react-splide";
+import { snapshot_UNSTABLE } from "recoil";
 
 interface SliderContainerProps {
   shouts: iShout[];
@@ -22,7 +23,7 @@ const SliderContainer = (props: SliderContainerProps) => {
         }}
       >
         {props.shouts.map((value) => (
-          <SliderCard shout={value} />
+          <SliderCard shout={value} key={value.id} />
         ))}
       </Splide>
     </div>

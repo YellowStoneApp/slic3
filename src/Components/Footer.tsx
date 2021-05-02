@@ -7,25 +7,25 @@ const Footer = (props: FooterProps) => {
   return (
     <>
       <div id="footer-bar" className="footer-bar-1">
-        <a href={Routes.WalletLogin}>
+        <a href={Routes.Gallery}>
           <i className="fa fa-home"></i>
-          <span>Home</span>
+          {/* <span>Home</span> */}
         </a>
-        <a href="index-components.html">
+        <a href="index-components.html" className="active-nav">
           <i className="fa fa-star"></i>
-          <span>Features</span>
+          {/* <span>Features</span> */}
         </a>
-        <a href="index-pages.html" className="active-nav">
-          <i className="fa fa-heart"></i>
-          <span>Pages</span>
+        <a href={Routes.Create}>
+          <i className="fa fa-plus"></i>
+          {/* <span>Pages</span> */}
         </a>
-        <a href="index-search.html">
+        <a href={Routes.Search}>
           <i className="fa fa-search"></i>
-          <span>Search</span>
+          {/* <span>Search</span> */}
         </a>
         <a href="#" data-menu="menu-settings">
           <i className="fa fa-cog"></i>
-          <span>Settings</span>
+          {/* <span>Settings</span> */}
         </a>
       </div>
 

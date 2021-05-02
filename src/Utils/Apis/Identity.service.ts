@@ -13,11 +13,13 @@ There should not be any need to manage tokens outside of this module
 */
 
 import { Auth } from "aws-amplify";
+import { ISignUpResult } from "amazon-cognito-identity-js";
 /** App constants */
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../Utils/constants";
 import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
 
 import { logService } from "./logging.service";
+import { tamarakService } from "./tamarak.service";
 
 const login = async (email: string, password: string) => {
   const response = await apiErrorHandlingWithLogs(async () => {
@@ -35,7 +37,7 @@ const login = async (email: string, password: string) => {
 };
 
 const signUp = async (username: string, password: string) => {
-  return await apiErrorHandlingWithLogs(async () => {
+  const response: ISignUpResult = await apiErrorHandlingWithLogs(async () => {
     return await Auth.signUp({
       username: username,
       password: password,
@@ -44,11 +46,12 @@ const signUp = async (username: string, password: string) => {
       },
     });
   }, "Auth.signUp");
+  return response;
 };
 
-const confirmSignup = async (username: string, validationCode: string) => {
-  return await apiErrorHandlingWithLogs(async () => {
-    return await Auth.confirmSignUp(username, validationCode);
+const confirmSignup = async (email: string, validationCode: string) => {
+  const response = await apiErrorHandlingWithLogs(async () => {
+    return await Auth.confirmSignUp(email, validationCode);
   }, "Auth.confirmSignUp");
 };
 

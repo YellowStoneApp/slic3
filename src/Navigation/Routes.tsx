@@ -9,6 +9,9 @@ import ConfirmEmailContainer from "../Containers/ConfirmEmailContainer";
 import ForgotPasswordContainer from "../Containers/ForgotPasswordContainer";
 import ResetPasswordContainer from "../Containers/ResetPasswordContainer";
 import WalletLoginContainer from "../Containers/WalletLoginContainer";
+import SearchContainer from "../Containers/SearchContainer";
+import CreateContainer from "../Containers/CreateContainer";
+import CreateAccountContainer from "../Containers/CreateAccountContainer";
 
 /** private route component */
 import PrivateRoute from "./PrivateRoute";
@@ -21,6 +24,9 @@ export enum Routes {
   ResetPassword = "/reset-password",
   ForgotPassword = "/forgot-password",
   WalletLogin = "/wallet-login",
+  Search = "/search",
+  Create = "/create",
+  CreateAccount = "/create-account",
 }
 
 class AppRouter extends React.Component {
@@ -32,6 +38,21 @@ class AppRouter extends React.Component {
             exact={true}
             path={Routes.Gallery}
             component={GalleryContainer}
+          />
+          <Route
+            exact={true}
+            path={Routes.Create}
+            component={CreateContainer}
+          />
+          <Route
+            exact={true}
+            path={Routes.CreateAccount}
+            component={CreateAccountContainer}
+          />
+          <Route
+            exact={true}
+            path={Routes.Search}
+            component={SearchContainer}
           />
           <Route
             exact={true}
@@ -61,7 +82,7 @@ class AppRouter extends React.Component {
           />
         </React.Fragment>
       </Router>
-    )
+    );
   }
 }
 

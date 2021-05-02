@@ -1,3 +1,7 @@
+/**
+ * Default behavior in this module. If something goes wrong this code should throw an error. The caller is responsible for bubbling this up to the user however they see fit.
+ */
+
 import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
 import axios from "axios";
 import { logService } from "./logging.service";
@@ -17,6 +21,7 @@ export interface iShout {
   likes: number;
   url: string;
   user: iUser;
+  id: number;
 }
 
 const dummyCall = async () => {
@@ -32,7 +37,50 @@ const getShouts = async (): Promise<iShout[]> => {
   return response.data;
 };
 
+const createShout = async (file: File) => {
+  const response = await secureClient.upload(url, "/api/shout", file, "Shout");
+  return response.data;
+};
+
+const registerUser = async (username: string, avatar: File) => {
+  const response = await secureClient.post(url, "/api/users/register", {
+    username,
+  });
+  validateResponse(response.data);
+  const updateAvatarResponse = await secureClient.upload(
+    url,
+    "/api/users/updateAvatar",
+    avatar,
+    "Avatar"
+  );
+  validateResponse(updateAvatarResponse.data);
+};
+
+/**
+ * This is meant to check the response for any failure codes that come back from MainService. I'm not 100% on this if I like it or not.
+ *
+ * But say we upload data to main service and what we sent is invalid. For instance a user is refistering and they picked a username already in existence. What do you do?
+ *
+ * It's not the server's fault. This shouldn't be a 500 error code inface we need the server to tell us something is wrong but the user can fix it.
+ * If something like this happens we need to validate the response here. If we get an error code in the responseType then we know something went wrong in the server that the
+ * user can and needs to fix like picking a different user name.
+ *
+ * Here we throw an error with this message and we let the calling code take responsibility for determining how to show the user this.
+ * @param response
+ */
+const validateResponse = (response: any) => {
+  // responseType === 0 when there's a successful result
+  if (response.responseType && response.responseType !== 0) {
+    logService.error(
+      `Server threw invalid response ${JSON.stringify(response)}`
+    );
+    throw new Error(response.message ?? "Got broken response from server");
+  }
+};
+
 export const tamarakService = {
   dummyCall,
   getShouts,
+  createShout,
+  registerUser,
 };

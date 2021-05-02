@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var i, e, el; //https://www.w3schools.com/js/js_performance.asp
                         
         //Attaching Menu Hider
+        // these two lines of code break lots of things...
         // var menuHider = document.getElementsByClassName('menu-hider');
         // if(!menuHider.length){document.body.innerHTML += '<div class="menu-hider"></div>';}
 
@@ -444,26 +445,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
         }
 
-        //File Upload
-        const inputArray = document.getElementsByClassName('upload-file');
-        if(inputArray.length){
-            inputArray[0].addEventListener('change',prepareUpload,false);
-                function prepareUpload(event){
-                  if (this.files && this.files[0]) {
-                  var img = document.getElementById('image-data');
-                  img.src = URL.createObjectURL(this.files[0]); 
-              }
-                const files = event.target.files;
-                const fileName = files[0].name;
-                document.getElementsByClassName('file-data')[0].classList.add('disabled');
-                document.getElementsByClassName('upload-file-data')[0].classList.remove('disabled');
-                document.getElementsByClassName('upload-file-name')[0].innerHTML = files[0].name;
-                document.getElementsByClassName('upload-file-modified')[0].innerHTML = files[0].lastModifiedDate;
-                document.getElementsByClassName('upload-file-size')[0].innerHTML = files[0].size/1000+'kb';
-                document.getElementsByClassName('upload-file-type')[0].innerHTML = files[0].type;
-            }
+        // //File Upload
+        // const inputArray = document.getElementsByClassName('upload-file');
+        // if(inputArray.length){
+        //     inputArray[0].addEventListener('change',prepareUpload,false);
+        //         function prepareUpload(event){
+        //           if (this.files && this.files[0]) {
+        //           var img = document.getElementById('image-data');
+        //           img.src = URL.createObjectURL(this.files[0]); 
+        //       }
+        //         const files = event.target.files;
+        //         const fileName = files[0].name;
+        //         document.getElementsByClassName('file-data')[0].classList.add('disabled');
+        //         document.getElementsByClassName('upload-file-data')[0].classList.remove('disabled');
+        //         document.getElementsByClassName('upload-file-name')[0].innerHTML = files[0].name;
+        //         document.getElementsByClassName('upload-file-modified')[0].innerHTML = files[0].lastModifiedDate;
+        //         document.getElementsByClassName('upload-file-size')[0].innerHTML = files[0].size/1000+'kb';
+        //         document.getElementsByClassName('upload-file-type')[0].innerHTML = files[0].type;
+        //     }
 
-        }
+        // }
         var locationBut = document.querySelectorAll('.get-location');
         if(locationBut.length){
             var locationSupport = document.getElementsByClassName('location-support')[0]
