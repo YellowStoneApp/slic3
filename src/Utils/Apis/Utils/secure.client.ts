@@ -6,6 +6,7 @@
  */
 
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../constants";
 import { logService } from "../logging.service";
 import { apiErrorHandlingWithLogs, requestType } from "./call.wrapper";
@@ -33,6 +34,9 @@ const post = async (baseUrl: string, api: string, payload: any) => {
 const get = async (baseUrl: string, api: string) => {
   const authToken = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
   if (authToken) {
+    console.log(authToken);
+    console.log(jwtDecode(authToken));
+
     axios.defaults.headers.common["Authorization"] = "Bearer " + authToken;
     const response = await apiErrorHandlingWithLogs(
       async () => {
