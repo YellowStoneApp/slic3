@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
+import { Redirect } from "react-router";
 import { Routes } from "../Navigation/Routes";
 import FormInput from "./FormInput";
 
@@ -25,6 +26,8 @@ const Form: FunctionComponent<FormProps> = ({
   rightRedirect,
   children,
 }) => {
+  const [redirectLeft, setRedirectLeft] = useState(false);
+  const [redirectRight, setRedirectRight] = useState(false);
   const RedirectLink = (isLeft: boolean, redirectionVals?: Redirection) => {
     if (!redirectionVals) {
       return <></>;
@@ -33,12 +36,29 @@ const Form: FunctionComponent<FormProps> = ({
     const className = `w-50 font-11 pb-2 color-theme opacity-60 pb-3 ${textPos}`;
     return (
       <div className={className}>
-        <a href={redirectionVals.destination} className="color-theme">
+        <a
+          href="#"
+          onClick={() => {
+            if (isLeft) {
+              setRedirectLeft(true);
+            } else {
+              setRedirectRight(true);
+            }
+          }}
+          className="color-theme"
+        >
           {redirectionVals.name}
         </a>
       </div>
     );
   };
+  if (redirectLeft) {
+    return <Redirect to={{ pathname: leftRedirect?.destination }} />;
+  }
+
+  if (redirectRight) {
+    return <Redirect to={{ pathname: rightRedirect?.destination }} />;
+  }
 
   return (
     <>
