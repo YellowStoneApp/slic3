@@ -11,6 +11,7 @@ const LoggedIn = () => {
 const NotLoggedIn = () => {
   const cu = useCurrentWalletUser();
   console.log(cu);
+  console.log(process.env.REACT_APP_WALLET_DISCOVERY);
   return cu.loggedIn ? null : (
     <div>
       <div className="page-content header-clear-medium">
