@@ -3,6 +3,9 @@
  */
 import { atom, useRecoilValue, useRecoilState } from "recoil";
 import { iUser } from "../Utils/Apis/tamarak.service";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 interface iIdentityCustomer {
   loggedIn: boolean;
@@ -14,6 +17,7 @@ const defaultState: iIdentityCustomer = { loggedIn: false };
 export const identityCustomerState = atom({
   key: "IDENTITY_CUSTOMER",
   default: defaultState,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const useIdentityCustomer = () => {

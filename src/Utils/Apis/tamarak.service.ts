@@ -56,6 +56,19 @@ const registerUser = async (username: string, avatar: File) => {
   validateResponse(updateAvatarResponse.data);
 };
 
+const getCurrentCustomer = async (): Promise<iUser> => {
+  const response = await secureClient.get(url, "/api/profile");
+  validateResponse(response);
+
+  const user: iUser = response.data;
+  if (!user.avatar || !user.id || !user.userName || !user.identityKey) {
+    logService.error(`Invalid response from server. Got ${response}`);
+    throw new Error("Invalid response.");
+  }
+
+  return user;
+};
+
 const getProfile = async (username: string): Promise<iUser> => {
   const response = await secureClient.get(url, "/api/profile/user", {
     username,
@@ -99,4 +112,5 @@ export const tamarakService = {
   createShout,
   registerUser,
   getProfile,
+  getCurrentCustomer,
 };

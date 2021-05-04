@@ -6,6 +6,7 @@ import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
 import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { useRecoilState } from "recoil";
+import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
 const LoginContainer = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -23,6 +24,8 @@ const LoginContainer = () => {
       try {
         const response = await identityService.login(email, password);
         setIdentityCustomer({ loggedIn: true });
+        const user = await tamarakService.getCurrentCustomer();
+        setIdentityCustomer({ loggedIn: true, user: user });
         console.log("user logged in", response);
         setLoggedIn(true);
       } catch (error) {

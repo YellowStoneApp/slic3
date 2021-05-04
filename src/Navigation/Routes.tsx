@@ -41,7 +41,7 @@ class AppRouter extends React.Component {
             path={Routes.Gallery}
             component={GalleryContainer}
           />
-          <Route
+          <PrivateRoute
             exact={true}
             path={Routes.Profile}
             component={ProfileContainer}

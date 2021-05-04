@@ -1,8 +1,34 @@
-import React from "react";
+import MapsLocalLaundryService from "material-ui/svg-icons/maps/local-laundry-service";
+import React, { useEffect, useState } from "react";
+import { snapshot_UNSTABLE } from "recoil";
+import {
+  iShout,
+  iUser,
+  tamarakService,
+} from "../../Utils/Apis/tamarak.service";
+import Post from "./Post";
 
 interface ProfileContainerProps {}
 
 const ProfileContainer = (props: ProfileContainerProps) => {
+  const [posts, setPosts] = useState<iShout[]>();
+  const [user, setUser] = useState<iUser | null>(null);
+
+  const loadPosts = async () => {
+    const response = await tamarakService.getShouts();
+    setPosts(response);
+  };
+  // how do you route the username here?
+  const loadUser = async () => {
+    const response = await tamarakService.getProfile("goslow");
+    setUser(response);
+  };
+
+  useEffect(() => {
+    loadPosts();
+    loadUser();
+  }, []);
+
   return (
     <>
       <div className="page-content header-clear-medium">
@@ -11,13 +37,10 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             {/* <!-- left side of profile --> */}
             <div className="flex-grow-1">
               <h1 className="font-700">
-                Karla Black
+                @{user?.userName}
                 <i className="fa fa-check-circle color-blue-dark float-end font-13 mt-2 me-3"></i>
               </h1>
-              <p className="mb-2">
-                Karla Black is a name used when you generate a text with an
-                annonymous name.
-              </p>
+              <p className="mb-2">Bio</p>
               <p className="font-10">
                 <strong className="color-theme pe-1">1k</strong>Followers
                 <strong className="color-theme ps-3 pe-1">342</strong>Following
@@ -25,14 +48,13 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             </div>
             {/* <!-- right side of profile. increase image width to increase column size--> */}
             <img
-              src="images/empty.png"
-              data-src="images/pictures/0t.jpg"
+              src={user?.avatar}
               width="115"
               height="115"
               className="rounded-circle mt-3 shadow-xl preload-img"
             />
           </div>
-          {/* <!-- follow buttons--> */}
+          {/* <!-- follow buttons--> Don't show this if this is customer's profile page */}
           <div className="content mb-0">
             <div className="row mb-0">
               <div className="col-6">
@@ -70,109 +92,9 @@ const ProfileContainer = (props: ProfileContainerProps) => {
           </div>
           <div className="content mb-0 mt-n1">
             <div className="gallery-views gallery-view-1">
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/10t.jpg"
-                title="Vynil and Typerwritter"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/10t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">Messy Desk?</h4>
-                  <p>Some may consider this to be a very messy desk.</p>
-                  <div className="divider bottom-0"></div>
-                </div>
-              </a>
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/11t.jpg"
-                title="Fruit Cookie Pie"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/11t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">Designers Desk</h4>
-                  <p>With all the gadgets you'd ever wish for.</p>
-                  <div className="divider bottom-0"></div>
-                </div>
-              </a>
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/28t.jpg"
-                title="Plain Cookies and Flour"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/28t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">Apple Watch</h4>
-                  <p>The perfect and small notification device.</p>
-                  <div className="divider bottom-0"></div>
-                </div>
-              </a>
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/18t.jpg"
-                title="Pots and Stuff"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/18t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">City Landscape</h4>
-                  <p>It's absolutely gorgeous, we'd love to see it live.</p>
-                  <div className="divider bottom-0"></div>
-                </div>
-              </a>
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/14t.jpg"
-                title="Delicious Strawberries"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/14t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">
-                    Typography and iPhone 5
-                  </h4>
-                  <p>A beautifully captured snap with great contrast.</p>
-                  <div className="divider bottom-0"></div>
-                </div>
-              </a>
-              <a
-                data-gallery="gallery-1"
-                href="images/pictures/15t.jpg"
-                title="A Beautiful Camera"
-              >
-                <img
-                  src="images/empty.png"
-                  data-src="images/pictures/15t.jpg"
-                  className="rounded-m preload-img shadow-xl img-fluid"
-                  alt="img"
-                />
-                <div className="caption">
-                  <h4 className="bottom-0 color-theme">Feather and Paper?</h4>
-                  <p>Going back to days when things were simplere.</p>
-                </div>
-              </a>
+              {posts?.map((value) => {
+                return <Post post={value} />;
+              })}
             </div>
           </div>
         </div>

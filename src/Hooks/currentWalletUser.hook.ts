@@ -6,6 +6,7 @@
 import { useEffect } from "react";
 import { atom, useSetRecoilState, useRecoilValue } from "recoil";
 import * as fcl from "@onflow/fcl";
+import { recoilPersist } from "recoil-persist";
 
 interface iFlowUser {
   loggedIn: boolean;
@@ -14,10 +15,12 @@ interface iFlowUser {
 }
 
 const defaultState: iFlowUser = { loggedIn: false };
+const { persistAtom } = recoilPersist();
 
 export const $currentWalletUser = atom({
   key: "CURRENT_WALLET_USER",
   default: defaultState,
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**
