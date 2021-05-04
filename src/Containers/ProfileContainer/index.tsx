@@ -21,17 +21,16 @@ const ProfileContainer = (props: ProfileContainerProps) => {
   );
 
   const loadPosts = async () => {
-    const response = await tamarakService.getShouts();
-    setPosts(response);
-  };
-  // how do you route the username here?
-  const loadUser = async () => {
-    const response = await tamarakService.getProfile("goslow");
+    if (identityCustomer.user?.userName) {
+      const response = await tamarakService.getPostsFromUser(
+        identityCustomer.user.id
+      );
+      setPosts(response);
+    }
   };
 
   useEffect(() => {
     loadPosts();
-    loadUser();
   }, []);
 
   return (
@@ -98,7 +97,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
           <div className="content mb-0 mt-n1">
             <div className="gallery-views gallery-view-1">
               {posts?.map((value) => {
-                return <Post post={value} />;
+                return <Post post={value} key={value.id} />;
               })}
             </div>
           </div>
