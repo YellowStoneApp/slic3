@@ -9,24 +9,25 @@ import { identityService } from "../../Utils/Apis/Identity.service";
 import { logService } from "../../Utils/Apis/logging.service";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
+import { useRecoilState } from "recoil";
+import { signUpState } from "../../Hooks/signup.hook";
 
 const SignUpContainer = () => {
   const [redirect, setRedirect] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [, setConfirmPassword] = useState("");
+  const [, setSignUp] = useRecoilState(signUpState);
 
   const handleSubmit = async () => {
     if (email && password) {
-      const response = await identityService
-        .signUp(email, password)
-        .then((response) => {
-          setRedirect(true);
-        })
-        .catch((error) => {
-          // todo alert user of error
-        });
+      try {
+        const responseSignUp = await identityService.signUp(email, password);
+        setSignUp({ email, password });
+        setRedirect(true);
+      } catch (error) {
+        console.log(error.message);
+      }
     } else {
       // todo alert user of this.
       logService.error("Must submit a username and password.");
@@ -35,11 +36,7 @@ const SignUpContainer = () => {
 
   return (
     <div>
-      {redirect && (
-        <Redirect
-          to={{ pathname: Routes.VerifyEmail, search: `?email=${email}` }}
-        />
-      )}
+      {redirect && <Redirect to={{ pathname: Routes.VerifyEmail }} />}
 
       <Form
         onSubmit={handleSubmit}

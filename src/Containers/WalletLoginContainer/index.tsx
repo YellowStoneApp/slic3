@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
+import { useRecoilState } from "recoil";
+import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { useCurrentWalletUser } from "../../Hooks/currentWalletUser.hook";
 import { Routes } from "../../Navigation/Routes";
 
 const LoggedIn = () => {
   const cu = useCurrentWalletUser();
-  return !cu.loggedIn ? null : <Redirect to={{ pathname: Routes.Gallery }} />;
+  const [identityCustomer] = useRecoilState(identityCustomerState);
+  let redirect = Routes.CreateAccount;
+  if (identityCustomer.user) {
+    redirect = Routes.Gallery;
+  }
+  return !cu.loggedIn ? null : <Redirect to={{ pathname: redirect }} />;
 };
 
 const NotLoggedIn = () => {

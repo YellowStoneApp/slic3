@@ -31,16 +31,17 @@ const post = async (baseUrl: string, api: string, payload: any) => {
   }
 };
 
-const get = async (baseUrl: string, api: string) => {
+const get = async (baseUrl: string, api: string, data?: any) => {
   const authToken = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
   if (authToken) {
-    console.log(authToken);
-    console.log(jwtDecode(authToken));
-
     axios.defaults.headers.common["Authorization"] = "Bearer " + authToken;
+    let params = {};
+    if (data) {
+      params = { params: data };
+    }
     const response = await apiErrorHandlingWithLogs(
       async () => {
-        return await axios.get(`${baseUrl}${api}`);
+        return await axios.get(`${baseUrl}${api}`, params);
       },
       api,
       baseUrl,

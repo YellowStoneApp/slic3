@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router";
+import { useRecoilState } from "recoil";
 import Alert from "../../Components/Alert";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
+import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { Routes } from "../../Navigation/Routes";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
 interface CreateAccountContainerProps {}
 
-/**
- * Choose a username and an avatar.
- * @param props
- * @returns
- */
 const CreateAccountContainer = (props: CreateAccountContainerProps) => {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [imageSource, setImageSource] = useState<File | null>(null);
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [redirect, setRedirect] = useState(false);
+  const [identityCustomer, setIdentityCustomer] = useRecoilState(
+    identityCustomerState
+  );
 
   const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -32,12 +32,20 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
   };
 
   const onSubmit = async () => {
-    if (imageSource && username) {
+    if (imageSource && imageUrl && username) {
       try {
         const response = await tamarakService.registerUser(
           username,
           imageSource
         );
+
+        const registeredUser = await tamarakService.getProfile(username);
+
+        setIdentityCustomer({
+          ...identityCustomer,
+          user: registeredUser,
+        });
+
         setRedirect(true);
       } catch (error) {
         setError(error.message);

@@ -56,6 +56,21 @@ const registerUser = async (username: string, avatar: File) => {
   validateResponse(updateAvatarResponse.data);
 };
 
+const getProfile = async (username: string): Promise<iUser> => {
+  const response = await secureClient.get(url, "/api/profile/user", {
+    username,
+  });
+  validateResponse(response);
+
+  const user: iUser = response.data;
+  if (!user.avatar || !user.id || !user.userName || !user.identityKey) {
+    logService.error(`Invalid response from server. Got ${response}`);
+    throw new Error("Invalid response.");
+  }
+
+  return user;
+};
+
 /**
  * This is meant to check the response for any failure codes that come back from MainService. I'm not 100% on this if I like it or not.
  *
@@ -83,4 +98,5 @@ export const tamarakService = {
   getShouts,
   createShout,
   registerUser,
+  getProfile,
 };
