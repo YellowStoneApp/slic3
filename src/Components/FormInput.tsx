@@ -16,7 +16,7 @@ const FormInput = (props: FormInputProps) => {
         <input
           type={props.type}
           className={className}
-          id="form1a"
+          id={props.name}
           placeholder={props.placeholder}
           onChange={(target) => props.onValueChange(target.currentTarget.value)}
         />

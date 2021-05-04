@@ -11,8 +11,9 @@ const Footer = (props: FooterProps) => {
           <i className="fa fa-home"></i>
           {/* <span>Home</span> */}
         </a>
-        <a href="index-components.html" className="active-nav">
-          <i className="fa fa-star"></i>
+        {/* <a href={Routes.Profile} className="active-nav"> */}
+        <a href={Routes.Profile}>
+          <i className="fa fa-user-alt"></i>
           {/* <span>Features</span> */}
         </a>
         <a href={Routes.Create}>

@@ -18,8 +18,6 @@ const PrivateRoute = ({
   component: Component,
   ...rest
 }: any & { component: any }) => {
-  const token = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
-  const checkUserAuth = validateToken(token);
   const customerLoggedIntoWallet = useCurrentWalletUser().loggedIn;
   const [identityCustomer] = useRecoilState(identityCustomerState);
 

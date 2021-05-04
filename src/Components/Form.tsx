@@ -75,7 +75,6 @@ const Form: FunctionComponent<FormProps> = ({
             {children}
 
             <a
-              type="submit"
               onClick={onSubmit}
               className="btn btn-m mt-2 mb-4 btn-full bg-green-dark text-uppercase font-900"
             >
