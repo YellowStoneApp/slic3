@@ -7,8 +7,8 @@ import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 
-const url = "http://localhost:5100";
-//const url = "https://mainservice.yellowstoneapp.io";
+//const url = "http://localhost:5100";
+const url = "https://mainservice.yellowstoneapp.io";
 
 export interface iUser {
   avatar: string;
