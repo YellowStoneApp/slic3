@@ -1,5 +1,7 @@
 import NotificationNetworkCheck from "material-ui/svg-icons/notification/network-check";
 import React, { useState } from "react";
+import { Redirect } from "react-router";
+import { Routes } from "../../Navigation/Routes";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
 interface CreateContainerProps {}
@@ -7,6 +9,7 @@ interface CreateContainerProps {}
 const CreateContainer = () => {
   const [imageSource, setImageSource] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const [redirectHome, setRedirectHome] = useState(false);
 
   const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -22,8 +25,8 @@ const CreateContainer = () => {
   const onSubmit = async () => {
     if (imageSource) {
       try {
-        const response = tamarakService.createShout(imageSource);
-        console.log(response);
+        const response = await tamarakService.createShout(imageSource);
+        setRedirectHome(true);
       } catch (error) {
         console.error(error);
       }
@@ -32,6 +35,10 @@ const CreateContainer = () => {
     }
   };
 
+  if (redirectHome) {
+    return <Redirect to={{ pathname: Routes.Gallery }} />;
+  }
+
   return (
     <>
       <div className="page-content header-clear-medium">
@@ -39,26 +46,23 @@ const CreateContainer = () => {
           <div className="content mb-0">
             <div className="file-data pb-5">
               <div style={{ width: "100%", marginBottom: "10" }}>
-                <input
-                  type="file"
-                  style={{
-                    border: "none",
-                    width: "100%",
-                    padding: "10",
-                    alignContent: "center",
-                  }}
-                  id="file-upload"
-                  accept="image/*"
-                  onChange={imageSelected}
-                />
-                <img
-                  id="image-data"
-                  src={
-                    imageUrl ??
-                    "https://timesofindia.indiatimes.com/photo/67586673.cms"
-                  }
-                  className="img-fluid"
-                />
+                <label>
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    id="file-upload"
+                    accept="image/*"
+                    onChange={imageSelected}
+                  />
+                  <img
+                    id="image-data"
+                    src={
+                      imageUrl ??
+                      "https://timesofindia.indiatimes.com/photo/67586673.cms"
+                    }
+                    className="img-fluid"
+                  />
+                </label>
               </div>
             </div>
             <a

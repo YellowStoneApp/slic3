@@ -7,7 +7,7 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-interface iIdentityCustomer {
+export interface iIdentityCustomer {
   loggedIn: boolean;
   user?: iUser; // this gets set after creating an account.
 }

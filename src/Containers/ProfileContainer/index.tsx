@@ -1,6 +1,10 @@
 import MapsLocalLaundryService from "material-ui/svg-icons/maps/local-laundry-service";
 import React, { useEffect, useState } from "react";
-import { snapshot_UNSTABLE } from "recoil";
+import { snapshot_UNSTABLE, useRecoilState } from "recoil";
+import {
+  identityCustomerState,
+  iIdentityCustomer,
+} from "../../Hooks/currentIdentityCustomer.hook";
 import {
   iShout,
   iUser,
@@ -12,7 +16,9 @@ interface ProfileContainerProps {}
 
 const ProfileContainer = (props: ProfileContainerProps) => {
   const [posts, setPosts] = useState<iShout[]>();
-  const [user, setUser] = useState<iUser | null>(null);
+  const [identityCustomer] = useRecoilState<iIdentityCustomer>(
+    identityCustomerState
+  );
 
   const loadPosts = async () => {
     const response = await tamarakService.getShouts();
@@ -21,7 +27,6 @@ const ProfileContainer = (props: ProfileContainerProps) => {
   // how do you route the username here?
   const loadUser = async () => {
     const response = await tamarakService.getProfile("goslow");
-    setUser(response);
   };
 
   useEffect(() => {
@@ -37,7 +42,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             {/* <!-- left side of profile --> */}
             <div className="flex-grow-1">
               <h1 className="font-700">
-                @{user?.userName}
+                @{identityCustomer.user?.userName}
                 <i className="fa fa-check-circle color-blue-dark float-end font-13 mt-2 me-3"></i>
               </h1>
               <p className="mb-2">Bio</p>
@@ -48,7 +53,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             </div>
             {/* <!-- right side of profile. increase image width to increase column size--> */}
             <img
-              src={user?.avatar}
+              src={identityCustomer.user?.avatar}
               width="115"
               height="115"
               className="rounded-circle mt-3 shadow-xl preload-img"
