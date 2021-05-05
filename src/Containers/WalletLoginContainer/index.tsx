@@ -3,11 +3,14 @@ import { Redirect } from "react-router";
 import { useRecoilState } from "recoil";
 import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { useCurrentWalletUser } from "../../Hooks/currentWalletUser.hook";
+import { errorState } from "../../Hooks/error.hook";
 import { Routes } from "../../Navigation/Routes";
 
 const LoggedIn = () => {
   const cu = useCurrentWalletUser();
   const [identityCustomer] = useRecoilState(identityCustomerState);
+
+  // todo WTF are you doing here??? This way adapted from a tutorial and this is some broke ass functionality.
   let redirect = Routes.CreateAccount;
   if (identityCustomer.user) {
     redirect = Routes.Gallery;

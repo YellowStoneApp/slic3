@@ -11,6 +11,7 @@ import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../Hooks/signup.hook";
+import { errorState } from "../../Hooks/error.hook";
 
 const SignUpContainer = () => {
   const [redirect, setRedirect] = useState(false);
@@ -18,6 +19,7 @@ const SignUpContainer = () => {
   const [password, setPassword] = useState("");
   const [, setConfirmPassword] = useState("");
   const [, setSignUp] = useRecoilState(signUpState);
+  const [, setError] = useRecoilState(errorState);
 
   const handleSubmit = async () => {
     if (email && password) {
@@ -26,11 +28,11 @@ const SignUpContainer = () => {
         setSignUp({ email, password });
         setRedirect(true);
       } catch (error) {
-        console.log(error.message);
+        setError({ message: error.message });
       }
     } else {
       // todo alert user of this.
-      logService.error("Must submit a username and password.");
+      setError({ message: "You gotta give me an email and a password." });
     }
   };
 

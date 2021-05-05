@@ -5,6 +5,7 @@ import {
   identityCustomerState,
   iIdentityCustomer,
 } from "../../Hooks/currentIdentityCustomer.hook";
+import { errorState } from "../../Hooks/error.hook";
 import {
   iShout,
   iUser,
@@ -19,6 +20,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
   const [identityCustomer] = useRecoilState<iIdentityCustomer>(
     identityCustomerState
   );
+  const [, setError] = useRecoilState(errorState);
 
   const loadPosts = async () => {
     if (identityCustomer.user?.userName) {
@@ -26,6 +28,11 @@ const ProfileContainer = (props: ProfileContainerProps) => {
         identityCustomer.user.id
       );
       setPosts(response);
+    } else {
+      setError({
+        message:
+          "This is awkward... Something went wrong, please try again later....",
+      });
     }
   };
 

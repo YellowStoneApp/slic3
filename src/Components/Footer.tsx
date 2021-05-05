@@ -1,9 +1,17 @@
 import React from "react";
+import { errorSelector, useRecoilState } from "recoil";
+import { errorState } from "../Hooks/error.hook";
 import { Routes } from "../Navigation/Routes";
+import ErrorPopup from "./ErrorPopup";
 
 interface FooterProps {}
 
 const Footer = (props: FooterProps) => {
+  const [error, setError] = useRecoilState(errorState);
+
+  const classNameNotUp = "menu menu-box-bottom menu-box-detached";
+  const classNameUp = classNameNotUp + " menu-active";
+
   return (
     <>
       <div id="footer-bar" className="footer-bar-1">
@@ -82,94 +90,6 @@ const Footer = (props: FooterProps) => {
               <i className="fa fa-angle-left"></i>
             </a>
           </div>
-        </div>
-      </div>
-      {/* <!-- Menu Settings Highlights--> */}
-      <div
-        id="menu-highlights"
-        className="menu menu-box-bottom menu-box-detached"
-      >
-        <div className="menu-title">
-          <h1>Highlights</h1>
-          <p className="color-highlight">
-            Any Element can have a Highlight Color
-          </p>
-          <a href="#" className="close-menu">
-            <i className="fa fa-times"></i>
-          </a>
-        </div>
-        <div className="divider divider-margins mb-n2"></div>
-        <div className="content">
-          <div className="highlight-changer">
-            <a href="#" data-change-highlight="blue">
-              <i className="fa fa-circle color-blue-dark"></i>
-              <span className="color-blue-light">Default</span>
-            </a>
-            <a href="#" data-change-highlight="red">
-              <i className="fa fa-circle color-red-dark"></i>
-              <span className="color-red-light">Red</span>
-            </a>
-            <a href="#" data-change-highlight="orange">
-              <i className="fa fa-circle color-orange-dark"></i>
-              <span className="color-orange-light">Orange</span>
-            </a>
-            <a href="#" data-change-highlight="pink2">
-              <i className="fa fa-circle color-pink2-dark"></i>
-              <span className="color-pink-dark">Pink</span>
-            </a>
-            <a href="#" data-change-highlight="magenta">
-              <i className="fa fa-circle color-magenta-dark"></i>
-              <span className="color-magenta-light">Purple</span>
-            </a>
-            <a href="#" data-change-highlight="aqua">
-              <i className="fa fa-circle color-aqua-dark"></i>
-              <span className="color-aqua-light">Aqua</span>
-            </a>
-            <a href="#" data-change-highlight="teal">
-              <i className="fa fa-circle color-teal-dark"></i>
-              <span className="color-teal-light">Teal</span>
-            </a>
-            <a href="#" data-change-highlight="mint">
-              <i className="fa fa-circle color-mint-dark"></i>
-              <span className="color-mint-light">Mint</span>
-            </a>
-            <a href="#" data-change-highlight="green">
-              <i className="fa fa-circle color-green-light"></i>
-              <span className="color-green-light">Green</span>
-            </a>
-            <a href="#" data-change-highlight="grass">
-              <i className="fa fa-circle color-green-dark"></i>
-              <span className="color-green-dark">Grass</span>
-            </a>
-            <a href="#" data-change-highlight="sunny">
-              <i className="fa fa-circle color-yellow-light"></i>
-              <span className="color-yellow-light">Sunny</span>
-            </a>
-            <a href="#" data-change-highlight="yellow">
-              <i className="fa fa-circle color-yellow-dark"></i>
-              <span className="color-yellow-light">Goldish</span>
-            </a>
-            <a href="#" data-change-highlight="brown">
-              <i className="fa fa-circle color-brown-dark"></i>
-              <span className="color-brown-light">Wood</span>
-            </a>
-            <a href="#" data-change-highlight="night">
-              <i className="fa fa-circle color-dark-dark"></i>
-              <span className="color-dark-light">Night</span>
-            </a>
-            <a href="#" data-change-highlight="dark">
-              <i className="fa fa-circle color-dark-light"></i>
-              <span className="color-dark-light">Dark</span>
-            </a>
-            <div className="clearfix"></div>
-          </div>
-          <a
-            href="#"
-            data-menu="menu-settings"
-            className="mb-3 btn btn-full btn-m rounded-sm bg-highlight shadow-xl text-uppercase font-900 mt-4"
-          >
-            Back to Settings
-          </a>
         </div>
       </div>
       {/* <!-- Menu Settings Backgrounds--> */}

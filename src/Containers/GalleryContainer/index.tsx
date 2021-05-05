@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Routes } from "../../Navigation/Routes";
-import { identityService } from "../../Utils/Apis/Identity.service";
 import { tamarakService, iShout } from "../../Utils/Apis/tamarak.service";
 import { useCurrentWalletUser } from "../../Hooks/currentWalletUser.hook";
 import SliderContainer from "../../Components/SliderContainer";
+import { useRecoilState } from "recoil";
+import { errorState } from "../../Hooks/error.hook";
 
 const GalleryContainer = () => {
-  const history = useHistory();
-  const customer = useCurrentWalletUser();
   const [shouts, setShouts] = useState<iShout[] | undefined>(undefined);
+  const [, setError] = useRecoilState(errorState);
 
   const getShouts = async () => {
     try {
@@ -28,9 +27,11 @@ const GalleryContainer = () => {
   if (shouts) {
     console.log("returning slider container");
     return (
-      <div className="page-content header-clear-medium">
-        <SliderContainer shouts={shouts} />
-      </div>
+      <>
+        <div className="page-content header-clear-medium">
+          <SliderContainer shouts={shouts} />
+        </div>
+      </>
     );
   }
   return <div>WAITING</div>;

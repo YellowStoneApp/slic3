@@ -7,15 +7,15 @@ import FormInput from "../../Components/FormInput";
 import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { useRecoilState } from "recoil";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
+import { errorState } from "../../Hooks/error.hook";
 
 const LoginContainer = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   //const identityCustomer = useIdentityCustomer();
-  const [identityCustomer, setIdentityCustomer] = useRecoilState(
-    identityCustomerState
-  );
+  const [, setIdentityCustomer] = useRecoilState(identityCustomerState);
+  const [, setError] = useRecoilState(errorState);
 
   const login = async () => {
     console.log("clicked");
@@ -29,8 +29,10 @@ const LoginContainer = () => {
         console.log("user logged in", response);
         setLoggedIn(true);
       } catch (error) {
-        // todo alert user of error
+        setError({ message: error.message });
       }
+    } else {
+      setError({ message: "You must enter your email and password" });
     }
   };
 

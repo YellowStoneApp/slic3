@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { isConstructorDeclaration } from "typescript";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
 import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
+import { errorState } from "../../Hooks/error.hook";
 import { signUpState } from "../../Hooks/signup.hook";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
+import { logService } from "../../Utils/Apis/logging.service";
 
 const ConfirmEmailContainer = () => {
   const [redirect, setRedirect] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [, setIdentityCustomer] = useRecoilState(identityCustomerState);
   const [signUp] = useRecoilState(signUpState);
+  const [, setError] = useRecoilState(errorState);
 
   const handleSubmit = async () => {
     if (verificationCode) {
-      // todo error handling with verification code.
       const { email, password } = signUp;
       try {
         if (email && password) {
@@ -32,10 +34,16 @@ const ConfirmEmailContainer = () => {
 
           setRedirect(true);
         } else {
-          console.error("can't load email or password to login");
+          logService.error(
+            "can't load email or password to login from ConfirmEmailContainer. Values are not set in signup state."
+          );
+          setError({
+            message:
+              "This is awkward.... Something went wrong. Please try again later.",
+          });
         }
       } catch (error) {
-        console.log(error);
+        setError({ message: error.message });
       }
     }
   };

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router";
 import { useRecoilState } from "recoil";
-import Alert from "../../Components/Alert";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
 import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
+import { errorState } from "../../Hooks/error.hook";
 import { Routes } from "../../Navigation/Routes";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
@@ -14,7 +14,7 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [imageSource, setImageSource] = useState<File | null>(null);
   const [username, setUsername] = useState<string | undefined>(undefined);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [, setError] = useRecoilState(errorState);
   const [redirect, setRedirect] = useState(false);
   const [identityCustomer, setIdentityCustomer] = useRecoilState(
     identityCustomerState
@@ -48,10 +48,10 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
 
         setRedirect(true);
       } catch (error) {
-        setError(error.message);
+        setError({ message: error.message });
       }
     } else {
-      setError("You must choose a username and profile picture");
+      setError({ message: "You must choose a username and profile picture" });
     }
   };
 
@@ -71,7 +71,6 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
         subtitle="Let's get your profile setup"
         submitButtonTitle="Next"
       >
-        <Alert message={error} setMessage={setError} />
         <div className="row text-center row-cols-1 mb-0">
           <div className="file-data pb-5">
             <div style={{ width: "100%", marginBottom: "10" }}>

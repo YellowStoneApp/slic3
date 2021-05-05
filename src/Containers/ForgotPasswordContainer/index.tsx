@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
+import { errorState } from "../../Hooks/error.hook";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 
 const ForgotPasswordContainer = () => {
   const [redirect, setRedirect] = useState(false);
   const [email, setEmail] = useState("");
+  const [, setError] = useRecoilState(errorState);
 
   const handleSubmit = async () => {
     if (email) {
@@ -18,8 +21,10 @@ const ForgotPasswordContainer = () => {
           setRedirect(true);
         })
         .catch((error) => {
-          // todo alert user of error
+          setError({ message: error.message });
         });
+    } else {
+      setError({ message: "You gotta enter your email." });
     }
   };
 

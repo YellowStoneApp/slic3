@@ -1,6 +1,8 @@
 import NotificationNetworkCheck from "material-ui/svg-icons/notification/network-check";
 import React, { useState } from "react";
 import { Redirect } from "react-router";
+import { useRecoilState } from "recoil";
+import { errorState } from "../../Hooks/error.hook";
 import { Routes } from "../../Navigation/Routes";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
@@ -10,6 +12,7 @@ const CreateContainer = () => {
   const [imageSource, setImageSource] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const [redirectHome, setRedirectHome] = useState(false);
+  const [, setError] = useRecoilState(errorState);
 
   const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -28,10 +31,10 @@ const CreateContainer = () => {
         const response = await tamarakService.createShout(imageSource);
         setRedirectHome(true);
       } catch (error) {
-        console.error(error);
+        setError({ message: error.message });
       }
     } else {
-      console.error("No image selected");
+      setError({ message: "No Image Selected" });
     }
   };
 

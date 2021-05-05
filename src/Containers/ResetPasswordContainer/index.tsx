@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
+import { errorState } from "../../Hooks/error.hook";
 import { identityService } from "../../Utils/Apis/Identity.service";
 
 const ResetPasswordContainer = () => {
@@ -8,6 +10,7 @@ const ResetPasswordContainer = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [, setError] = useRecoilState(errorState);
 
   useEffect(() => {
     let userName = window.location.search.split("=")[1];
@@ -27,10 +30,14 @@ const ResetPasswordContainer = () => {
           return data;
         })
         .catch((error) => {
-          // todo alert user of error
+          setError({ message: error.message });
         });
 
       console.log(response);
+    } else {
+      setError({
+        message: "You gotta give me the verification code and a new password.",
+      });
     }
   };
 
