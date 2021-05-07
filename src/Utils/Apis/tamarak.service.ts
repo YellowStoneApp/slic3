@@ -7,8 +7,10 @@ import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 
-const url = "http://localhost:5100";
-//const url = "https://mainservice.yellowstoneapp.io";
+const url = process.env.REACT_APP_MAIN_SERVICE_URL;
+if (!url) {
+  throw new Error("Cannot load url from env variable");
+}
 
 export interface iUser {
   avatar: string;
