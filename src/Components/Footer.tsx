@@ -24,10 +24,11 @@ const Footer = (props: FooterProps) => {
           <i className="fa fa-user-alt"></i>
           {/* <span>Features</span> */}
         </a>
-        <a href={Routes.Create}>
+
+        {/* <a href="#" data-menu="menu-settings">
           <i className="fa fa-plus"></i>
-          {/* <span>Pages</span> */}
-        </a>
+        </a> */}
+
         <a href={Routes.Search}>
           <i className="fa fa-search"></i>
           {/* <span>Search</span> */}

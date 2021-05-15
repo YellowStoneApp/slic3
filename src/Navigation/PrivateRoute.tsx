@@ -22,19 +22,19 @@ const PrivateRoute = ({
   const [identityCustomer] = useRecoilState(identityCustomerState);
 
   const RouteTo = (props: any) => {
-    if (identityCustomer.loggedIn && customerLoggedIntoWallet) {
-      console.log("logged in to both identity and wallet");
-      return <Component {...props} />;
-    } else if (identityCustomer.loggedIn) {
-      // haven't logged into wallet
-      console.log(
-        "not logged into wallet. Redirecting to ",
-        Routes.WalletLogin
-      );
-      return <Redirect to={{ pathname: Routes.WalletLogin }} />;
-    }
-    console.log("not logged in anywhere");
-    return <Redirect to={{ pathname: "/login" }} />;
+    // if (identityCustomer.loggedIn && customerLoggedIntoWallet) {
+    //   console.log("logged in to both identity and wallet");
+    //   return <Component {...props} />;
+    // } else if (identityCustomer.loggedIn) {
+    //   // haven't logged into wallet
+    //   console.log(
+    //     "not logged into wallet. Redirecting to ",
+    //     Routes.WalletLogin
+    //   );
+    //   return <Redirect to={{ pathname: Routes.WalletLogin }} />;
+    // }
+    // console.log("not logged in anywhere");
+    // return <Redirect to={{ pathname: "/login" }} />;
   };
 
   return (

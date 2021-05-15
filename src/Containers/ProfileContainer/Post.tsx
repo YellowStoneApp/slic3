@@ -1,8 +1,8 @@
 import React from "react";
-import { iShout } from "../../Utils/Apis/tamarak.service";
+import { iGift } from "../../Utils/Apis/tamarak.service";
 
 interface PostProps {
-  post: iShout;
+  post: iGift;
 }
 
 const Post = (props: PostProps) => {

@@ -49,7 +49,7 @@ const ConfirmEmailContainer = () => {
   };
 
   if (redirect) {
-    return <Redirect to={{ pathname: Routes.WalletLogin }} />;
+    return <Redirect to={{ pathname: Routes.Gallery }} />;
   }
 
   // todo resend verification code.

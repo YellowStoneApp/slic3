@@ -6,17 +6,13 @@ import {
   iIdentityCustomer,
 } from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
-import {
-  iShout,
-  iUser,
-  tamarakService,
-} from "../../Utils/Apis/tamarak.service";
+import { iGift, iUser, tamarakService } from "../../Utils/Apis/tamarak.service";
 import Post from "./Post";
 
 interface ProfileContainerProps {}
 
 const ProfileContainer = (props: ProfileContainerProps) => {
-  const [posts, setPosts] = useState<iShout[]>();
+  const [posts, setPosts] = useState<iGift[]>();
   const [identityCustomer] = useRecoilState<iIdentityCustomer>(
     identityCustomerState
   );

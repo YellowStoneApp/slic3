@@ -6,6 +6,7 @@ import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
 import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
+import { linkPreview } from "./Utils/gift.registry";
 
 const url = process.env.REACT_APP_MAIN_SERVICE_URL;
 if (!url) {
@@ -19,10 +20,8 @@ export interface iUser {
   identityKey: string;
 }
 
-export interface iShout {
-  likes: number;
+export interface iGift {
   url: string;
-  user: iUser;
   id: number;
 }
 
@@ -33,15 +32,26 @@ const dummyCall = async () => {
   console.log(response);
 };
 
-const getShouts = async (): Promise<iShout[]> => {
+const getGifts = async (): Promise<iGift[]> => {
   const response = await secureClient.get(url, "/api/shout");
   return response.data;
 };
 
-const getPostsFromUser = async (id: number): Promise<iShout[]> => {
+const getPostsFromUser = async (id: number): Promise<iGift[]> => {
   const response = await secureClient.get(url, "/api/shout/postsbyuser", {
     userId: id,
   });
+  return response.data;
+};
+
+const registerGift = async (giftUrl: string, preview: linkPreview) => {
+  const response = await secureClient.post(url, "/api/gift/register", {
+    url: giftUrl,
+    title: preview.title,
+    image: preview.image,
+    description: preview.description,
+  });
+
   return response.data;
 };
 
@@ -116,10 +126,11 @@ const validateResponse = (response: any) => {
 
 export const tamarakService = {
   dummyCall,
-  getShouts,
+  getShouts: getGifts,
   createShout,
   registerUser,
   getProfile,
   getCurrentCustomer,
   getPostsFromUser,
+  registerGift,
 };

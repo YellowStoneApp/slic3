@@ -24,9 +24,7 @@ export enum Routes {
   Signup = "/signup",
   ResetPassword = "/reset-password",
   ForgotPassword = "/forgot-password",
-  WalletLogin = "/wallet-login",
   Search = "/search",
-  Create = "/create",
   CreateAccount = "/create-account",
   Profile = "/profile",
 }
@@ -36,21 +34,21 @@ class AppRouter extends React.Component {
     return (
       <Router>
         <React.Fragment>
-          <PrivateRoute
+          <Route
             exact={true}
             path={Routes.Gallery}
             component={GalleryContainer}
           />
-          <PrivateRoute
+          <Route
             exact={true}
             path={Routes.Profile}
             component={ProfileContainer}
           />
-          <Route
+          {/* <Route
             exact={true}
             path={Routes.Create}
             component={CreateContainer}
-          />
+          /> */}
           <Route
             exact={true}
             path={Routes.CreateAccount}
@@ -61,11 +59,11 @@ class AppRouter extends React.Component {
             path={Routes.Search}
             component={SearchContainer}
           />
-          <Route
+          {/* <Route
             exact={true}
             path={Routes.WalletLogin}
             component={WalletLoginContainer}
-          />
+          /> */}
           <Route exact={true} path={Routes.Login} component={LoginContainer} />
           <Route
             exact={true}
