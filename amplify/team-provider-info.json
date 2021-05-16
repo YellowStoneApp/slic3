@@ -12,14 +12,14 @@
       "AmplifyAppId": "d2m7rehsde4w8t"
     },
     "categories": {
-      "auth": {
-        "amplifyCognito": {}
-      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d2m7rehsde4w8t",
           "type": "cicd"
         }
+      },
+      "auth": {
+        "slic3916e02c9": {}
       }
     }
   }

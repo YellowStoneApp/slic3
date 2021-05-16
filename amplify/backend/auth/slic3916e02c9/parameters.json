@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "amplifyCognito_identitypool_1743a2c3",
+    "identityPoolName": "slic3916e02c9_identitypool_916e02c9",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "slic3836276c5",
-    "userPoolName": "slic3CustomerPool",
+    "resourceNameTruncated": "slic3916e02c9",
+    "userPoolName": "slic3916e02c9_userpool_916e02c9",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -14,11 +14,13 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": true,
+    "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "family_name",
+        "name"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
@@ -28,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "amplif836276c5_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "slic39916e02c9_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "836276c5",
-    "resourceName": "amplifyCognito",
+    "sharedId": "916e02c9",
+    "resourceName": "slic3916e02c9",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,13 +48,11 @@
         ]
     },
     "useDefault": "defaultSocial",
+    "hostedUI": true,
     "usernameAttributes": [
         "email"
     ],
-    "userPoolGroups": false,
-    "adminQueries": false,
     "triggers": "{}",
-    "hostedUI": true,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -61,11 +61,11 @@
     },
     "permissions": [],
     "dependsOn": [],
-    "hostedUIDomainName": "morethanthethought",
+    "hostedUIDomainName": "mttt",
     "authProvidersUserPool": [
         "Facebook"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\",\"Name\":\"first_name\", \"Family Name\":\"last_name\"}}]",
-    "authProviders": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"family_name\":\"last_name\",\"name\":\"name\",\"username\":\"id\"}}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+    "authProviders": []
 }
