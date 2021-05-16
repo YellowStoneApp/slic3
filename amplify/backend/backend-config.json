@@ -1,17 +1,9 @@
 {
-  "auth": {
-    "slic3916e02c9": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  },
   "hosting": {
     "amplifyhosting": {
       "service": "amplifyhosting",
       "type": "cicd",
-      "lastPushTimeStamp": "2021-04-25T21:10:32.796Z"
+      "lastPushTimeStamp": "2021-05-16T16:00:14.053Z"
     }
   }
 }
