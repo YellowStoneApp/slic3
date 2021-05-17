@@ -38,6 +38,13 @@ const SignUpContainer = () => {
     }
   };
 
+  // when this fires off we get redirected to our login page.
+  const handleFacebookSignin = async () => {
+    Auth.federatedSignIn({
+      provider: CognitoHostedUIIdentityProvider.Facebook,
+    });
+  };
+
   return (
     <div>
       {redirect && <Redirect to={{ pathname: Routes.VerifyEmail }} />}
@@ -74,11 +81,7 @@ const SignUpContainer = () => {
         <a
           href="#"
           className="btn btn-m mt-2 mb-4 btn-full bg-green-dark text-uppercase font-900"
-          onClick={() =>
-            Auth.federatedSignIn({
-              provider: CognitoHostedUIIdentityProvider.Facebook,
-            })
-          }
+          onClick={handleFacebookSignin}
         >
           FACEBOOK
         </a>

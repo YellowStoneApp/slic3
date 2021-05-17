@@ -5,14 +5,36 @@
  * Only *.service.ts modules should make calls through this.
  */
 
+import { Auth } from "aws-amplify";
+import { CognitoUser } from "amazon-cognito-identity-js";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../constants";
 import { logService } from "../logging.service";
 import { apiErrorHandlingWithLogs, requestType } from "./call.wrapper";
 
+const getAccessToken = async (): Promise<string> => {
+  try {
+    const authenticated: CognitoUser | any =
+      await Auth.currentAuthenticatedUser();
+    if (authenticated instanceof CognitoUser) {
+      const token = authenticated
+        .getSignInUserSession()
+        ?.getAccessToken()
+        .getJwtToken();
+      if (token !== undefined) {
+        return token;
+      }
+      throw new Error("No valid access token");
+    }
+    throw new Error("No valid user logged in");
+  } catch (error) {
+    logService.error(error.message);
+    throw error;
+  }
+};
+
 const post = async (baseUrl: string, api: string, payload: any) => {
-  const authToken = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
+  const authToken = await getAccessToken();
   if (authToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + authToken;
     const response = await apiErrorHandlingWithLogs(
@@ -32,7 +54,7 @@ const post = async (baseUrl: string, api: string, payload: any) => {
 };
 
 const get = async (baseUrl: string, api: string, data?: any) => {
-  const authToken = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
+  const authToken = await getAccessToken();
   if (authToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + authToken;
     let params = {};

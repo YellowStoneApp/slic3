@@ -7,11 +7,13 @@ import { errorState } from "../../Hooks/error.hook";
 import FormInput from "../../Components/FormInput";
 import Form from "../../Components/Form";
 import { giftRegistry } from "../../Utils/Apis/Utils/gift.registry";
+import { Auth } from "aws-amplify";
 
 const GalleryContainer = () => {
   const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
   const [url, setUrl] = useState("");
   const [, setError] = useRecoilState(errorState);
+  const [customer, setCustomer] = useState();
 
   const getShouts = async () => {
     try {
@@ -23,7 +25,16 @@ const GalleryContainer = () => {
     }
   };
 
+  const getCurrentCustomer = async () => {
+    Auth.currentAuthenticatedUser()
+      .then((customer) => {
+        setCustomer(customer);
+      })
+      .catch(() => console.log("No customer signed in."));
+  };
+
   useEffect(() => {
+    getCurrentCustomer();
     getShouts();
   }, []);
 
