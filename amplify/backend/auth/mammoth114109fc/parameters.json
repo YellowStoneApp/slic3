@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mammotha0ceece2_identitypool_a0ceece2",
+    "identityPoolName": "mammoth114109fc_identitypool_114109fc",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mammota0ceece2",
-    "userPoolName": "mammotha0ceece2_userpool_a0ceece2",
+    "resourceNameTruncated": "mammot114109fc",
+    "userPoolName": "mammoth114109fc_userpool_114109fc",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -30,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "mammota0ceece2_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "mammot114109fc_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "a0ceece2",
-    "resourceName": "mammotha0ceece2",
+    "sharedId": "114109fc",
+    "resourceName": "mammoth114109fc",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -47,12 +47,18 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "defaultSocial",
     "hostedUI": true,
     "usernameAttributes": [
         "email"
     ],
     "triggers": "{}",
+    "hostedUIDomainName": "mammoth",
+    "authProvidersUserPool": [
+        "Facebook"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"family_name\":\"last_name\",\"name\":\"name\",\"username\":\"id\"}}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/signout/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -60,6 +66,5 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": [],
-    "authProviders": []
+    "dependsOn": []
 }
