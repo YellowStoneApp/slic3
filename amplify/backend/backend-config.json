@@ -7,7 +7,7 @@
     }
   },
   "auth": {
-    "mammoth36fad651": {
+    "mammotha3f31a25": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

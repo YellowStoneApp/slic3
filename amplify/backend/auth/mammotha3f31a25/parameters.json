@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mammoth36fad651_identitypool_36fad651",
+    "identityPoolName": "mammotha3f31a25_identitypool_a3f31a25",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mammot36fad651",
-    "userPoolName": "mammoth36fad651_userpool_36fad651",
+    "resourceNameTruncated": "mammota3f31a25",
+    "userPoolName": "mammotha3f31a25_userpool_a3f31a25",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -30,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "mammot36fad651_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "mammota3f31a25_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "36fad651",
-    "resourceName": "mammoth36fad651",
+    "sharedId": "a3f31a25",
+    "resourceName": "mammotha3f31a25",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -47,18 +47,11 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
-    "hostedUI": true,
+    "useDefault": "default",
     "usernameAttributes": [
         "email"
     ],
     "triggers": "{}",
-    "hostedUIDomainName": "mammoth-auth",
-    "authProvidersUserPool": [
-        "Facebook"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"family_name\":\"last_name\",\"name\":\"name\",\"username\":\"id\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/signin_response/\"],\"LogoutURLs\":[\"http://localhost:3000/signout/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
