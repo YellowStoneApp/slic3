@@ -6,12 +6,5 @@
       "lastPushTimeStamp": "2021-05-17T03:05:06.050Z"
     }
   },
-  "auth": {
-    "mammoth114109fc": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  }
+  "auth": {}
 }
