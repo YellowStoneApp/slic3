@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mammoth07e0c29d_identitypool_07e0c29d",
+    "identityPoolName": "mammoth36fad651_identitypool_36fad651",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mammot07e0c29d",
-    "userPoolName": "mammoth07e0c29d_userpool_07e0c29d",
+    "resourceNameTruncated": "mammot36fad651",
+    "userPoolName": "mammoth36fad651_userpool_36fad651",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -30,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "mammot07e0c29d_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "mammot36fad651_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "07e0c29d",
-    "resourceName": "mammoth07e0c29d",
+    "sharedId": "36fad651",
+    "resourceName": "mammoth36fad651",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -53,7 +53,7 @@
         "email"
     ],
     "triggers": "{}",
-    "hostedUIDomainName": "mammoth",
+    "hostedUIDomainName": "mammoth-auth",
     "authProvidersUserPool": [
         "Facebook"
     ],
