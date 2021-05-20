@@ -66,7 +66,7 @@ const Form: FunctionComponent<FormProps> = ({
   return (
     <>
       <div className="page-content header-clear-medium">
-        <div className="card card-style">
+        <div className="card card-style-form">
           <div className="content mt-4 mb-0">
             <h1 className="text-center font-900 font-40 text-uppercase mb-0">
               {title}

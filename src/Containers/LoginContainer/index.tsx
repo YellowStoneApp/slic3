@@ -24,10 +24,10 @@ const LoginContainer = () => {
       try {
         const response = await identityService.login(email, password);
         setIdentityCustomer({ loggedIn: true });
-        const user = await tamarakService.getCurrentCustomer();
-        setIdentityCustomer({ loggedIn: true, user: user });
-        console.log("user logged in", response);
-        setLoggedIn(true);
+        // const user = await tamarakService.getCurrentCustomer();
+        // setIdentityCustomer({ loggedIn: true, user: user });
+        // console.log("user logged in", response);
+        // setLoggedIn(true);
       } catch (error) {
         setError({ message: error.message });
       }

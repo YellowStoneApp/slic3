@@ -2,14 +2,17 @@
  * Hook is not working. Do not expect to work right now. There's a issue with how the value gets set on App load that's breaking behavior.
  */
 import { atom, useRecoilValue, useRecoilState } from "recoil";
-import { iUser } from "../Utils/Apis/tamarak.service";
 import { recoilPersist } from "recoil-persist";
+import {
+  iCustomerPublic,
+  iRegisteredCustomer,
+} from "../Utils/Apis/Identity.service";
 
 const { persistAtom } = recoilPersist();
 
 export interface iIdentityCustomer {
   loggedIn: boolean;
-  user?: iUser; // this gets set after creating an account.
+  user?: iRegisteredCustomer; // this gets set after creating an account.
 }
 
 const defaultState: iIdentityCustomer = { loggedIn: false };

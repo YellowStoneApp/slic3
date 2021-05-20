@@ -8,9 +8,7 @@ import SignUpContainer from "../Containers/SignUpContainer";
 import ConfirmEmailContainer from "../Containers/ConfirmEmailContainer";
 import ForgotPasswordContainer from "../Containers/ForgotPasswordContainer";
 import ResetPasswordContainer from "../Containers/ResetPasswordContainer";
-import WalletLoginContainer from "../Containers/WalletLoginContainer";
 import SearchContainer from "../Containers/SearchContainer";
-import CreateContainer from "../Containers/CreateContainer";
 import CreateAccountContainer from "../Containers/CreateAccountContainer";
 
 /** private route component */
@@ -46,11 +44,6 @@ class AppRouter extends React.Component {
             path={Routes.Profile}
             component={ProfileContainer}
           />
-          {/* <Route
-            exact={true}
-            path={Routes.Create}
-            component={CreateContainer}
-          /> */}
           <Route
             exact={true}
             path={Routes.CreateAccount}
@@ -66,11 +59,6 @@ class AppRouter extends React.Component {
             path={Routes.Search}
             component={SearchContainer}
           />
-          {/* <Route
-            exact={true}
-            path={Routes.WalletLogin}
-            component={WalletLoginContainer}
-          /> */}
           <Route exact={true} path={Routes.Login} component={LoginContainer} />
           <Route
             exact={true}

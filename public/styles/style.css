@@ -2152,6 +2152,14 @@ button {
 
 .card-style {
   overflow: hidden;
+  margin: 0px 16px 30px 16px; /* was 16ps */
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+}
+
+.card-style-form {
+  overflow: hidden;
   max-width: 500px;
   margin: 0px auto 30px auto; /* was 16ps */
   border-radius: 15px;

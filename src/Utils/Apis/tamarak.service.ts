@@ -7,22 +7,24 @@ import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 import { linkPreview } from "./Utils/gift.registry";
-import { iCustomer } from "./Identity.service";
+import {
+  iCustomer,
+  iCustomerPublic,
+  iRegisteredCustomer,
+} from "./Identity.service";
 
 const url = process.env.REACT_APP_MAIN_SERVICE_URL;
 if (!url) {
   throw new Error("Cannot load url from env variable");
 }
 
-export interface iUser {
-  avatar: string;
-  userName: string;
-  id: number;
-  identityKey: string;
-}
-
 export interface iGift {
   url: string;
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+  affiliateUrl?: string;
   id: number;
 }
 
@@ -33,19 +35,15 @@ const dummyCall = async () => {
   console.log(response);
 };
 
-const getGifts = async (): Promise<iGift[]> => {
-  const response = await secureClient.get(url, "/api/shout");
-  return response.data;
-};
-
-const getPostsFromUser = async (id: number): Promise<iGift[]> => {
-  const response = await secureClient.get(url, "/api/shout/postsbyuser", {
-    userId: id,
+const getGifts = async (customerId: string): Promise<iGift[]> => {
+  const response = await secureClient.get(url, "/api/giftpublic", {
+    customerId: customerId,
   });
   return response.data;
 };
 
 const registerGift = async (giftUrl: string, preview: linkPreview) => {
+  console.log(preview, giftUrl);
   const response = await secureClient.post(url, "/api/gift/register", {
     url: giftUrl,
     title: preview.title,
@@ -56,41 +54,43 @@ const registerGift = async (giftUrl: string, preview: linkPreview) => {
   return response.data;
 };
 
-const createShout = async (file: File) => {
-  const response = await secureClient.upload(url, "/api/shout", file, "Shout");
-  return response.data;
-};
-
-const registerCustomer = async (customer: iCustomer) => {
+const registerCustomer = async (
+  customer: iCustomer
+): Promise<iRegisteredCustomer> => {
   const response = await secureClient.post(url, "/api/customer/register", {
     name: customer.name,
     email: customer.email,
     avatar: customer.avatar,
   });
   validateResponse(response.data);
+  return response.data;
 };
 
-const getCurrentCustomer = async (): Promise<iUser> => {
-  const response = await secureClient.get(url, "/api/profile");
+const getCustomerPublicProfile = async (
+  customerId: string
+): Promise<iCustomerPublic> => {
+  const response = await secureClient.get(url, "/api/customerpublic", {
+    customerId: customerId,
+  });
   validateResponse(response);
 
-  const user: iUser = response.data;
-  if (!user.avatar || !user.id || !user.userName || !user.identityKey) {
+  const customer: iCustomerPublic = response.data;
+  if (!customer.avatar || !customer.name || !customer.identityKey) {
     logService.error(`Invalid response from server. Got ${response}`);
     throw new Error("Invalid response.");
   }
 
-  return user;
+  return customer;
 };
 
-const getProfile = async (username: string): Promise<iUser> => {
+const getProfile = async (username: string): Promise<iCustomerPublic> => {
   const response = await secureClient.get(url, "/api/profile/user", {
     username,
   });
   validateResponse(response);
 
-  const user: iUser = response.data;
-  if (!user.avatar || !user.id || !user.userName || !user.identityKey) {
+  const user: iCustomerPublic = response.data;
+  if (!user.avatar || !user.name || !user.identityKey) {
     logService.error(`Invalid response from server. Got ${response}`);
     throw new Error("Invalid response.");
   }
@@ -121,12 +121,10 @@ const validateResponse = (response: any) => {
 };
 
 export const tamarakService = {
+  getCustomerPublicProfile,
   dummyCall,
-  getShouts: getGifts,
-  createShout,
+  getGifts,
   registerCustomer,
   getProfile,
-  getCurrentCustomer,
-  getPostsFromUser,
   registerGift,
 };

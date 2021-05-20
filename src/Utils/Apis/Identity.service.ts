@@ -26,6 +26,17 @@ export interface iCustomer {
   email: string;
 }
 
+export interface iRegisteredCustomer extends iCustomer {
+  identityKey: string;
+  id: string;
+}
+
+export interface iCustomerPublic {
+  avatar: string;
+  name: string;
+  identityKey: string;
+}
+
 const login = async (email: string, password: string) => {
   const response = await apiErrorHandlingWithLogs(async () => {
     return await Auth.signIn(email, password);

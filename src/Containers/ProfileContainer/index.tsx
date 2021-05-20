@@ -6,7 +6,7 @@ import {
   iIdentityCustomer,
 } from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
-import { iGift, iUser, tamarakService } from "../../Utils/Apis/tamarak.service";
+import { iGift, tamarakService } from "../../Utils/Apis/tamarak.service";
 import Post from "./Post";
 
 interface ProfileContainerProps {}
@@ -18,22 +18,22 @@ const ProfileContainer = (props: ProfileContainerProps) => {
   );
   const [, setError] = useRecoilState(errorState);
 
-  const loadPosts = async () => {
-    if (identityCustomer.user?.userName) {
-      const response = await tamarakService.getPostsFromUser(
-        identityCustomer.user.id
-      );
-      setPosts(response);
-    } else {
-      setError({
-        message:
-          "This is awkward... Something went wrong, please try again later....",
-      });
-    }
-  };
+  // const loadPosts = async () => {
+  //   if (identityCustomer.user?.userName) {
+  //     const response = await tamarakService.getPostsFromUser(
+  //       identityCustomer.user.id
+  //     );
+  //     setPosts(response);
+  //   } else {
+  //     setError({
+  //       message:
+  //         "This is awkward... Something went wrong, please try again later....",
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
-    loadPosts();
+    //loadPosts();
   }, []);
 
   return (
@@ -44,7 +44,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             {/* <!-- left side of profile --> */}
             <div className="flex-grow-1">
               <h1 className="font-700">
-                @{identityCustomer.user?.userName}
+                @{identityCustomer.user?.name}
                 <i className="fa fa-check-circle color-blue-dark float-end font-13 mt-2 me-3"></i>
               </h1>
               <p className="mb-2">Bio</p>
