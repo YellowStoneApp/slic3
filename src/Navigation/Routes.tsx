@@ -16,6 +16,7 @@ import CreateAccountContainer from "../Containers/CreateAccountContainer";
 /** private route component */
 import PrivateRoute from "./PrivateRoute";
 import ProfileContainer from "../Containers/ProfileContainer";
+import SignInResponse from "../Containers/SignInResponse";
 
 export enum Routes {
   Gallery = "/",
@@ -27,6 +28,7 @@ export enum Routes {
   Search = "/search",
   CreateAccount = "/create-account",
   Profile = "/profile",
+  SignInResponse = "/signin_response",
 }
 
 class AppRouter extends React.Component {
@@ -53,6 +55,11 @@ class AppRouter extends React.Component {
             exact={true}
             path={Routes.CreateAccount}
             component={CreateAccountContainer}
+          />
+          <Route
+            exact={false}
+            path={Routes.SignInResponse}
+            component={SignInResponse}
           />
           <Route
             exact={true}

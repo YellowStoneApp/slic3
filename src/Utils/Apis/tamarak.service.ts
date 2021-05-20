@@ -7,6 +7,7 @@ import axios from "axios";
 import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 import { linkPreview } from "./Utils/gift.registry";
+import { iCustomer } from "./Identity.service";
 
 const url = process.env.REACT_APP_MAIN_SERVICE_URL;
 if (!url) {
@@ -60,18 +61,13 @@ const createShout = async (file: File) => {
   return response.data;
 };
 
-const registerUser = async (username: string, avatar: File) => {
-  const response = await secureClient.post(url, "/api/users/register", {
-    username,
+const registerCustomer = async (customer: iCustomer) => {
+  const response = await secureClient.post(url, "/api/customer/register", {
+    name: customer.name,
+    email: customer.email,
+    avatar: customer.avatar,
   });
   validateResponse(response.data);
-  const updateAvatarResponse = await secureClient.upload(
-    url,
-    "/api/users/updateAvatar",
-    avatar,
-    "Avatar"
-  );
-  validateResponse(updateAvatarResponse.data);
 };
 
 const getCurrentCustomer = async (): Promise<iUser> => {
@@ -128,7 +124,7 @@ export const tamarakService = {
   dummyCall,
   getShouts: getGifts,
   createShout,
-  registerUser,
+  registerCustomer,
   getProfile,
   getCurrentCustomer,
   getPostsFromUser,

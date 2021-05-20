@@ -12,7 +12,6 @@ import FormInput from "../../Components/FormInput";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../Hooks/signup.hook";
 import { errorState } from "../../Hooks/error.hook";
-import Auth, { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 
 const SignUpContainer = () => {
   const [redirect, setRedirect] = useState(false);
@@ -21,7 +20,6 @@ const SignUpContainer = () => {
   const [, setConfirmPassword] = useState("");
   const [, setSignUp] = useRecoilState(signUpState);
   const [, setError] = useRecoilState(errorState);
-  const [user, setUser] = useState();
 
   const handleSubmit = async () => {
     if (email && password) {
@@ -40,9 +38,7 @@ const SignUpContainer = () => {
 
   // when this fires off we get redirected to our login page.
   const handleFacebookSignin = async () => {
-    Auth.federatedSignIn({
-      provider: CognitoHostedUIIdentityProvider.Facebook,
-    });
+    identityService.loginWithFacebook();
   };
 
   return (
@@ -54,6 +50,7 @@ const SignUpContainer = () => {
         title="Sign Up"
         subtitle="Let's get you signed up"
         submitButtonTitle="Sign Up"
+        handleFacebookSignIn={handleFacebookSignin}
         leftRedirect={{ name: "Log In", destination: Routes.Login }}
         rightRedirect={{
           name: "Forgot Password",
@@ -78,13 +75,6 @@ const SignUpContainer = () => {
           type="password"
           placeholder="Confirm Password"
         />
-        <a
-          href="#"
-          className="btn btn-m mt-2 mb-4 btn-full bg-green-dark text-uppercase font-900"
-          onClick={handleFacebookSignin}
-        >
-          FACEBOOK
-        </a>
       </Form>
     </div>
   );

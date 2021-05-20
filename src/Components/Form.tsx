@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import { Redirect } from "react-router";
+import { isPropertySignature } from "typescript";
 import { Routes } from "../Navigation/Routes";
 import FormInput from "./FormInput";
 
@@ -8,6 +9,7 @@ interface FormProps {
   subtitle: string;
   onSubmit: () => void;
   submitButtonTitle: string;
+  handleFacebookSignIn?: () => void;
   leftRedirect?: Redirection;
   rightRedirect?: Redirection;
 }
@@ -24,6 +26,7 @@ const Form: FunctionComponent<FormProps> = ({
   submitButtonTitle,
   leftRedirect,
   rightRedirect,
+  handleFacebookSignIn,
   children,
 }) => {
   const [redirectLeft, setRedirectLeft] = useState(false);
@@ -82,6 +85,21 @@ const Form: FunctionComponent<FormProps> = ({
               {submitButtonTitle}
             </a>
 
+            <div className="divider mt-4 mb-3"></div>
+
+            {/* Facebook sign in */}
+            {handleFacebookSignIn ? (
+              <a
+                href="#"
+                onClick={handleFacebookSignIn}
+                className="btn btn-icon btn-m btn-full shadow-l bg-facebook text-uppercase font-900 text-start"
+              >
+                <i className="fab fa-facebook-f text-center"></i>Login with
+                Facebook
+              </a>
+            ) : (
+              <></>
+            )}
             <div className="divider mt-4 mb-3"></div>
 
             <div className="d-flex">

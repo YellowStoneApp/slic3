@@ -33,20 +33,14 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
 
   const onSubmit = async () => {
     if (imageSource && imageUrl && username) {
+      throw new Error("This wont work currently");
       try {
-        const response = await tamarakService.registerUser(
-          username,
-          imageSource
-        );
-
-        const registeredUser = await tamarakService.getProfile(username);
-
-        setIdentityCustomer({
-          ...identityCustomer,
-          user: registeredUser,
-        });
-
-        setRedirect(true);
+        //const registeredUser = await tamarakService.getProfile(username);
+        // setIdentityCustomer({
+        //   ...identityCustomer,
+        //   user: registeredUser,
+        // });
+        // setRedirect(true);
       } catch (error) {
         setError({ message: error.message });
       }

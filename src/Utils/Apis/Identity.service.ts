@@ -12,14 +12,19 @@ Type or throw an error if that response type can't be satisfied.
 There should not be any need to manage tokens outside of this module
 */
 
-import { Auth } from "aws-amplify";
+import Auth, { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 import { ISignUpResult } from "amazon-cognito-identity-js";
 /** App constants */
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../Utils/constants";
 import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
-
+import { CognitoUser } from "amazon-cognito-identity-js";
 import { logService } from "./logging.service";
-import { tamarakService } from "./tamarak.service";
+
+export interface iCustomer {
+  name: string;
+  avatar: string;
+  email: string;
+}
 
 const login = async (email: string, password: string) => {
   const response = await apiErrorHandlingWithLogs(async () => {
@@ -49,8 +54,32 @@ const signUp = async (username: string, password: string) => {
   return response;
 };
 
+const getCurrentCustomer = async (): Promise<iCustomer> => {
+  const cust = await Auth.currentAuthenticatedUser();
+  if (cust !== undefined && cust instanceof CognitoUser) {
+    const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
+    const avatar = extractAvatar(idPayload);
+    if (idPayload !== undefined) {
+      return {
+        name: idPayload.name, //cust.getUserData().name,
+        avatar: avatar,
+        email: idPayload.email,
+      };
+    }
+  }
+  throw new Error("Could not load authenticated user");
+};
+
+const loginWithFacebook = async () => {
+  return await apiErrorHandlingWithLogs(async () => {
+    return Auth.federatedSignIn({
+      provider: CognitoHostedUIIdentityProvider.Facebook,
+    });
+  }, "Auth.federatedSignIn");
+};
+
 const confirmSignup = async (email: string, validationCode: string) => {
-  const response = await apiErrorHandlingWithLogs(async () => {
+  return await apiErrorHandlingWithLogs(async () => {
     return await Auth.confirmSignUp(email, validationCode);
   }, "Auth.confirmSignUp");
 };
@@ -91,8 +120,22 @@ export const identityService = {
   forgotPassword,
   resetPassword,
   signOut,
+  loginWithFacebook,
+  getCurrentCustomer,
 };
 
 /**
  *  Internal Methods below.
  */
+
+const extractAvatar = (payload: any): string => {
+  const blob = payload.picture;
+  if (blob) {
+    const obj = JSON.parse(blob);
+    if (obj.data.url) {
+      return obj.data.url;
+    }
+  }
+  logService.error("Payload did not contain a url. " + payload);
+  return blob;
+};
