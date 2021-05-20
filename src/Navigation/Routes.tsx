@@ -10,6 +10,7 @@ import ForgotPasswordContainer from "../Containers/ForgotPasswordContainer";
 import ResetPasswordContainer from "../Containers/ResetPasswordContainer";
 import SearchContainer from "../Containers/SearchContainer";
 import CreateAccountContainer from "../Containers/CreateAccountContainer";
+import Landing from "../Containers/LandingContainer";
 
 /** private route component */
 import PrivateRoute from "./PrivateRoute";
@@ -17,7 +18,7 @@ import ProfileContainer from "../Containers/ProfileContainer";
 import SignInResponse from "../Containers/SignInResponse";
 
 export enum Routes {
-  Gallery = "/",
+  Gallery = "/gallery",
   VerifyEmail = "/verify-code",
   Login = "/login",
   Signup = "/signup",
@@ -27,6 +28,7 @@ export enum Routes {
   CreateAccount = "/create-account",
   Profile = "/profile",
   SignInResponse = "/signin_response",
+  Landing = "/",
 }
 
 class AppRouter extends React.Component {
@@ -34,6 +36,7 @@ class AppRouter extends React.Component {
     return (
       <Router>
         <React.Fragment>
+          <Route exact={true} path={Routes.Landing} component={Landing} />
           <Route
             exact={true}
             path={Routes.Gallery}

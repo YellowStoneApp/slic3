@@ -76,27 +76,41 @@ const GalleryContainer = () => {
     }
   };
 
+  const getNumCardsInRow = () => {
+    const width = window.innerWidth;
+    if (width < 400) {
+      return 1;
+    } else if (width < 900) {
+      return 2;
+    }
+    return 3;
+  };
+
   const urlEntered = (value: string) => {
     setUrl(value);
   };
 
+  const numCards = getNumCardsInRow();
+
   return (
     <div className="page-content header-clear-medium">
-      <div className="card card-style">
+      {/* <div className="card card-style">
         <div className="content mb-3">
           <h3 className="mb-1">{customerPublic ? customerPublic.name : ""}</h3>
           <p>Get 'em what they want!</p>
-
-          <div className="row text-center row-cols-2 mb-0">
-            {gifts ? (
-              gifts.map((gift) => {
-                return <GiftItem gift={gift} />;
-              })
-            ) : (
-              <></>
-            )}
-          </div>
         </div>
+      </div> */}
+
+      <div className="row text-center mb-0">
+        {gifts ? (
+          gifts.map((gift, index) => {
+            return (
+              <GiftItem gift={gift} position={index} numCardsInRow={numCards} />
+            );
+          })
+        ) : (
+          <></>
+        )}
       </div>
       <Form
         onSubmit={submitUrl}
