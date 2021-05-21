@@ -14,6 +14,7 @@ const SignInResponse = () => {
   const getCurrentCustomer = async () => {
     try {
       const cust = await identityService.getCurrentCustomer();
+      // todo from FB you should call for the full profile picture.
       const registered = await tamarakService.registerCustomer(cust);
       setCustomer(registered);
     } catch (error) {

@@ -68,6 +68,8 @@ const GalleryContainer = () => {
 
   const handleFollow = () => {};
 
+  const handleEditProfile = () => {};
+
   const submitUrl = () => {
     if (url !== "") {
       giftRegistry.registerGift(url);
@@ -112,6 +114,7 @@ const GalleryContainer = () => {
           customerPublic={customerPublic}
           addGifty={handleAddGift}
           followClicked={handleFollow}
+          handleEditProfile={handleEditProfile}
         />
 
         <div className="row text-center mb-0">
