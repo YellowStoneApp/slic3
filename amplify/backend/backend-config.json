@@ -13,5 +13,11 @@
       "dependsOn": [],
       "customAuth": false
     }
+  },
+  "storage": {
+    "MammothStorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }
