@@ -46,7 +46,7 @@ const post = async (baseUrl: string, api: string, payload: any) => {
       baseUrl,
       requestType.post
     );
-    console.log(response, "get");
+    console.log(response, "post");
     return response;
   } else {
     logService.error("No Auth token present");

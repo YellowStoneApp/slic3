@@ -15,10 +15,9 @@ const SignInResponse = () => {
     try {
       const cust = await identityService.getCurrentCustomer();
       const registered = await tamarakService.registerCustomer(cust);
-      console.log(registered);
       setCustomer(registered);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

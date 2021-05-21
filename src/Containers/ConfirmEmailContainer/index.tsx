@@ -4,14 +4,13 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { isConstructorDeclaration } from "typescript";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
-import {
-  authCustomerState,
-  iAuthCustomer,
-} from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
 import { signUpState } from "../../Hooks/signup.hook";
 import { Routes } from "../../Navigation/Routes";
-import { identityService } from "../../Utils/Apis/Identity.service";
+import {
+  identityService,
+  iRegisteredCustomer,
+} from "../../Utils/Apis/Identity.service";
 import { logService } from "../../Utils/Apis/logging.service";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
@@ -19,7 +18,8 @@ const ConfirmEmailContainer = () => {
   const [redirect, setRedirect] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [authCustomer, setAuthCustomer] =
-    useRecoilState<iAuthCustomer>(authCustomerState);
+    useState<iRegisteredCustomer | undefined>(undefined);
+
   const [signUp] = useRecoilState(signUpState);
   const [, setError] = useRecoilState(errorState);
 
@@ -28,7 +28,6 @@ const ConfirmEmailContainer = () => {
       const { email, password } = signUp;
       try {
         if (email && password) {
-          console.log(email, password);
           const responseConfirm = await identityService.confirmSignup(
             email,
             verificationCode
@@ -40,7 +39,7 @@ const ConfirmEmailContainer = () => {
             email,
           });
 
-          setAuthCustomer({ customer: responseLogin });
+          setAuthCustomer(responseLogin);
 
           setRedirect(true);
         } else {
@@ -63,7 +62,7 @@ const ConfirmEmailContainer = () => {
       <Redirect
         to={{
           pathname: Routes.Gallery,
-          search: `?id=${authCustomer.customer?.identityKey}`,
+          search: `?id=${authCustomer?.identityKey}`,
         }}
       />
     );

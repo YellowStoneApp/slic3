@@ -5,7 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Amplify from "aws-amplify";
 import { RecoilRoot } from "recoil";
-import { CurrentWalletUserSubscription } from "./Hooks/currentWalletUser.hook";
 
 import awsconfig from "./aws-exports";
 import "./config";
@@ -15,7 +14,6 @@ Amplify.configure(awsconfig);
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <CurrentWalletUserSubscription />
       <App />
     </RecoilRoot>
   </React.StrictMode>,

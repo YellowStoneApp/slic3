@@ -14,7 +14,6 @@ const ResetPasswordContainer = () => {
 
   useEffect(() => {
     let userName = window.location.search.split("=")[1];
-    console.log(userName);
     setEmail(userName.trim());
   }, []);
 
@@ -22,7 +21,6 @@ const ResetPasswordContainer = () => {
    * Open question should this log you in automatically after you reset your password?
    */
   const handleSubmit = async () => {
-    console.log("submitting");
     if (verificationCode && newPassword) {
       const response = await identityService
         .resetPassword(email, verificationCode, newPassword)
@@ -32,8 +30,6 @@ const ResetPasswordContainer = () => {
         .catch((error) => {
           setError({ message: error.message });
         });
-
-      console.log(response);
     } else {
       setError({
         message: "You gotta give me the verification code and a new password.",

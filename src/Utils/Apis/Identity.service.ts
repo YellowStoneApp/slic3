@@ -20,17 +20,26 @@ import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { logService } from "./logging.service";
 
-export interface iCustomer {
+/**
+ * Used in signing up the customer with password / email flow.
+ */
+export interface iCustomerSignUp {
   name: string;
   avatar: string;
   email: string;
 }
 
-export interface iRegisteredCustomer extends iCustomer {
+/**
+ * This is the customer that's now registerd in our system. We have access to their identity key.
+ */
+export interface iRegisteredCustomer extends iCustomerSignUp {
   identityKey: string;
-  id: string;
 }
 
+/**
+ * This is a public customer. There's no information here that we don't want others to have like email and such.
+ * This should be the type that's used for customers that aren't logged in.n
+ */
 export interface iCustomerPublic {
   avatar: string;
   name: string;
@@ -43,19 +52,18 @@ export const defaultAvatar =
 const login = async (
   email: string,
   password: string
-): Promise<iCustomerPublic> => {
+): Promise<iRegisteredCustomer> => {
   const response = await apiErrorHandlingWithLogs(async () => {
     return await Auth.signIn(email, password);
   }, "Auth.signIn");
-  console.log(response, "login");
   if (response && response instanceof CognitoUser) {
     const idPayload = response.getSignInUserSession()?.getIdToken().payload;
-    console.log(idPayload);
     if (idPayload !== undefined) {
       const avatar = extractAvatar(idPayload);
       return {
         name: idPayload.name,
         avatar: avatar,
+        email: idPayload.email,
         identityKey: idPayload.sub,
       };
     }
@@ -84,7 +92,10 @@ const signUp = async (
   return response;
 };
 
-const getCurrentCustomer = async (): Promise<iCustomer> => {
+/**
+ * This should be used to access if the customer is authorized. Don't use recoil
+ */
+const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
   const cust = await Auth.currentAuthenticatedUser();
   if (cust !== undefined && cust instanceof CognitoUser) {
     const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
@@ -94,6 +105,7 @@ const getCurrentCustomer = async (): Promise<iCustomer> => {
         name: idPayload.name, //cust.getUserData().name,
         avatar: avatar,
         email: idPayload.email,
+        identityKey: idPayload.sub,
       };
     }
   }
@@ -151,7 +163,7 @@ export const identityService = {
   resetPassword,
   signOut,
   loginWithFacebook,
-  getCurrentCustomer,
+  getCurrentCustomer: getCurrentAuthCustomer,
 };
 
 /**

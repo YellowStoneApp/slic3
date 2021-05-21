@@ -14,7 +14,6 @@ const get = async (baseUrl: string, api: string, data?: any) => {
     baseUrl,
     requestType.get
   );
-  console.log(response, "get");
   return response;
 };
 

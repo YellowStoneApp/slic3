@@ -9,12 +9,9 @@ import ConfirmEmailContainer from "../Containers/ConfirmEmailContainer";
 import ForgotPasswordContainer from "../Containers/ForgotPasswordContainer";
 import ResetPasswordContainer from "../Containers/ResetPasswordContainer";
 import SearchContainer from "../Containers/SearchContainer";
-import CreateAccountContainer from "../Containers/CreateAccountContainer";
 import Landing from "../Containers/LandingContainer";
 
 /** private route component */
-import PrivateRoute from "./PrivateRoute";
-import ProfileContainer from "../Containers/ProfileContainer";
 import SignInResponse from "../Containers/SignInResponse";
 
 export enum Routes {
@@ -41,16 +38,6 @@ class AppRouter extends React.Component {
             exact={true}
             path={Routes.Gallery}
             component={GalleryContainer}
-          />
-          <Route
-            exact={true}
-            path={Routes.Profile}
-            component={ProfileContainer}
-          />
-          <Route
-            exact={true}
-            path={Routes.CreateAccount}
-            component={CreateAccountContainer}
           />
           <Route
             exact={false}

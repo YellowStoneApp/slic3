@@ -15,6 +15,7 @@ enum PositionInRow {
   Left = "pe-0",
   Middle = "pe-0 ps-0",
   Right = "ps-0",
+  None = "",
 }
 
 const cardsToClassName = {
@@ -32,19 +33,19 @@ const GiftItem = (props: GiftItemProps) => {
   ) => {
     // left most in row
     if (position % numCardsInRow === 0) {
-      console.log("Left");
       return PositionInRow.Left;
     }
     // right most in row
     if ((position + 1) % numCardsInRow === 0) {
-      console.log("Right");
       return PositionInRow.Right;
     }
-    console.log("Middle");
     return PositionInRow.Middle;
   };
 
-  const positionInRow = getRowPosition(position, numCardsInRow);
+  let positionInRow = getRowPosition(position, numCardsInRow);
+  if (positionInRow === PositionInRow.Left && numCardsInRow === 1) {
+    positionInRow = PositionInRow.None;
+  }
 
   return (
     <div className={cardsToClassName[numCardsInRow] + " " + positionInRow}>
@@ -60,29 +61,41 @@ const GiftItem = (props: GiftItemProps) => {
             className="preload-img img-fluid round-m"
             alt="img"
           />
-          <div className="content">
-            <h4>{gift.title}</h4>
-            <p>{gift.description}</p>
-            <a
+        </a>
+        <div className="content">
+          <h4>{gift.title}</h4>
+          <p>{gift.description}</p>
+          {/* <a
               href="#"
               className="icon icon-xxs shadow-m rounded-s bg-facebook"
             >
               <i className="fab fa-facebook-f"></i>
-            </a>
+            </a> */}
+          {/* Actual FB Share button
+          <div
+            className="fb-share-button"
+            data-href="http://localhost:3000/gallery?id=262e208c-6800-4996-bbfd-2388a580c602#"
+            data-layout="button"
+            data-size="small"
+          >
             <a
-              href="#"
-              className="icon icon-xxs shadow-m rounded-s bg-twitter me-1 ms-1"
+              target="_blank"
+              href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A3000%2Fgallery%3Fid%3D262e208c-6800-4996-bbfd-2388a580c602%23&amp;src=sdkpreparse"
+              className="fb-xfbml-parse-ignore"
             >
-              <i className="fab fa-twitter"></i>
+              Share
             </a>
-            <a
-              href="#"
-              className="icon icon-xxs shadow-m rounded-s bg-pinterest"
-            >
-              <i className="fab fa-pinterest-p"></i>
-            </a>
-          </div>
-        </a>
+          </div> */}
+          {/* <a
+            href="#"
+            className="icon icon-xxs shadow-m rounded-s bg-twitter me-1 ms-1"
+          >
+            <i className="fab fa-twitter"></i>
+          </a>
+          <a href="#" className="icon icon-xxs shadow-m rounded-s bg-pinterest">
+            <i className="fab fa-pinterest-p"></i>
+          </a> */}
+        </div>
       </div>
     </div>
   );

@@ -27,7 +27,6 @@ const registerGift = async (url: string) => {
     );
     const preview: linkPreview = response.data;
 
-    console.log(preview);
     // write to tamarak
     const regResponse = await tamarakService.registerGift(url, preview);
   } catch (error) {}

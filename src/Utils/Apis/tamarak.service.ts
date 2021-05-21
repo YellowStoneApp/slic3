@@ -8,7 +8,7 @@ import { logService } from "./logging.service";
 import { secureClient } from "./Utils/secure.client";
 import { linkPreview } from "./Utils/gift.registry";
 import {
-  iCustomer,
+  iCustomerSignUp,
   iCustomerPublic,
   iRegisteredCustomer,
 } from "./Identity.service";
@@ -33,7 +33,6 @@ const dummyCall = async () => {
   const response = await apiErrorHandlingWithLogs(async () => {
     return await axios.get(`${url}/api/dummy`);
   }, "/api/dummy");
-  console.log(response);
 };
 
 const getGifts = async (customerId: string): Promise<iGift[]> => {
@@ -44,7 +43,6 @@ const getGifts = async (customerId: string): Promise<iGift[]> => {
 };
 
 const registerGift = async (giftUrl: string, preview: linkPreview) => {
-  console.log(preview, giftUrl);
   const response = await secureClient.post(url, "/api/gift/register", {
     url: giftUrl,
     title: preview.title,
@@ -56,7 +54,7 @@ const registerGift = async (giftUrl: string, preview: linkPreview) => {
 };
 
 const registerCustomer = async (
-  customer: iCustomer
+  customer: iCustomerSignUp
 ): Promise<iRegisteredCustomer> => {
   const response = await secureClient.post(url, "/api/customer/register", {
     name: customer.name,

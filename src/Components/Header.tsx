@@ -2,7 +2,6 @@ import { Auth } from "aws-amplify";
 import React, { useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { authCustomerState } from "../Hooks/currentIdentityCustomer.hook";
 import { Routes } from "../Navigation/Routes";
 
 interface HeaderProps {}
@@ -10,17 +9,13 @@ interface HeaderProps {}
 const Header = (props: HeaderProps) => {
   // want a login / sign up button here to show to user if they're not logged in.
   // want to conditionally show back button if we're on a computer browser.
-  const [identityCustomer] = useRecoilState(authCustomerState);
 
   const handleSignOut = async () => {
-    console.log("sign out");
-    // this is a broken thing and shouldn't be used unfortunately...
     const response = await Auth.signOut({ global: true });
-    console.log(response);
   };
 
   return (
-    <div className="header header-demo header-logo-app mb-3">
+    <div className="header header-fixed header-logo-app mb-3">
       <a href="index.html" className="header-title">
         More Than The Thought
       </a>
