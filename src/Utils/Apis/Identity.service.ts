@@ -12,28 +12,29 @@ Type or throw an error if that response type can't be satisfied.
 There should not be any need to manage tokens outside of this module
 */
 
-import Auth, { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
-import { ISignUpResult } from "amazon-cognito-identity-js";
+import Auth, { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+import { ISignUpResult } from 'amazon-cognito-identity-js';
 /** App constants */
-import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../Utils/constants";
-import { apiErrorHandlingWithLogs } from "./Utils/call.wrapper";
-import { CognitoUser } from "amazon-cognito-identity-js";
-import { logService } from "./logging.service";
+import { AUTH_USER_ACCESS_TOKEN_KEY } from '../../Utils/constants';
+import { apiErrorHandlingWithLogs } from './Utils/call.wrapper';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import { logService } from './logging.service';
 
 /**
  * Used in signing up the customer with password / email flow.
  */
 export interface iCustomerSignUp {
-  name: string;
-  avatar: string;
-  email: string;
+    name: string;
+    avatar: string;
+    email: string;
+    bio?: string;
 }
 
 /**
  * This is the customer that's now registerd in our system. We have access to their identity key.
  */
 export interface iRegisteredCustomer extends iCustomerSignUp {
-  identityKey: string;
+    identityKey: string;
 }
 
 /**
@@ -41,129 +42,113 @@ export interface iRegisteredCustomer extends iCustomerSignUp {
  * This should be the type that's used for customers that aren't logged in.n
  */
 export interface iCustomerPublic {
-  avatar: string;
-  name: string;
-  identityKey: string;
+    avatar: string;
+    name: string;
+    identityKey: string;
+    bio?: string;
 }
 
-export const defaultAvatar =
-  "https://image.freepik.com/free-vector/cute-teddy-bear-waving-hand-cartoon-icon-illustration_138676-2714.jpg";
+export const defaultAvatar = 'https://image.freepik.com/free-vector/cute-teddy-bear-waving-hand-cartoon-icon-illustration_138676-2714.jpg';
 
-const login = async (
-  email: string,
-  password: string
-): Promise<iRegisteredCustomer> => {
-  const response = await apiErrorHandlingWithLogs(async () => {
-    return await Auth.signIn(email, password);
-  }, "Auth.signIn");
-  if (response && response instanceof CognitoUser) {
-    const idPayload = response.getSignInUserSession()?.getIdToken().payload;
-    if (idPayload !== undefined) {
-      const avatar = extractAvatar(idPayload);
-      return {
-        name: idPayload.name,
-        avatar: avatar,
-        email: idPayload.email,
-        identityKey: idPayload.sub,
-      };
+const login = async (email: string, password: string): Promise<iRegisteredCustomer> => {
+    const response = await apiErrorHandlingWithLogs(async () => {
+        return await Auth.signIn(email, password);
+    }, 'Auth.signIn');
+    if (response && response instanceof CognitoUser) {
+        const idPayload = response.getSignInUserSession()?.getIdToken().payload;
+        if (idPayload !== undefined) {
+            const avatar = extractAvatar(idPayload);
+            return {
+                name: idPayload.name,
+                avatar: avatar,
+                email: idPayload.email,
+                identityKey: idPayload.sub,
+            };
+        }
     }
-  }
-  logService.error(`No access token in response. ${response}`);
-  throw new Error("No access token in response");
+    logService.error(`No access token in response. ${response}`);
+    throw new Error('No access token in response');
 };
 
-const signUp = async (
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string
-) => {
-  const response: ISignUpResult = await apiErrorHandlingWithLogs(async () => {
-    return await Auth.signUp({
-      username: email,
-      password: password,
-      attributes: {
-        email: email,
-        name: firstName + " " + lastName,
-        family_name: lastName,
-      },
-    });
-  }, "Auth.signUp");
-  return response;
+const signUp = async (firstName: string, lastName: string, email: string, password: string) => {
+    const response: ISignUpResult = await apiErrorHandlingWithLogs(async () => {
+        return await Auth.signUp({
+            username: email,
+            password: password,
+            attributes: {
+                email: email,
+                name: firstName + ' ' + lastName,
+                family_name: lastName,
+            },
+        });
+    }, 'Auth.signUp');
+    return response;
 };
 
 /**
  * This should be used to access if the customer is authorized. Don't use recoil
  */
 const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
-  const cust = await Auth.currentAuthenticatedUser();
-  if (cust !== undefined && cust instanceof CognitoUser) {
-    const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
-    if (idPayload !== undefined) {
-      const avatar = extractAvatar(idPayload);
-      return {
-        name: idPayload.name, //cust.getUserData().name,
-        avatar: avatar,
-        email: idPayload.email,
-        identityKey: idPayload.sub,
-      };
+    const cust = await Auth.currentAuthenticatedUser();
+    if (cust !== undefined && cust instanceof CognitoUser) {
+        const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
+        if (idPayload !== undefined) {
+            const avatar = extractAvatar(idPayload);
+            return {
+                name: idPayload.name, //cust.getUserData().name,
+                avatar: avatar,
+                email: idPayload.email,
+                identityKey: idPayload.sub,
+            };
+        }
     }
-  }
-  throw new Error("Could not load authenticated user");
+    throw new Error('Could not load authenticated user');
 };
 
 const loginWithFacebook = async () => {
-  return await apiErrorHandlingWithLogs(async () => {
-    return Auth.federatedSignIn({
-      provider: CognitoHostedUIIdentityProvider.Facebook,
-    });
-  }, "Auth.federatedSignIn");
+    return await apiErrorHandlingWithLogs(async () => {
+        return Auth.federatedSignIn({
+            provider: CognitoHostedUIIdentityProvider.Facebook,
+        });
+    }, 'Auth.federatedSignIn');
 };
 
 const confirmSignup = async (email: string, validationCode: string) => {
-  return await apiErrorHandlingWithLogs(async () => {
-    return await Auth.confirmSignUp(email, validationCode);
-  }, "Auth.confirmSignUp");
+    return await apiErrorHandlingWithLogs(async () => {
+        return await Auth.confirmSignUp(email, validationCode);
+    }, 'Auth.confirmSignUp');
 };
 
 const forgotPassword = async (email: string) => {
-  return await apiErrorHandlingWithLogs(async () => {
-    return await Auth.forgotPassword(email).then((data) => {});
-  }, "Auth.forgotPassword");
+    return await apiErrorHandlingWithLogs(async () => {
+        return await Auth.forgotPassword(email).then((data) => {});
+    }, 'Auth.forgotPassword');
 };
 
 const signOut = async () => {
-  const response = await apiErrorHandlingWithLogs(async () => {
-    return await Auth.signOut();
-  }, "Auth.signOut");
+    const response = await apiErrorHandlingWithLogs(async () => {
+        return await Auth.signOut();
+    }, 'Auth.signOut');
 
-  localStorage.removeItem(AUTH_USER_ACCESS_TOKEN_KEY);
-  return response;
+    localStorage.removeItem(AUTH_USER_ACCESS_TOKEN_KEY);
+    return response;
 };
 
-const resetPassword = async (
-  email: string,
-  verificationCode: string,
-  newPassword: string
-) => {
-  return await apiErrorHandlingWithLogs(async () => {
-    return await Auth.forgotPasswordSubmit(
-      email,
-      verificationCode,
-      newPassword
-    );
-  }, "Auth.forgotPasswordSubmit");
+const resetPassword = async (email: string, verificationCode: string, newPassword: string) => {
+    return await apiErrorHandlingWithLogs(async () => {
+        return await Auth.forgotPasswordSubmit(email, verificationCode, newPassword);
+    }, 'Auth.forgotPasswordSubmit');
 };
 
 export const identityService = {
-  login,
-  signUp,
-  confirmSignup,
-  forgotPassword,
-  resetPassword,
-  signOut,
-  loginWithFacebook,
-  getCurrentCustomer: getCurrentAuthCustomer,
+    login,
+    signUp,
+    confirmSignup,
+    forgotPassword,
+    resetPassword,
+    signOut,
+    loginWithFacebook,
+    getCurrentCustomer: getCurrentAuthCustomer,
 };
 
 /**
@@ -171,13 +156,13 @@ export const identityService = {
  */
 
 const extractAvatar = (payload: any): string => {
-  const blob = payload.picture;
-  if (blob) {
-    const obj = JSON.parse(blob);
-    if (obj.data.url) {
-      return obj.data.url;
+    const blob = payload.picture;
+    if (blob) {
+        const obj = JSON.parse(blob);
+        if (obj.data.url) {
+            return obj.data.url;
+        }
     }
-  }
-  logService.error("Payload did not contain a url. " + payload);
-  return defaultAvatar;
+    logService.error('Payload did not contain a url. ' + payload);
+    return defaultAvatar;
 };

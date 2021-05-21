@@ -1,101 +1,103 @@
-import React, { useEffect, useState } from "react";
-import { tamarakService, iGift } from "../../Utils/Apis/tamarak.service";
-import { useRecoilState } from "recoil";
-import { errorState } from "../../Hooks/error.hook";
-import { giftRegistry } from "../../Utils/Apis/Utils/gift.registry";
-import * as queryString from "query-string";
-import { logService } from "../../Utils/Apis/logging.service";
-import {
-  iCustomerPublic,
-  identityService,
-} from "../../Utils/Apis/Identity.service";
-import GiftItem from "./GiftItem";
-import ProfileCard from "./ProfileCard";
+import React, { useEffect, useState } from 'react';
+import { tamarakService, iGift } from '../../Utils/Apis/tamarak.service';
+import { useRecoilState } from 'recoil';
+import { errorState } from '../../Hooks/error.hook';
+import { giftRegistry } from '../../Utils/Apis/Utils/gift.registry';
+import * as queryString from 'query-string';
+import { logService } from '../../Utils/Apis/logging.service';
+import { iCustomerPublic, identityService, iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
+import GiftItem from './GiftItem';
+import ProfileCard from './ProfileCard';
+import ProfileEditModal from './ProfileEditModal';
 
 const GalleryContainer = () => {
-  const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
-  const [url, setUrl] = useState("");
-  const [, setError] = useRecoilState(errorState);
-  const [customerPublic, setCustomerPublic] =
-    useState<iCustomerPublic | undefined>(undefined);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+    const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
+    const [url, setUrl] = useState('');
+    const [, setError] = useRecoilState(errorState);
+    const [customerPublic, setCustomerPublic] = useState<iCustomerPublic | undefined>(undefined);
+    const [customerRegistered, setCustomerRegistered] = useState<iRegisteredCustomer | undefined>(undefined);
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [showProfileEdit, setShowProfileEdit] = useState(false);
 
-  const getGifts = async (customerId: string) => {
-    try {
-      const response = await tamarakService.getGifts(customerId);
-      setGifts(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const getGifts = async (customerId: string) => {
+        try {
+            const response = await tamarakService.getGifts(customerId);
+            setGifts(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  const getCustomer = async (customerId: string) => {
-    try {
-      // if customer is authenticated and authorized to make changes on this page.
-      const authCustomer = await identityService.getCurrentCustomer();
-      if (authCustomer.identityKey === customerId) {
-        setIsAuthorized(true);
-        setCustomerPublic(authCustomer);
-      } else {
-        const customerPublic = await tamarakService.getCustomerPublicProfile(
-          customerId
-        );
-        setCustomerPublic(customerPublic);
-      }
-    } catch (error) {
-      // redirect to login here?
-      logService.error(error.message);
-    }
-  };
+    const getCustomer = async (customerId: string) => {
+        try {
+            // if customer is authenticated and authorized to make changes on this page.
+            const authCustomer = await identityService.getCurrentCustomer();
+            if (authCustomer.identityKey === customerId) {
+                setIsAuthorized(true);
+                setCustomerPublic(authCustomer);
+                setCustomerRegistered(authCustomer);
+            } else {
+                const customerPublic = await tamarakService.getCustomerPublicProfile(customerId);
+                setCustomerPublic(customerPublic);
+            }
+        } catch (error) {
+            // redirect to login here?
+            logService.error(error.message);
+        }
+    };
 
-  const loadCustomerFromSearch = async () => {
-    const parsed = queryString.parse(window.location.search);
-    if (parsed && typeof parsed.id === "string") {
-      getCustomer(parsed.id);
-      getGifts(parsed.id);
-    } else {
-      logService.error(
-        `Cannot get customer id from search string ${window.location.search}`
-      );
-    }
-  };
+    const loadCustomerFromSearch = async () => {
+        const parsed = queryString.parse(window.location.search);
+        if (parsed && typeof parsed.id === 'string') {
+            getCustomer(parsed.id);
+            getGifts(parsed.id);
+        } else {
+            logService.error(`Cannot get customer id from search string ${window.location.search}`);
+        }
+    };
 
-  useEffect(() => {
-    loadCustomerFromSearch();
-  }, []);
+    useEffect(() => {
+        loadCustomerFromSearch();
+    }, []);
 
-  const handleAddGift = () => {};
+    const handleAddGift = () => {};
 
-  const handleFollow = () => {};
+    const handleFollow = () => {};
 
-  const handleEditProfile = () => {};
+    const handleEditProfile = () => {
+        setShowProfileEdit(true);
+    };
 
-  const submitUrl = () => {
-    if (url !== "") {
-      giftRegistry.registerGift(url);
-      setUrl("");
-    }
-  };
+    const handleProfileEditClosed = () => {
+        setShowProfileEdit(false);
+    };
 
-  const getNumCardsInRow = () => {
-    const width = window.innerWidth;
-    if (width < 500) {
-      return 1;
-    } else if (width < 900) {
-      return 2;
-    }
-    return 3;
-  };
+    const submitUrl = () => {
+        if (url !== '') {
+            giftRegistry.registerGift(url);
+            setUrl('');
+        }
+    };
 
-  const urlEntered = (value: string) => {
-    setUrl(value);
-  };
+    const getNumCardsInRow = () => {
+        const width = window.innerWidth;
+        if (width < 500) {
+            return 1;
+        } else if (width < 900) {
+            return 2;
+        }
+        return 3;
+    };
 
-  const numCards = getNumCardsInRow();
+    const urlEntered = (value: string) => {
+        setUrl(value);
+    };
 
-  return (
-    <>
-      {/* <Sticky
+    const numCards = getNumCardsInRow();
+
+    return (
+        <>
+            {/* <Sticky
         top={40000}
         child={
           <a
@@ -107,35 +109,28 @@ const GalleryContainer = () => {
           </a>
         }
       ></Sticky> */}
-
-      <div className="page-content header-clear-medium">
-        <ProfileCard
-          isAuthorized={isAuthorized}
-          customerPublic={customerPublic}
-          addGifty={handleAddGift}
-          followClicked={handleFollow}
-          handleEditProfile={handleEditProfile}
-        />
-
-        <div className="row text-center mb-0">
-          {gifts ? (
-            gifts.map((gift, index) => {
-              return (
-                <GiftItem
-                  key={index}
-                  gift={gift}
-                  position={index}
-                  numCardsInRow={numCards}
+            <div className="page-content header-clear-medium">
+                {customerRegistered ? <ProfileEditModal onClose={handleProfileEditClosed} show={showProfileEdit} customer={customerRegistered} /> : <></>}
+                <ProfileCard
+                    isAuthorized={isAuthorized}
+                    customerPublic={customerPublic}
+                    addGifty={handleAddGift}
+                    followClicked={handleFollow}
+                    handleEditProfile={handleEditProfile}
                 />
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
-    </>
-  );
+
+                <div className="row text-center mb-0">
+                    {gifts ? (
+                        gifts.map((gift, index) => {
+                            return <GiftItem key={index} gift={gift} position={index} numCardsInRow={numCards} />;
+                        })
+                    ) : (
+                        <></>
+                    )}
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default GalleryContainer;
