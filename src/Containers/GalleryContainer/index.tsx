@@ -10,7 +10,10 @@ import { giftRegistry } from "../../Utils/Apis/Utils/gift.registry";
 import { Auth } from "aws-amplify";
 import * as queryString from "query-string";
 import { logService } from "../../Utils/Apis/logging.service";
-import { iCustomerPublic } from "../../Utils/Apis/Identity.service";
+import {
+  iCustomerPublic,
+  identityService,
+} from "../../Utils/Apis/Identity.service";
 import GiftItem from "./GiftItem";
 
 const GalleryContainer = () => {
@@ -33,13 +36,14 @@ const GalleryContainer = () => {
 
   const getCustomer = async (customerId: string) => {
     try {
+      console.log(`getting public profile for ${customerId}`);
       const customerPublic = await tamarakService.getCustomerPublicProfile(
         customerId
       );
       console.log(customerPublic);
       setCustomerPublic(customerPublic);
     } catch (error) {
-      logService.error(error);
+      logService.error(error.message);
     }
   };
 
@@ -57,11 +61,7 @@ const GalleryContainer = () => {
 
   // check if current authenticated customer is same as what's being viewed
   const getCurrentCustomer = async () => {
-    Auth.currentAuthenticatedUser()
-      .then((customer) => {
-        setAuthCustomer(customer);
-      })
-      .catch(() => console.log("No customer signed in."));
+    //const currAuthCustomer = await identityService.getCurrentCustomer();
   };
 
   useEffect(() => {
@@ -93,13 +93,53 @@ const GalleryContainer = () => {
   const numCards = getNumCardsInRow();
 
   return (
-    <div className="page-content header-clear-medium">
-      {/* <div className="card card-style">
-        <div className="content mb-3">
-          <h3 className="mb-1">{customerPublic ? customerPublic.name : ""}</h3>
-          <p>Get 'em what they want!</p>
+    <div>
+      <div className="card card-style">
+        <div className="d-flex content mb-1">
+          {/* <!-- left side of profile --> */}
+          <div className="flex-grow-1">
+            <h1 className="font-700">{customerPublic?.name}</h1>
+            <p className="mb-2">Bio</p>
+            {/* <p className="font-10">
+              <strong className="color-theme pe-1">1k</strong>Followers
+              <strong className="color-theme ps-3 pe-1">342</strong>Following
+            </p> */}
+          </div>
+          {/* <!-- right side of profile. increase image width to increase column size--> */}
+          <img
+            src={
+              customerPublic
+                ? customerPublic.avatar
+                : "https://image.freepik.com/free-vector/cute-teddy-bear-waving-hand-cartoon-icon-illustration_138676-2714.jpg"
+            }
+            width="115"
+            height="115"
+            className="rounded-circle mt-3 shadow-xl preload-img"
+          />
         </div>
-      </div> */}
+        {/* <!-- follow buttons--> Don't show this if this is customer's profile page */}
+        <div className="content mb-0">
+          <div className="row mb-0">
+            <div className="col-6">
+              <a
+                href="#"
+                className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-blue-dark"
+              >
+                Follow
+              </a>
+            </div>
+            <div className="col-6">
+              <a
+                href="#"
+                className="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-blue-dark"
+              >
+                Message
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="divider mt-4 mb-0"></div>
+      </div>
 
       <div className="row text-center mb-0">
         {gifts ? (

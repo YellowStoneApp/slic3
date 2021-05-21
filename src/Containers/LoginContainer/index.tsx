@@ -4,7 +4,10 @@ import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
-import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
+import {
+  authCustomerState,
+  iAuthCustomer,
+} from "../../Hooks/currentIdentityCustomer.hook";
 import { useRecoilState } from "recoil";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
 import { errorState } from "../../Hooks/error.hook";
@@ -14,7 +17,8 @@ const LoginContainer = () => {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   //const identityCustomer = useIdentityCustomer();
-  const [, setIdentityCustomer] = useRecoilState(identityCustomerState);
+  const [authCustomer, setAuthCustomer] =
+    useRecoilState<iAuthCustomer>(authCustomerState);
   const [, setError] = useRecoilState(errorState);
 
   const login = async () => {
@@ -23,11 +27,9 @@ const LoginContainer = () => {
     if (email && password) {
       try {
         const response = await identityService.login(email, password);
-        setIdentityCustomer({ loggedIn: true });
-        // const user = await tamarakService.getCurrentCustomer();
-        // setIdentityCustomer({ loggedIn: true, user: user });
-        // console.log("user logged in", response);
-        // setLoggedIn(true);
+        setAuthCustomer({ customer: response });
+        console.log("user logged in", response);
+        setLoggedIn(true);
       } catch (error) {
         setError({ message: error.message });
       }
@@ -38,10 +40,14 @@ const LoginContainer = () => {
 
   if (loggedIn) {
     console.log("redirecting");
-    //history.push(Routes.Gallery);
-    // this isn't bullet proof. Something's going on where this fails to redirect us to the gallery page.
-    // this could be due to race condition in setting the local storage.
-    return <Redirect to={{ pathname: Routes.Gallery }} />;
+    return (
+      <Redirect
+        to={{
+          pathname: Routes.Gallery,
+          search: `?id=${authCustomer.customer?.identityKey}`,
+        }}
+      />
+    );
   }
   return (
     <>

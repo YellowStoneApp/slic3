@@ -4,17 +4,22 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { isConstructorDeclaration } from "typescript";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
-import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
+import {
+  authCustomerState,
+  iAuthCustomer,
+} from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
 import { signUpState } from "../../Hooks/signup.hook";
 import { Routes } from "../../Navigation/Routes";
 import { identityService } from "../../Utils/Apis/Identity.service";
 import { logService } from "../../Utils/Apis/logging.service";
+import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
 const ConfirmEmailContainer = () => {
   const [redirect, setRedirect] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
-  const [, setIdentityCustomer] = useRecoilState(identityCustomerState);
+  const [authCustomer, setAuthCustomer] =
+    useRecoilState<iAuthCustomer>(authCustomerState);
   const [signUp] = useRecoilState(signUpState);
   const [, setError] = useRecoilState(errorState);
 
@@ -30,7 +35,12 @@ const ConfirmEmailContainer = () => {
           );
           const responseLogin = await identityService.login(email, password);
 
-          setIdentityCustomer({ loggedIn: true });
+          const response = await tamarakService.registerCustomer({
+            ...responseLogin,
+            email,
+          });
+
+          setAuthCustomer({ customer: responseLogin });
 
           setRedirect(true);
         } else {
@@ -49,7 +59,14 @@ const ConfirmEmailContainer = () => {
   };
 
   if (redirect) {
-    return <Redirect to={{ pathname: Routes.Gallery }} />;
+    return (
+      <Redirect
+        to={{
+          pathname: Routes.Gallery,
+          search: `?id=${authCustomer.customer?.identityKey}`,
+        }}
+      />
+    );
   }
 
   // todo resend verification code.

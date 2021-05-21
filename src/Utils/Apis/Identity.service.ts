@@ -37,28 +37,47 @@ export interface iCustomerPublic {
   identityKey: string;
 }
 
-const login = async (email: string, password: string) => {
+export const defaultAvatar =
+  "https://image.freepik.com/free-vector/cute-teddy-bear-waving-hand-cartoon-icon-illustration_138676-2714.jpg";
+
+const login = async (
+  email: string,
+  password: string
+): Promise<iCustomerPublic> => {
   const response = await apiErrorHandlingWithLogs(async () => {
     return await Auth.signIn(email, password);
   }, "Auth.signIn");
-  if (response?.signInUserSession?.accessToken?.jwtToken) {
-    localStorage.setItem(
-      AUTH_USER_ACCESS_TOKEN_KEY,
-      response.signInUserSession.accessToken.jwtToken
-    );
-  } else {
-    logService.error(`No access token in response. ${response}`);
-    throw new Error("No access token in response");
+  console.log(response, "login");
+  if (response && response instanceof CognitoUser) {
+    const idPayload = response.getSignInUserSession()?.getIdToken().payload;
+    console.log(idPayload);
+    if (idPayload !== undefined) {
+      const avatar = extractAvatar(idPayload);
+      return {
+        name: idPayload.name,
+        avatar: avatar,
+        identityKey: idPayload.sub,
+      };
+    }
   }
+  logService.error(`No access token in response. ${response}`);
+  throw new Error("No access token in response");
 };
 
-const signUp = async (username: string, password: string) => {
+const signUp = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string
+) => {
   const response: ISignUpResult = await apiErrorHandlingWithLogs(async () => {
     return await Auth.signUp({
-      username: username,
+      username: email,
       password: password,
       attributes: {
-        email: username,
+        email: email,
+        name: firstName + " " + lastName,
+        family_name: lastName,
       },
     });
   }, "Auth.signUp");
@@ -69,8 +88,8 @@ const getCurrentCustomer = async (): Promise<iCustomer> => {
   const cust = await Auth.currentAuthenticatedUser();
   if (cust !== undefined && cust instanceof CognitoUser) {
     const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
-    const avatar = extractAvatar(idPayload);
     if (idPayload !== undefined) {
+      const avatar = extractAvatar(idPayload);
       return {
         name: idPayload.name, //cust.getUserData().name,
         avatar: avatar,
@@ -148,5 +167,5 @@ const extractAvatar = (payload: any): string => {
     }
   }
   logService.error("Payload did not contain a url. " + payload);
-  return blob;
+  return defaultAvatar;
 };

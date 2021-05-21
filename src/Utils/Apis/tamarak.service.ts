@@ -12,6 +12,7 @@ import {
   iCustomerPublic,
   iRegisteredCustomer,
 } from "./Identity.service";
+import { standardClient } from "./Utils/standard.client";
 
 const url = process.env.REACT_APP_MAIN_SERVICE_URL;
 if (!url) {
@@ -36,7 +37,7 @@ const dummyCall = async () => {
 };
 
 const getGifts = async (customerId: string): Promise<iGift[]> => {
-  const response = await secureClient.get(url, "/api/giftpublic", {
+  const response = await standardClient.get(url, "/api/giftpublic", {
     customerId: customerId,
   });
   return response.data;
@@ -69,7 +70,7 @@ const registerCustomer = async (
 const getCustomerPublicProfile = async (
   customerId: string
 ): Promise<iCustomerPublic> => {
-  const response = await secureClient.get(url, "/api/customerpublic", {
+  const response = await standardClient.get(url, "/api/customerpublic", {
     customerId: customerId,
   });
   validateResponse(response);

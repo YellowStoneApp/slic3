@@ -6,7 +6,7 @@ import { validateToken } from "../Utils/validate.token";
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../Utils/constants";
 import { useCurrentWalletUser } from "../Hooks/currentWalletUser.hook";
 import { Routes } from "./Routes";
-import { identityCustomerState } from "../Hooks/currentIdentityCustomer.hook";
+import { authCustomerState } from "../Hooks/currentIdentityCustomer.hook";
 import { useRecoilState } from "recoil";
 
 /**
@@ -19,7 +19,7 @@ const PrivateRoute = ({
   ...rest
 }: any & { component: any }) => {
   const customerLoggedIntoWallet = useCurrentWalletUser().loggedIn;
-  const [identityCustomer] = useRecoilState(identityCustomerState);
+  const [identityCustomer] = useRecoilState(authCustomerState);
 
   const RouteTo = (props: any) => {
     // if (identityCustomer.loggedIn && customerLoggedIntoWallet) {

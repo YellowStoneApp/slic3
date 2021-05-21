@@ -3,7 +3,7 @@ import { Redirect } from "react-router";
 import { useRecoilState } from "recoil";
 import Form from "../../Components/Form";
 import FormInput from "../../Components/FormInput";
-import { identityCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
+import { authCustomerState } from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
 import { Routes } from "../../Navigation/Routes";
 import { tamarakService } from "../../Utils/Apis/tamarak.service";
@@ -16,9 +16,8 @@ const CreateAccountContainer = (props: CreateAccountContainerProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [, setError] = useRecoilState(errorState);
   const [redirect, setRedirect] = useState(false);
-  const [identityCustomer, setIdentityCustomer] = useRecoilState(
-    identityCustomerState
-  );
+  const [identityCustomer, setIdentityCustomer] =
+    useRecoilState(authCustomerState);
 
   const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

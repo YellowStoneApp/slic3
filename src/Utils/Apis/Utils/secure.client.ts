@@ -11,6 +11,7 @@ import axios from "axios";
 import { AUTH_USER_ACCESS_TOKEN_KEY } from "../../constants";
 import { logService } from "../logging.service";
 import { apiErrorHandlingWithLogs, requestType } from "./call.wrapper";
+import { standardClient } from "./standard.client";
 
 const getAccessToken = async (): Promise<string> => {
   try {
@@ -57,20 +58,7 @@ const get = async (baseUrl: string, api: string, data?: any) => {
   const authToken = await getAccessToken();
   if (authToken) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + authToken;
-    let params = {};
-    if (data) {
-      params = { params: data };
-    }
-    const response = await apiErrorHandlingWithLogs(
-      async () => {
-        return await axios.get(`${baseUrl}${api}`, params);
-      },
-      api,
-      baseUrl,
-      requestType.get
-    );
-    console.log(response, "get");
-    return response;
+    return await standardClient.get(baseUrl, api, data);
   } else {
     logService.error("No Auth token present");
     throw new Error("No Auth token present in storage");

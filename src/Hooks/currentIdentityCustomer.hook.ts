@@ -3,28 +3,24 @@
  */
 import { atom, useRecoilValue, useRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import {
-  iCustomerPublic,
-  iRegisteredCustomer,
-} from "../Utils/Apis/Identity.service";
+import { iCustomerPublic } from "../Utils/Apis/Identity.service";
 
 const { persistAtom } = recoilPersist();
 
-export interface iIdentityCustomer {
-  loggedIn: boolean;
-  user?: iRegisteredCustomer; // this gets set after creating an account.
+export interface iAuthCustomer {
+  customer?: iCustomerPublic; // this gets set after creating an account.
 }
 
-const defaultState: iIdentityCustomer = { loggedIn: false };
+const defaultState: iAuthCustomer = {};
 
-export const identityCustomerState = atom({
+export const authCustomerState = atom({
   key: "IDENTITY_CUSTOMER",
   default: defaultState,
   effects_UNSTABLE: [persistAtom],
 });
 
-export const useIdentityCustomer = () => {
-  const identityCustomer = useRecoilValue(identityCustomerState);
+export const useAuthCustomer = () => {
+  const identityCustomer = useRecoilValue(authCustomerState);
   return {
     ...identityCustomer,
   };

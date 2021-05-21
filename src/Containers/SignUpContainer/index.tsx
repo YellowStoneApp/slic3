@@ -12,10 +12,13 @@ import FormInput from "../../Components/FormInput";
 import { useRecoilState } from "recoil";
 import { signUpState } from "../../Hooks/signup.hook";
 import { errorState } from "../../Hooks/error.hook";
+import { tamarakService } from "../../Utils/Apis/tamarak.service";
 
 const SignUpContainer = () => {
   const [redirect, setRedirect] = useState(false);
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [, setConfirmPassword] = useState("");
   const [, setSignUp] = useRecoilState(signUpState);
@@ -24,7 +27,12 @@ const SignUpContainer = () => {
   const handleSubmit = async () => {
     if (email && password) {
       try {
-        const responseSignUp = await identityService.signUp(email, password);
+        const responseSignUp = await identityService.signUp(
+          firstName,
+          lastName,
+          email,
+          password
+        );
         setSignUp({ email, password });
         setRedirect(true);
       } catch (error) {
@@ -57,6 +65,18 @@ const SignUpContainer = () => {
           destination: Routes.ForgotPassword,
         }}
       >
+        <FormInput
+          onValueChange={setFirstName}
+          name="firstname"
+          type="firstname"
+          placeholder="First Name"
+        />
+        <FormInput
+          onValueChange={setLastName}
+          name="lastname"
+          type="lastname"
+          placeholder="Last Name"
+        />
         <FormInput
           onValueChange={setEmail}
           name="email"

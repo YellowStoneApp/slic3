@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <>
       <Header />
-      <Footer />
+      {/* <Footer /> */}
       {/* <!-- Error Menu --> */}
       <ErrorPopup />
       <AppRouter />

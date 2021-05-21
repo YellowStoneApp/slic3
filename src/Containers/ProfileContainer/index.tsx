@@ -2,8 +2,8 @@ import MapsLocalLaundryService from "material-ui/svg-icons/maps/local-laundry-se
 import React, { useEffect, useState } from "react";
 import { snapshot_UNSTABLE, useRecoilState } from "recoil";
 import {
-  identityCustomerState,
-  iIdentityCustomer,
+  authCustomerState,
+  iAuthCustomer,
 } from "../../Hooks/currentIdentityCustomer.hook";
 import { errorState } from "../../Hooks/error.hook";
 import { iGift, tamarakService } from "../../Utils/Apis/tamarak.service";
@@ -13,9 +13,7 @@ interface ProfileContainerProps {}
 
 const ProfileContainer = (props: ProfileContainerProps) => {
   const [posts, setPosts] = useState<iGift[]>();
-  const [identityCustomer] = useRecoilState<iIdentityCustomer>(
-    identityCustomerState
-  );
+  const [identityCustomer] = useRecoilState<iAuthCustomer>(authCustomerState);
   const [, setError] = useRecoilState(errorState);
 
   // const loadPosts = async () => {
@@ -44,7 +42,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             {/* <!-- left side of profile --> */}
             <div className="flex-grow-1">
               <h1 className="font-700">
-                @{identityCustomer.user?.name}
+                @{identityCustomer.customer?.name}
                 <i className="fa fa-check-circle color-blue-dark float-end font-13 mt-2 me-3"></i>
               </h1>
               <p className="mb-2">Bio</p>
@@ -55,7 +53,7 @@ const ProfileContainer = (props: ProfileContainerProps) => {
             </div>
             {/* <!-- right side of profile. increase image width to increase column size--> */}
             <img
-              src={identityCustomer.user?.avatar}
+              src={identityCustomer.customer?.avatar}
               width="115"
               height="115"
               className="rounded-circle mt-3 shadow-xl preload-img"
