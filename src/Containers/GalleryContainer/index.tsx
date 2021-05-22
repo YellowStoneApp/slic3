@@ -9,6 +9,7 @@ import { iCustomerPublic, identityService, iRegisteredCustomer } from '../../Uti
 import GiftItem from './GiftItem';
 import ProfileCard from './ProfileCard';
 import ProfileEditModal from './ProfileEditModal';
+import { storageService } from '../../Utils/Apis/storage.service';
 
 const GalleryContainer = () => {
     const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
@@ -68,7 +69,20 @@ const GalleryContainer = () => {
         setShowProfileEdit(true);
     };
 
-    const handleProfileEditClosed = () => {
+    const handleProfileEditClosed = async (customerEdit: iRegisteredCustomer, imageSource?: File) => {
+        setShowProfileEdit(false);
+
+        if (imageSource) {
+            customerEdit = await storageService.uploadImage(imageSource, customerEdit);
+            console.log(customerEdit);
+        }
+        // this needs to call tamarak with new params
+        const response = await tamarakService.updateCustomerProfile(customerEdit);
+        setCustomerPublic(response);
+        setCustomerRegistered(response);
+    };
+
+    const handleProfileEditCancelled = () => {
         setShowProfileEdit(false);
     };
 
@@ -97,20 +111,17 @@ const GalleryContainer = () => {
 
     return (
         <>
-            {/* <Sticky
-        top={40000}
-        child={
-          <a
-            href="#"
-            onClick={(e) => handleAddItem(e)}
-            className="btn btn-l mb-3 rounded-xl text-uppercase font-900 shadow-s bg-mint-dark"
-          >
-            <i className="fa fa-plus font-15 rounded-xl text-center"></i>
-          </a>
-        }
-      ></Sticky> */}
             <div className="page-content header-clear-medium">
-                {customerRegistered ? <ProfileEditModal onClose={handleProfileEditClosed} show={showProfileEdit} customer={customerRegistered} /> : <></>}
+                {customerRegistered ? (
+                    <ProfileEditModal
+                        onCancel={handleProfileEditCancelled}
+                        onClose={handleProfileEditClosed}
+                        show={showProfileEdit}
+                        customer={customerRegistered}
+                    />
+                ) : (
+                    <></>
+                )}
                 <ProfileCard
                     isAuthorized={isAuthorized}
                     customerPublic={customerPublic}

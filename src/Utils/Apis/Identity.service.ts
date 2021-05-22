@@ -19,13 +19,14 @@ import { AUTH_USER_ACCESS_TOKEN_KEY } from '../../Utils/constants';
 import { apiErrorHandlingWithLogs } from './Utils/call.wrapper';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { logService } from './logging.service';
+import { tamarakService } from './tamarak.service';
 
 /**
  * Used in signing up the customer with password / email flow.
  */
 export interface iCustomerSignUp {
     name: string;
-    avatar: string;
+    avatar?: string;
     email: string;
     bio?: string;
 }
@@ -42,7 +43,7 @@ export interface iRegisteredCustomer extends iCustomerSignUp {
  * This should be the type that's used for customers that aren't logged in.n
  */
 export interface iCustomerPublic {
-    avatar: string;
+    avatar?: string;
     name: string;
     identityKey: string;
     bio?: string;
@@ -58,12 +59,17 @@ const login = async (email: string, password: string): Promise<iRegisteredCustom
         const idPayload = response.getSignInUserSession()?.getIdToken().payload;
         if (idPayload !== undefined) {
             const avatar = extractAvatar(idPayload);
-            return {
+            const customer = {
                 name: idPayload.name,
                 avatar: avatar,
                 email: idPayload.email,
                 identityKey: idPayload.sub,
             };
+
+            // we need to register the customer with tamarak before we can really load their profile. See tamarakService comments about why i did dis...
+            await tamarakService.registerCustomer(customer);
+            // this is main entry point for authorized customer info.
+            return await getCurrentAuthCustomer();
         }
     }
     logService.error(`No access token in response. ${response}`);
@@ -86,20 +92,17 @@ const signUp = async (firstName: string, lastName: string, email: string, passwo
 };
 
 /**
- * This should be used to access if the customer is authorized. Don't use recoil
+ * This should be used to access if the customer is authorized and to get the authorized customer profile information.
+ *
+ * this makes a call to tamarak service to get customer profile. Tamarak is source of truth for customer profile information.
  */
 const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
     const cust = await Auth.currentAuthenticatedUser();
     if (cust !== undefined && cust instanceof CognitoUser) {
         const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
         if (idPayload !== undefined) {
-            const avatar = extractAvatar(idPayload);
-            return {
-                name: idPayload.name, //cust.getUserData().name,
-                avatar: avatar,
-                email: idPayload.email,
-                identityKey: idPayload.sub,
-            };
+            const customerId = idPayload.sub;
+            return await tamarakService.getRegisteredCustomer(customerId);
         }
     }
     throw new Error('Could not load authenticated user');

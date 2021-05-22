@@ -1,19 +1,41 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
+import { storageService } from '../../Utils/Apis/storage.service';
 
 interface ProfileEditModalProps {
-    onClose: (customer: iRegisteredCustomer) => void;
+    onClose: (customer: iRegisteredCustomer, imageSource?: File) => void;
+    onCancel: () => void;
     show: boolean;
     customer: iRegisteredCustomer;
 }
 
-const ProfileEditModal = (props: ProfileEditModalProps) => {
+const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModalProps) => {
     const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
-    const [imageSource, setImageSource] = useState<File | null>(null);
+    const [imageSource, setImageSource] = useState<File | undefined>(undefined);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const swallowFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+    };
+
+    const handleSubmit = async () => {
+        try {
+            onClose(customer, imageSource);
+            resetValues();
+        } catch (error) {
+            // todo error on upload
+            console.log(error);
+        }
+    };
+
+    const handleCancel = () => {
+        resetValues();
+        onCancel();
+    };
+
+    const resetValues = () => {
+        setImageUrl(undefined);
+        setImageSource(undefined);
     };
 
     const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +51,7 @@ const ProfileEditModal = (props: ProfileEditModalProps) => {
 
     return (
         <>
-            <Modal show={props.show} onHide={props.onClose}>
+            <Modal show={show} onHide={handleCancel}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Profile</Modal.Title>
                 </Modal.Header>
@@ -59,7 +81,7 @@ const ProfileEditModal = (props: ProfileEditModalProps) => {
                                             maxWidth: '200px',
                                             maxHeight: '200px',
                                         }}
-                                        src={imageUrl ?? props.customer.avatar}
+                                        src={imageUrl ?? customer.avatar}
                                         className="preload-img img-fluid rounded-circle"
                                         alt="img"
                                     />
@@ -67,22 +89,22 @@ const ProfileEditModal = (props: ProfileEditModalProps) => {
                             </div>
                         </div>
                     </div>
-                    <Form onSubmit={(e) => handleSubmit(e)}>
+                    <Form onSubmit={(e) => swallowFormSubmit(e)}>
                         <Form.Group controlId="exampleForm.ControlInput1">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="name" placeholder={props.customer.name} />
+                            <Form.Control type="name" placeholder={customer.name} />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Bio</Form.Label>
-                            <Form.Control as="textarea" rows={3} placeholder={props.customer.bio} />
+                            <Form.Control as="textarea" rows={3} placeholder={customer.bio} />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => props.onClose(props.customer)}>
+                    <Button variant="secondary" onClick={handleCancel}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={() => props.onClose(props.customer)}>
+                    <Button variant="primary" onClick={handleSubmit}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
