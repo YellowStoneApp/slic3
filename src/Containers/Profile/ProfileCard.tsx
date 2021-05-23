@@ -2,23 +2,38 @@ import React, { useState } from 'react';
 import { iCustomerPublic, iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
 import { storageService } from '../../Utils/Apis/storage.service';
 import { tamarakService } from '../../Utils/Apis/tamarak.service';
+import AddGiftModal from './AddGiftModal';
 import './ProfileCard.scss';
 import ProfileEditModal from './ProfileEditModal';
 
 interface ProfileCardProps {
     isAuthorized: boolean;
     customerPublic?: iCustomerPublic;
-    addGifty: () => void;
+    addGifty: (url: string) => void;
 }
 
 const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProps) => {
     const [customerRegistered, setCustomerRegistered] = useState<iRegisteredCustomer | undefined>(undefined);
     const [showProfileEdit, setShowProfileEdit] = useState(false);
+    const [showAddGift, setShowAddGift] = useState(false);
 
     const handleFollow = () => {};
 
     const handleEditProfile = () => {
         setShowProfileEdit(true);
+    };
+
+    const handleAddGift = () => {
+        setShowAddGift(true);
+    };
+
+    const handleAddGiftCancel = () => {
+        setShowAddGift(false);
+    };
+
+    const handleAddGiftSubmit = (url: string) => {
+        setShowAddGift(false);
+        addGifty(url);
     };
 
     const handleProfileEditClosed = async (customerEdit: iRegisteredCustomer, imageSource?: File) => {
@@ -41,7 +56,14 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
 
     return (
         <>
-            {isAuthorized ? <ProfileEditModal onCancel={handleProfileEditCancelled} onClose={handleProfileEditClosed} show={showProfileEdit} /> : <></>}
+            {isAuthorized ? (
+                <>
+                    <ProfileEditModal onCancel={handleProfileEditCancelled} onClose={handleProfileEditClosed} show={showProfileEdit} />
+                    <AddGiftModal show={showAddGift} onSubmit={handleAddGiftSubmit} onCancel={handleAddGiftCancel} />
+                </>
+            ) : (
+                <></>
+            )}
             <div className="card card-style card-style-form">
                 <div className="d-flex content mb-1">
                     {/* <!-- left side of profile --> */}
@@ -61,7 +83,7 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
                     <div className="content mb-0">
                         <div className="row mb-0">
                             <div className="col-6">
-                                <a href="#" onClick={addGifty} className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight">
+                                <a href="#" onClick={handleAddGift} className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight">
                                     Add Item
                                 </a>
                             </div>

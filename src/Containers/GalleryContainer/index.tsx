@@ -13,15 +13,19 @@ import { storageService } from '../../Utils/Apis/storage.service';
 
 const GalleryContainer = () => {
     const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
-    const [url, setUrl] = useState('');
     const [, setError] = useRecoilState(errorState);
     const [customerPublic, setCustomerPublic] = useState<iCustomerPublic | undefined>(undefined);
     const [isAuthorized, setIsAuthorized] = useState(false);
 
     const getGifts = async (customerId: string) => {
         try {
-            const response = await tamarakService.getGifts(customerId);
-            setGifts(response);
+            const gifties = await tamarakService.getGifts(customerId);
+            gifties.sort((a, b) => {
+                return Date.parse(b.dateAdded) - Date.parse(a.dateAdded);
+            });
+            console.log(gifties);
+
+            setGifts(gifties);
         } catch (error) {
             console.error(error);
         }
@@ -58,12 +62,10 @@ const GalleryContainer = () => {
         loadCustomerFromSearch();
     }, []);
 
-    const handleAddGift = () => {};
-
-    const submitUrl = () => {
-        if (url !== '') {
-            giftRegistry.registerGift(url);
-            setUrl('');
+    const handleAddGift = async (url: string) => {
+        if (url !== '' && customerPublic) {
+            await giftRegistry.registerGift(url);
+            await getGifts(customerPublic?.identityKey);
         }
     };
 
@@ -75,10 +77,6 @@ const GalleryContainer = () => {
             return 2;
         }
         return 3;
-    };
-
-    const urlEntered = (value: string) => {
-        setUrl(value);
     };
 
     const numCards = getNumCardsInRow();

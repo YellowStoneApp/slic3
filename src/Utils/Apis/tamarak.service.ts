@@ -20,6 +20,7 @@ if (!url) {
 
 export interface iGift {
     url: string;
+    dateAdded: string;
     description: string;
     image: string;
     price: number;
