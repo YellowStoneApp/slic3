@@ -20,15 +20,17 @@ const GalleryContainer = () => {
     const getGifts = async (customerId: string) => {
         try {
             const gifties = await tamarakService.getGifts(customerId);
-            gifties.sort((a, b) => {
-                return Date.parse(b.dateAdded) - Date.parse(a.dateAdded);
-            });
-            console.log(gifties);
-
-            setGifts(gifties);
+            updateGifts(gifties);
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const updateGifts = (gifts: iGift[]) => {
+        gifts.sort((a, b) => {
+            return Date.parse(b.dateAdded) - Date.parse(a.dateAdded);
+        });
+        setGifts(gifts);
     };
 
     const getCustomer = async (customerId: string) => {
@@ -69,6 +71,11 @@ const GalleryContainer = () => {
         }
     };
 
+    const handleRemoveGift = async (giftId: number) => {
+        const giftsAfterChange = await tamarakService.removeGift(giftId);
+        updateGifts(giftsAfterChange);
+    };
+
     const getNumCardsInRow = () => {
         const width = window.innerWidth;
         if (width < 500) {
@@ -89,7 +96,16 @@ const GalleryContainer = () => {
                 <div className="row text-center mb-0">
                     {gifts ? (
                         gifts.map((gift, index) => {
-                            return <GiftItem key={index} gift={gift} position={index} numCardsInRow={numCards} />;
+                            return (
+                                <GiftItem
+                                    key={index}
+                                    gift={gift}
+                                    position={index}
+                                    numCardsInRow={numCards}
+                                    isAuthorized={isAuthorized}
+                                    removeGift={handleRemoveGift}
+                                />
+                            );
                         })
                     ) : (
                         <></>

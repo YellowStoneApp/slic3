@@ -72,6 +72,14 @@ const registerGift = async (giftUrl: string, preview: linkPreview) => {
 
 /** Access Controlled functions */
 
+const removeGift = async (giftId: number): Promise<iGift[]> => {
+    const response = await secureClient.post(url, '/api/gift/remove', {
+        id: giftId,
+    });
+
+    return response.data;
+};
+
 /**
  * Sets initial customer information. This can get called multiple times even if the customer is already registered. We don't know that here.
  * The server has source of truth on customer profile information.
@@ -152,6 +160,7 @@ export const tamarakService = {
     getGifts,
     registerCustomer,
     registerGift,
+    removeGift,
 };
 
 /** Private functions... These could go in a helper file */

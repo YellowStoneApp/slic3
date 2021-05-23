@@ -1,77 +1,82 @@
-import { getByTitle } from "@testing-library/dom";
-import { stringify } from "query-string";
-import React, { useState } from "react";
-import { iGift } from "../../Utils/Apis/tamarak.service";
+import { getByTitle } from '@testing-library/dom';
+import { stringify } from 'query-string';
+import React, { useState } from 'react';
+import { iGift } from '../../Utils/Apis/tamarak.service';
 
 type AllowedCardsPerRow = 1 | 2 | 3;
 
 interface GiftItemProps {
-  gift: iGift;
-  position: number;
-  numCardsInRow: AllowedCardsPerRow;
+    gift: iGift;
+    position: number;
+    numCardsInRow: AllowedCardsPerRow;
+    removeGift: (id: number) => void;
+    isAuthorized: boolean;
 }
 
 enum PositionInRow {
-  Left = "pe-0",
-  Middle = "pe-0 ps-0",
-  Right = "ps-0",
-  None = "",
+    Left = 'pe-0',
+    Middle = 'pe-0 ps-0',
+    Right = 'ps-0',
+    None = '',
 }
 
 const cardsToClassName = {
-  1: "col-12",
-  2: "col-6",
-  3: "col-4",
+    1: 'col-12',
+    2: 'col-6',
+    3: 'col-4',
 };
 
 const GiftItem = (props: GiftItemProps) => {
-  const { gift, position, numCardsInRow } = props;
+    const { gift, position, numCardsInRow, removeGift, isAuthorized } = props;
 
-  const getRowPosition = (
-    position: number,
-    numCardsInRow: AllowedCardsPerRow
-  ) => {
-    // left most in row
-    if (position % numCardsInRow === 0) {
-      return PositionInRow.Left;
+    const getRowPosition = (position: number, numCardsInRow: AllowedCardsPerRow) => {
+        // left most in row
+        if (position % numCardsInRow === 0) {
+            return PositionInRow.Left;
+        }
+        // right most in row
+        if ((position + 1) % numCardsInRow === 0) {
+            return PositionInRow.Right;
+        }
+        return PositionInRow.Middle;
+    };
+
+    const handleRemoveGift = () => {
+        removeGift(gift.id);
+    };
+
+    let positionInRow = getRowPosition(position, numCardsInRow);
+    if (positionInRow === PositionInRow.Left && numCardsInRow === 1) {
+        positionInRow = PositionInRow.None;
     }
-    // right most in row
-    if ((position + 1) % numCardsInRow === 0) {
-      return PositionInRow.Right;
-    }
-    return PositionInRow.Middle;
-  };
 
-  let positionInRow = getRowPosition(position, numCardsInRow);
-  if (positionInRow === PositionInRow.Left && numCardsInRow === 1) {
-    positionInRow = PositionInRow.None;
-  }
-
-  return (
-    <div className={cardsToClassName[numCardsInRow] + " " + positionInRow}>
-      <div className="card card-style">
-        <a
-          target="_blank"
-          href={gift.affiliateUrl ? gift.affiliateUrl : gift.url}
-          title={gift.title}
-        >
-          <img
-            src={gift.image}
-            data-src={gift.image}
-            className="preload-img img-fluid round-m"
-            alt="img"
-          />
-        </a>
-        <div className="content">
-          <h4>{gift.title}</h4>
-          <p>{gift.description}</p>
-          {/* <a
+    return (
+        <div className={cardsToClassName[numCardsInRow] + ' ' + positionInRow}>
+            <div className="card ms-3 rounded-m card-style">
+                {isAuthorized ? (
+                    <div className="card-top-right">
+                        <a href="#" onClick={handleRemoveGift}>
+                            <span className="icon icon-m rounded-circle bg-red-light ms-3 mt-3">
+                                <i className="fa color-white fa-trash"></i>
+                            </span>
+                        </a>
+                    </div>
+                ) : (
+                    <></>
+                )}
+                <a target="_blank" href={gift.affiliateUrl ? gift.affiliateUrl : gift.url} title={gift.title}>
+                    <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
+                </a>
+                <div className="content">
+                    <h4>{gift.title}</h4>
+                    <p>{gift.description}</p>
+                    {/* <a
               href="#"
               className="icon icon-xxs shadow-m rounded-s bg-facebook"
             >
               <i className="fab fa-facebook-f"></i>
             </a> */}
-          {/* Actual FB Share button
+                    {/* Actual FB Share button
           <div
             className="fb-share-button"
             data-href="http://localhost:3000/gallery?id=262e208c-6800-4996-bbfd-2388a580c602#"
@@ -86,7 +91,7 @@ const GiftItem = (props: GiftItemProps) => {
               Share
             </a>
           </div> */}
-          {/* <a
+                    {/* <a
             href="#"
             className="icon icon-xxs shadow-m rounded-s bg-twitter me-1 ms-1"
           >
@@ -95,10 +100,10 @@ const GiftItem = (props: GiftItemProps) => {
           <a href="#" className="icon icon-xxs shadow-m rounded-s bg-pinterest">
             <i className="fab fa-pinterest-p"></i>
           </a> */}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default GiftItem;
