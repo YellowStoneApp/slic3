@@ -1,29 +1,27 @@
 import Storage from '@aws-amplify/storage';
-import { iRegisteredCustomer } from './Identity.service';
+import { identityService, iRegisteredCustomer } from './Identity.service';
 import { logService } from './logging.service';
 import { apiErrorHandlingWithLogs, requestType } from './Utils/call.wrapper';
 
 const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaws.com/public/';
 
-const uploadImage = async (file: File, customer: iRegisteredCustomer): Promise<iRegisteredCustomer> => {
+const uploadImage = async (file: File, keyBase: string): Promise<string> => {
     try {
+        console.log(await identityService.getCurrentCustomer());
         validateImageFile(file);
         const extension = getFileExtension(file.name);
-        const fullImageName = customer.identityKey + '-full.' + extension;
+        const fullImageName = keyBase; //+ '-full.' + extension;
         const result = await apiErrorHandlingWithLogs(
             async () => {
                 return await Storage.put(fullImageName, file, {
-                    contentType: file.type,
+                    contentType: 'image/jpeg', // this is problematic if you use file.type for some reason...
                 });
             },
             'Storage.put',
             undefined,
             requestType.Storage
         );
-        const fileAccessURL = await getImageUrlByKey(fullImageName);
-        customer.avatar = fileAccessURL;
-        console.log(customer);
-        return customer;
+        return await getImageUrlByKey(fullImageName);
     } catch (error) {
         throw error;
     }

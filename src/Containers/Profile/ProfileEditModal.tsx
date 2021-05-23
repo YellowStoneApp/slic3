@@ -1,27 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
+import { identityService, iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
 import { storageService } from '../../Utils/Apis/storage.service';
 
 interface ProfileEditModalProps {
     onClose: (customer: iRegisteredCustomer, imageSource?: File) => void;
     onCancel: () => void;
     show: boolean;
-    customer: iRegisteredCustomer;
 }
 
-const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModalProps) => {
-    const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) => {
     const [imageSource, setImageSource] = useState<File | undefined>(undefined);
+    const [avatar, setAvatar] = useState<string | undefined>(undefined);
+    const [name, setName] = useState('');
+    const [bio, setBio] = useState<string | undefined>(undefined);
+    const [customer, setCustomer] = useState<iRegisteredCustomer | undefined>(undefined);
 
     const swallowFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     };
 
+    const loadCustomer = async () => {
+        setCustomer(await identityService.getCurrentCustomer());
+        console.log(customer);
+
+        setAvatar(customer?.avatar);
+        setName(customer?.name ?? '');
+        setBio(customer?.bio);
+    };
+
+    useEffect(() => {
+        loadCustomer();
+    }, []);
+
     const handleSubmit = async () => {
         try {
-            onClose(customer, imageSource);
-            resetValues();
+            console.log('submit');
+            if (customer) {
+                const toReturn = {
+                    ...customer,
+                    avatar,
+                    name,
+                    bio,
+                };
+                console.log(toReturn);
+                onClose(toReturn, imageSource);
+                resetValues();
+            } else {
+                handleCancel();
+            }
         } catch (error) {
             // todo error on upload
             console.log(error);
@@ -34,8 +61,10 @@ const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModa
     };
 
     const resetValues = () => {
-        setImageUrl(undefined);
-        setImageSource(undefined);
+        // setAvatar(undefined);
+        // setImageSource(undefined);
+        // setName('');
+        // setBio(undefined);
     };
 
     const imageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +73,17 @@ const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModa
             setImageSource(files[0]);
             const url = URL.createObjectURL(files[0]);
             console.log(url);
-            setImageUrl(url);
+            setAvatar(url);
         }
         console.log(e.target.files);
+    };
+
+    const handleBioChange = (e: any) => {
+        setBio(e.target.value);
+    };
+
+    const handleNameChange = (e: any) => {
+        setName(e.target.value);
     };
 
     return (
@@ -81,7 +118,7 @@ const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModa
                                             maxWidth: '200px',
                                             maxHeight: '200px',
                                         }}
-                                        src={imageUrl ?? customer.avatar}
+                                        src={avatar}
                                         className="preload-img img-fluid rounded-circle"
                                         alt="img"
                                     />
@@ -92,11 +129,11 @@ const ProfileEditModal = ({ onClose, onCancel, show, customer }: ProfileEditModa
                     <Form onSubmit={(e) => swallowFormSubmit(e)}>
                         <Form.Group controlId="exampleForm.ControlInput1">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="name" placeholder={customer.name} />
+                            <Form.Control type="name" placeholder={name} defaultValue={name} onChange={handleNameChange} />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Bio</Form.Label>
-                            <Form.Control as="textarea" rows={3} placeholder={customer.bio} />
+                            <Form.Control as="textarea" rows={3} placeholder={bio} defaultValue={bio} onChange={(e) => handleBioChange(e)} />
                         </Form.Group>
                     </Form>
                 </Modal.Body>

@@ -7,8 +7,8 @@ import * as queryString from 'query-string';
 import { logService } from '../../Utils/Apis/logging.service';
 import { iCustomerPublic, identityService, iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
 import GiftItem from './GiftItem';
-import ProfileCard from './ProfileCard';
-import ProfileEditModal from './ProfileEditModal';
+import ProfileCard from '../Profile/ProfileCard';
+import ProfileEditModal from '../Profile/ProfileEditModal';
 import { storageService } from '../../Utils/Apis/storage.service';
 
 const GalleryContainer = () => {
@@ -16,9 +16,7 @@ const GalleryContainer = () => {
     const [url, setUrl] = useState('');
     const [, setError] = useRecoilState(errorState);
     const [customerPublic, setCustomerPublic] = useState<iCustomerPublic | undefined>(undefined);
-    const [customerRegistered, setCustomerRegistered] = useState<iRegisteredCustomer | undefined>(undefined);
     const [isAuthorized, setIsAuthorized] = useState(false);
-    const [showProfileEdit, setShowProfileEdit] = useState(false);
 
     const getGifts = async (customerId: string) => {
         try {
@@ -36,7 +34,6 @@ const GalleryContainer = () => {
             if (authCustomer.identityKey === customerId) {
                 setIsAuthorized(true);
                 setCustomerPublic(authCustomer);
-                setCustomerRegistered(authCustomer);
             } else {
                 const customerPublic = await tamarakService.getCustomerPublicProfile(customerId);
                 setCustomerPublic(customerPublic);
@@ -62,29 +59,6 @@ const GalleryContainer = () => {
     }, []);
 
     const handleAddGift = () => {};
-
-    const handleFollow = () => {};
-
-    const handleEditProfile = () => {
-        setShowProfileEdit(true);
-    };
-
-    const handleProfileEditClosed = async (customerEdit: iRegisteredCustomer, imageSource?: File) => {
-        setShowProfileEdit(false);
-
-        if (imageSource) {
-            customerEdit = await storageService.uploadImage(imageSource, customerEdit);
-            console.log(customerEdit);
-        }
-        // this needs to call tamarak with new params
-        const response = await tamarakService.updateCustomerProfile(customerEdit);
-        setCustomerPublic(response);
-        setCustomerRegistered(response);
-    };
-
-    const handleProfileEditCancelled = () => {
-        setShowProfileEdit(false);
-    };
 
     const submitUrl = () => {
         if (url !== '') {
@@ -112,23 +86,7 @@ const GalleryContainer = () => {
     return (
         <>
             <div className="page-content header-clear-medium">
-                {customerRegistered ? (
-                    <ProfileEditModal
-                        onCancel={handleProfileEditCancelled}
-                        onClose={handleProfileEditClosed}
-                        show={showProfileEdit}
-                        customer={customerRegistered}
-                    />
-                ) : (
-                    <></>
-                )}
-                <ProfileCard
-                    isAuthorized={isAuthorized}
-                    customerPublic={customerPublic}
-                    addGifty={handleAddGift}
-                    followClicked={handleFollow}
-                    handleEditProfile={handleEditProfile}
-                />
+                <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} />
 
                 <div className="row text-center mb-0">
                     {gifts ? (
