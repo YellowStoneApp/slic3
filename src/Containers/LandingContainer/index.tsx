@@ -21,7 +21,7 @@ const Landing = () => {
     return (
         <>
             {authCustomer ? (
-                <Redirect to={{ pathname: Routes.Landing, search: `?id=${authCustomer.identityKey}` }} />
+                <Redirect to={{ pathname: Routes.Gallery, search: `?id=${authCustomer.identityKey}` }} />
             ) : (
                 <div className="page-content pb-0">
                     <div className="card" data-card-height="cover">
