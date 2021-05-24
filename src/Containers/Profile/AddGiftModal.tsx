@@ -25,13 +25,14 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
 
     return (
         <Modal show={show}>
-            <Modal.Header closeButton>
-                <Modal.Title>Edit Profile</Modal.Title>
+            <Modal.Header>
+                <Modal.Title>Add A Gift</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                Tell us what you want. We'll do the rest.
                 <Form onSubmit={(e) => swallowFormSubmit(e)}>
                     <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Url</Form.Label>
+                        <Form.Label></Form.Label>
                         <Form.Control type="name" placeholder="paste url here" onChange={(e) => setUrl(e.target.value)} />
                     </Form.Group>
                 </Form>

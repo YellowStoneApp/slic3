@@ -117,21 +117,15 @@ const registerCustomer = async (customer: iCustomerSignUp): Promise<iRegisteredC
 const getRegisteredCustomer = async (customerId: string): Promise<iRegisteredCustomer> => {
     const customer = await getRegisteredCustomerFromCache(customerId);
 
-    console.log('customer from cache ', customer);
-
     if (customer) {
         return customer;
     }
 
     const custFromTam = await secureClient.get(url, '/api/customer');
 
-    console.log(custFromTam);
-
     validateResponse(custFromTam);
 
     const customerReturned = validateRegisteredCustomer(custFromTam.data);
-
-    console.log(customerReturned, 'validated customer');
 
     if (!customerReturned) {
         throw new Error('Customer retuned from server not valid.');

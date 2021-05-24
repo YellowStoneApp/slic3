@@ -21,12 +21,12 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
     };
 
     const loadCustomer = async () => {
-        setCustomer(await identityService.getCurrentCustomer());
-        console.log(customer);
+        const cust = await identityService.getCurrentCustomer();
 
-        setAvatar(customer?.avatar);
-        setName(customer?.name ?? '');
-        setBio(customer?.bio);
+        setCustomer(cust);
+        setAvatar(cust?.avatar);
+        setName(cust?.name ?? '');
+        setBio(cust?.bio);
     };
 
     useEffect(() => {
@@ -89,7 +89,7 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
     return (
         <>
             <Modal show={show} onHide={handleCancel}>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title>Edit Profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
