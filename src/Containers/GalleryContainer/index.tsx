@@ -34,19 +34,25 @@ const GalleryContainer = () => {
     };
 
     const getCustomer = async (customerId: string) => {
+        let authCustomer: iRegisteredCustomer | undefined = undefined;
         try {
             // if customer is authenticated and authorized to make changes on this page.
-            const authCustomer = await identityService.getCurrentCustomer();
-            if (authCustomer.identityKey === customerId) {
-                setIsAuthorized(true);
-                setCustomerPublic(authCustomer);
-            } else {
-                const customerPublic = await tamarakService.getCustomerPublicProfile(customerId);
-                setCustomerPublic(customerPublic);
-            }
+            authCustomer = await identityService.getCurrentCustomer();
         } catch (error) {
             // redirect to login here?
-            logService.error(error.message);
+            logService.error(error);
+        }
+
+        if (authCustomer?.identityKey === customerId) {
+            setIsAuthorized(true);
+            setCustomerPublic(authCustomer);
+        } else {
+            try {
+                const customerPublic = await tamarakService.getCustomerPublicProfile(customerId);
+                setCustomerPublic(customerPublic);
+            } catch (error) {
+                logService.error(error);
+            }
         }
     };
 

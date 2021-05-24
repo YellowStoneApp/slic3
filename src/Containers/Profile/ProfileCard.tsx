@@ -41,7 +41,6 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
 
         if (imageSource) {
             customerEdit.avatar = await storageService.uploadImage(imageSource, customerEdit.identityKey);
-            console.log(customerEdit);
         }
         // this needs to call tamarak with new params
         const response = await tamarakService.updateCustomerProfile(customerEdit);
@@ -54,6 +53,7 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
         setShowProfileEdit(false);
     };
 
+    console.log(customerPublic);
     return (
         <>
             {isAuthorized ? (
