@@ -6,6 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaws.com/public/';
 
+/**
+ * This function will fail on the second call. I'm not entirely sure why but this is a known bug in the program currently.
+ *
+ * The fix is hard reload CMD-R.
+ * @param file
+ * @param keyBase
+ * @returns
+ */
 const uploadImage = async (file: File, keyBase: string): Promise<string> => {
     try {
         console.log(await identityService.getCurrentCustomer());
