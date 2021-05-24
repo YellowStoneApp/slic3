@@ -9,10 +9,11 @@ import ProfileEditModal from './ProfileEditModal';
 interface ProfileCardProps {
     isAuthorized: boolean;
     customerPublic?: iCustomerPublic;
+    setCustomerPublic: (customer: iCustomerPublic) => void;
     addGifty: (url: string) => void;
 }
 
-const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProps) => {
+const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty }: ProfileCardProps) => {
     const [customerRegistered, setCustomerRegistered] = useState<iRegisteredCustomer | undefined>(undefined);
     const [showProfileEdit, setShowProfileEdit] = useState(false);
     const [showAddGift, setShowAddGift] = useState(false);
@@ -45,7 +46,8 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
         // this needs to call tamarak with new params
         const response = await tamarakService.updateCustomerProfile(customerEdit);
 
-        setCustomerRegistered({ ...response });
+        setCustomerPublic(response);
+        setCustomerRegistered(response);
     };
 
     const handleProfileEditCancelled = () => {
@@ -75,6 +77,7 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
                         </p>
                     </div>
                     {/* <!-- right side of profile. increase image width to increase column size--> */}
+                    {/* This wont reload until you hard reload the page.  */}
                     <img src={customerPublic ? customerPublic.avatar : ''} width="115" height="115" className="rounded-circle mt-3 shadow-xl preload-img" />
                 </div>
                 {/* <!-- follow buttons--> Don't show this if this is customer's profile page */}

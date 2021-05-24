@@ -97,7 +97,7 @@ const GalleryContainer = () => {
     return (
         <>
             <div className="page-content header-clear-medium">
-                <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} />
+                <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} setCustomerPublic={setCustomerPublic} />
 
                 <div className="row text-center mb-0">
                     {gifts ? (

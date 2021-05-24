@@ -2,6 +2,7 @@ import Storage from '@aws-amplify/storage';
 import { identityService, iRegisteredCustomer } from './Identity.service';
 import { logService } from './logging.service';
 import { apiErrorHandlingWithLogs, requestType } from './Utils/call.wrapper';
+import { v4 as uuidv4 } from 'uuid';
 
 const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaws.com/public/';
 
@@ -9,8 +10,9 @@ const uploadImage = async (file: File, keyBase: string): Promise<string> => {
     try {
         console.log(await identityService.getCurrentCustomer());
         validateImageFile(file);
+        const key = uuidv4();
         const extension = getFileExtension(file.name);
-        const fullImageName = keyBase; //+ '-full.' + extension;
+        const fullImageName = key + '-full.' + extension;
         const result = await apiErrorHandlingWithLogs(
             async () => {
                 return await Storage.put(fullImageName, file, {
