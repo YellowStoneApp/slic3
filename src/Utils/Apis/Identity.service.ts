@@ -98,8 +98,10 @@ const signUp = async (firstName: string, lastName: string, email: string, passwo
  */
 const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
     const cust = await Auth.currentAuthenticatedUser();
+    console.log(cust);
     if (cust !== undefined && cust instanceof CognitoUser) {
         const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
+        console.log(idPayload);
         if (idPayload !== undefined) {
             const customerId = idPayload.sub;
             return await tamarakService.getRegisteredCustomer(customerId);

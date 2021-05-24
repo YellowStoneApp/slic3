@@ -44,7 +44,6 @@ const ProfileCard = ({ isAuthorized, customerPublic, addGifty }: ProfileCardProp
         }
         // this needs to call tamarak with new params
         const response = await tamarakService.updateCustomerProfile(customerEdit);
-        // why doesn't this trigger a rerender?
 
         setCustomerRegistered({ ...response });
     };
