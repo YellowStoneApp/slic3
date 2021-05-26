@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@datadog/browser-logs": "^2.10.0",
     "@logdna/logger": "^2.3.2",
     "@onflow/fcl": "0.0.67",
     "@onflow/types": "0.0.4",
