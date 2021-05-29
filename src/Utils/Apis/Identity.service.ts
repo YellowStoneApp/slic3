@@ -20,6 +20,7 @@ import { apiErrorHandlingWithLogs } from './Utils/call.wrapper';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { logService } from './logging.service';
 import { tamarakService } from './tamarak.service';
+import { Hub } from 'aws-amplify';
 
 /**
  * Used in signing up the customer with password / email flow.
@@ -102,7 +103,13 @@ const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
         const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
         if (idPayload !== undefined) {
             const customerId = idPayload.sub;
-            return await tamarakService.getRegisteredCustomer(customerId);
+            const customer = await tamarakService.getRegisteredCustomer(customerId);
+            Hub.dispatch('auth', {
+                event: 'hasAuthCustomer',
+                data: customer,
+                message: '',
+            });
+            return customer;
         }
     }
     throw new Error('Could not load authenticated user');

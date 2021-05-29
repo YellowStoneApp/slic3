@@ -5,7 +5,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Routes } from '../Navigation/Routes';
 
-interface HeaderProps {}
+interface HeaderProps {
+    isLoggedIn: boolean;
+}
 
 const Header = (props: HeaderProps) => {
     // want a login / sign up button here to show to user if they're not logged in.
@@ -30,22 +32,32 @@ const Header = (props: HeaderProps) => {
                     <span className="badge bg-highlight"></span>
                 </button>
             </div>
-            <div id="header-icon-2-group">
-                <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-2">
-                    <i className="fas fa-bars"></i>
-                    {/* Put notifications here */}
-                    <span className="badge bg-highlight"></span>
-                </button>
-                <div className="dropdown-menu bg-theme border-0 shadow-l rounded-s me-2 mt-2" aria-labelledby="header-3">
-                    {/* <p className="font-10 ps-3 pe-3 font-500 mb-0">Mini Menu</p> */}
-                    <div className="list-group list-custom-small ps-2 pe-3">
-                        <a href="#" onClick={handleSignOut}>
-                            <i className="fa font-14 fa-sign-out-alt color-blue-dark"></i>
-                            <span>Sign Out</span>
-                        </a>
+            {props.isLoggedIn ? (
+                <div id="header-icon-2-group">
+                    <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-2">
+                        <i className="fas fa-bars"></i>
+                        {/* Put notifications here */}
+                        <span className="badge bg-highlight"></span>
+                    </button>
+                    <div className="dropdown-menu bg-theme border-0 shadow-l rounded-s me-2 mt-2" aria-labelledby="header-3">
+                        {/* <p className="font-10 ps-3 pe-3 font-500 mb-0">Mini Menu</p> */}
+                        <div className="list-group list-custom-small ps-2 pe-3">
+                            <a href="#" onClick={handleSignOut}>
+                                <i className="fa font-14 fa-sign-out-alt color-blue-dark"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div id="header-icon-2-group">
+                    <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-2">
+                        <i className="fas fa-user-plus"></i>
+                        {/* Put notifications here */}
+                        <span className="badge bg-highlight"></span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
