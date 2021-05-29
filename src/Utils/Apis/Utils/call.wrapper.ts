@@ -13,6 +13,8 @@ interface logMessage {
     requestType?: requestType;
     errorMessage?: string;
     errorCode?: string;
+    request?: any;
+    response?: any;
 }
 
 export enum requestType {
@@ -27,19 +29,21 @@ export enum requestType {
  * @param functionName
  * @returns
  */
-export const apiErrorHandlingWithLogs = async (callback: Function, functionName: string, url?: string, requestType?: requestType) => {
+export const apiErrorHandlingWithLogs = async (callback: Function, functionName: string, url?: string, requestType?: requestType, requestData?: any) => {
     const message: logMessage = {
         method: functionName,
         successful: callSuccess.failure,
         requestTime: -1,
         url: url,
         requestType: requestType,
+        request: requestData,
     };
     const t0 = performance.now();
     try {
         const response = await callback();
         message.requestTime = performance.now() - t0;
         message.successful = callSuccess.success;
+        message.response = response.data;
         logService.info(message);
         return response;
     } catch (error) {

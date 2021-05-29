@@ -34,15 +34,7 @@ const post = async (baseUrl: string, api: string, payload: any) => {
     const authToken = await getAccessToken();
     if (authToken) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-        const response = await apiErrorHandlingWithLogs(
-            async () => {
-                return await axios.post(`${baseUrl}${api}`, payload);
-            },
-            api,
-            baseUrl,
-            requestType.post
-        );
-        return response;
+        return await standardClient.post(baseUrl, api, payload);
     } else {
         logService.error('No Auth token present');
         throw new Error('No Auth token present. You must login first.');
@@ -56,7 +48,7 @@ const get = async (baseUrl: string, api: string, data?: any) => {
         return await standardClient.get(baseUrl, api, data);
     } else {
         logService.error('No Auth token present');
-        throw new Error('No Auth token present in storage');
+        throw new Error('No Auth token present. You must login first.');
     }
 };
 

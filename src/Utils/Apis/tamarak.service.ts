@@ -31,13 +31,8 @@ export interface iGift extends iGiftRequest {
     dateAdded: string;
     affiliateUrl?: string;
     id: number;
+    vendor?: string;
 }
-
-const dummyCall = async () => {
-    const response = await apiErrorHandlingWithLogs(async () => {
-        return await axios.get(`${url}/api/dummy`);
-    }, '/api/dummy');
-};
 
 /** Publicly available functions */
 
@@ -63,6 +58,15 @@ const getCustomerPublicProfile = async (customerId: string): Promise<iCustomerPu
     return customer;
 };
 
+const registerGiftPurchase = async (gift: iGift, email?: string) => {
+    const response = await standardClient.post(url, '/api/giftpublic/registerpurchase', {
+        giftId: gift.id,
+        purchaserEmail: email,
+    });
+};
+
+/** Access Controlled functions */
+
 const registerGift = async (gift: iGiftRequest) => {
     const response = await secureClient.post(url, '/api/gift/register', {
         url: gift.url,
@@ -75,8 +79,6 @@ const registerGift = async (gift: iGiftRequest) => {
 
     return response.data;
 };
-
-/** Access Controlled functions */
 
 const removeGift = async (giftId: number): Promise<iGift[]> => {
     const response = await secureClient.post(url, '/api/gift/remove', {
@@ -162,11 +164,11 @@ export const tamarakService = {
     getCustomerPublicProfile,
     getRegisteredCustomer,
     updateCustomerProfile,
-    dummyCall,
     getGifts,
     registerCustomer,
     registerGift,
     removeGift,
+    registerGiftPurchase,
 };
 
 /** Private functions... These could go in a helper file */

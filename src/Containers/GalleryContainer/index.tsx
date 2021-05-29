@@ -10,12 +10,15 @@ import GiftItem from './GiftItem';
 import ProfileCard from '../Profile/ProfileCard';
 import ProfileEditModal from '../Profile/ProfileEditModal';
 import { storageService } from '../../Utils/Apis/storage.service';
+import BuyGiftModal from './BuyGiftModal';
 
 const GalleryContainer = () => {
     const [gifts, setGifts] = useState<iGift[] | undefined>(undefined);
     const [, setError] = useRecoilState(errorState);
     const [customerPublic, setCustomerPublic] = useState<iCustomerPublic | undefined>(undefined);
     const [isAuthorized, setIsAuthorized] = useState(false);
+    const [selectedGift, setSelectedGift] = useState<iGift | undefined>(undefined);
+    const [showBuyGift, setShowBuyGift] = useState(false);
 
     const getGifts = async (customerId: string) => {
         try {
@@ -92,12 +95,36 @@ const GalleryContainer = () => {
         return 3;
     };
 
+    const handleBuyGift = (gift: iGift) => {
+        setSelectedGift(gift);
+        setShowBuyGift(true);
+    };
+
+    const handleCancel = () => {
+        setSelectedGift(undefined);
+        setShowBuyGift(false);
+    };
+
+    const handleBuy = async (email?: string) => {
+        // call tamarak here
+        if (selectedGift) {
+            try {
+                const response = await tamarakService.registerGiftPurchase(selectedGift, email);
+            } catch (error) {
+                // swallow this as error is already logged lower in call stack.  Nothing to show user other than we don fucked up.
+            }
+        }
+        // setSelectedGift(undefined);
+        // setShowBuyGift(false);
+    };
+
     const numCards = getNumCardsInRow();
 
     return (
         <>
             <div className="page-content header-clear-medium">
                 <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} setCustomerPublic={setCustomerPublic} />
+                <BuyGiftModal handleCancel={handleCancel} handleBuy={handleBuy} gift={selectedGift} show={showBuyGift} />
 
                 <div className="row text-center mb-0">
                     {gifts ? (
@@ -110,6 +137,7 @@ const GalleryContainer = () => {
                                     numCardsInRow={numCards}
                                     isAuthorized={isAuthorized}
                                     removeGift={handleRemoveGift}
+                                    handleBuyGift={handleBuyGift}
                                 />
                             );
                         })

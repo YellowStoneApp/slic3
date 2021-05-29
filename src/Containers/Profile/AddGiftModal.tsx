@@ -22,8 +22,16 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
 
     const handleCancel = () => {
         onCancel();
-        setUrl('');
+        resetState();
     };
+
+    const resetState = () => {
+        setUrl('');
+        setGift(undefined);
+        setDetails(undefined);
+        setQuantity(1);
+    };
+
     const handleSubmit = () => {
         if (gift) {
             onSubmit({
@@ -35,7 +43,7 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
                 quantity: quantity,
             });
         }
-        setUrl('');
+        resetState();
     };
 
     const setUrlValue = async (url: string) => {

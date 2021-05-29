@@ -11,6 +11,7 @@ interface GiftItemProps {
     numCardsInRow: AllowedCardsPerRow;
     removeGift: (id: number) => void;
     isAuthorized: boolean;
+    handleBuyGift: (gift: iGift) => void;
 }
 
 enum PositionInRow {
@@ -27,7 +28,7 @@ const cardsToClassName = {
 };
 
 const GiftItem = (props: GiftItemProps) => {
-    const { gift, position, numCardsInRow, removeGift, isAuthorized } = props;
+    const { gift, position, numCardsInRow, removeGift, isAuthorized, handleBuyGift } = props;
     const [showRemove, setShowRemove] = useState(false);
 
     const getRowPosition = (position: number, numCardsInRow: AllowedCardsPerRow) => {
@@ -44,6 +45,11 @@ const GiftItem = (props: GiftItemProps) => {
 
     const handleRemoveGift = () => {
         removeGift(gift.id);
+    };
+
+    const handleBuy = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        handleBuyGift(gift);
     };
 
     let positionInRow = getRowPosition(position, numCardsInRow);
@@ -75,37 +81,10 @@ const GiftItem = (props: GiftItemProps) => {
                 <div className="content">
                     <h4>{gift.title}</h4>
                     <p>{gift.customDescription ?? gift.description}</p>
-                    {/* <a
-              href="#"
-              className="icon icon-xxs shadow-m rounded-s bg-facebook"
-            >
-              <i className="fab fa-facebook-f"></i>
-            </a> */}
-                    {/* Actual FB Share button
-          <div
-            className="fb-share-button"
-            data-href="http://localhost:3000/gallery?id=262e208c-6800-4996-bbfd-2388a580c602#"
-            data-layout="button"
-            data-size="small"
-          >
-            <a
-              target="_blank"
-              href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A3000%2Fgallery%3Fid%3D262e208c-6800-4996-bbfd-2388a580c602%23&amp;src=sdkpreparse"
-              className="fb-xfbml-parse-ignore"
-            >
-              Share
-            </a>
-          </div> */}
-                    {/* <a
-            href="#"
-            className="icon icon-xxs shadow-m rounded-s bg-twitter me-1 ms-1"
-          >
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a href="#" className="icon icon-xxs shadow-m rounded-s bg-pinterest">
-            <i className="fab fa-pinterest-p"></i>
-          </a> */}
                 </div>
+                <a href="#" onClick={(e) => handleBuy(e)} className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight">
+                    {gift.vendor ? <div>Buy At {gift.vendor}</div> : <div>Buy This</div>}
+                </a>
             </div>
         </div>
     );
