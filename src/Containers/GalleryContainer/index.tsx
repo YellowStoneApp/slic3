@@ -114,8 +114,8 @@ const GalleryContainer = () => {
                 // swallow this as error is already logged lower in call stack.  Nothing to show user other than we don fucked up.
             }
         }
-        // setSelectedGift(undefined);
-        // setShowBuyGift(false);
+        setSelectedGift(undefined);
+        setShowBuyGift(false);
     };
 
     const numCards = getNumCardsInRow();
