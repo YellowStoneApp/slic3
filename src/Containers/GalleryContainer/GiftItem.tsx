@@ -28,6 +28,7 @@ const cardsToClassName = {
 
 const GiftItem = (props: GiftItemProps) => {
     const { gift, position, numCardsInRow, removeGift, isAuthorized } = props;
+    const [showRemove, setShowRemove] = useState(false);
 
     const getRowPosition = (position: number, numCardsInRow: AllowedCardsPerRow) => {
         // left most in row
@@ -51,9 +52,13 @@ const GiftItem = (props: GiftItemProps) => {
     }
 
     return (
-        <div className={cardsToClassName[numCardsInRow] + ' ' + positionInRow}>
+        <div
+            className={cardsToClassName[numCardsInRow] + ' ' + positionInRow}
+            onMouseEnter={() => setShowRemove(true)}
+            onMouseLeave={() => setShowRemove(false)}
+        >
             <div className="card ms-3 rounded-m card-style">
-                {isAuthorized ? (
+                {isAuthorized && showRemove ? (
                     <div className="card-top-right">
                         <a href="#" onClick={handleRemoveGift}>
                             <span className="icon icon-m rounded-circle bg-red-light ms-3 mt-3">
