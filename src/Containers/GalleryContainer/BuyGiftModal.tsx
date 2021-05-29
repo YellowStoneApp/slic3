@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Col, Row, Form, Modal, Container } from 'react-bootstrap';
+import { iCustomerPublic } from '../../Utils/Apis/Identity.service';
 import { iGift } from '../../Utils/Apis/tamarak.service';
 
 interface BuyGiftModalProps {
     gift?: iGift;
     show: boolean;
     handleCancel: () => void;
+    customerPublic: iCustomerPublic | undefined;
     handleBuy: (email?: string) => void;
 }
 
 const BuyGiftModal = (props: BuyGiftModalProps) => {
-    const { show, gift, handleCancel, handleBuy } = props;
+    const { show, gift, handleCancel, handleBuy, customerPublic } = props;
     const [email, setEmail] = useState<string | undefined>(undefined);
 
     const handleClose = (e?: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -22,6 +24,18 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
 
     const handleBuyAttempt = () => {
         handleBuy(email);
+    };
+
+    /**
+     * This is gonna break
+     * @param name
+     * @returns
+     */
+    const getFirstName = (name?: string) => {
+        if (name) {
+            const split = name.split(' ');
+            return split[0];
+        }
     };
 
     return (
@@ -43,7 +57,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                         </Col>
                         <Col xs={9} md={6}>
                             <div style={{ marginTop: 20 }}>
-                                <h1>Ryan says... </h1>
+                                <h1>{getFirstName(customerPublic?.name)} says... </h1>
                                 <p>{gift?.customDescription}</p>
                                 <div className="divider mt-4 mb-3"></div>
                                 <h2>Let us know</h2>
@@ -51,8 +65,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                                     We want to make sure no one else buys this. Enter your email below and we'll follow up with you later to see if you bought
                                     this thing. Until then we'll prevent anyone from buying this.
                                 </p>
-                                <Form.Group controlId="exampleForm.ControlInput1">
-                                    <Form.Label>Email</Form.Label>
+                                <Form.Group>
                                     <Form.Control id="purchaserEmail" type="email" placeholder="what's your email" onChange={(e) => setEmail(e.target.value)} />
                                 </Form.Group>
                                 <div className="content mb-0">
