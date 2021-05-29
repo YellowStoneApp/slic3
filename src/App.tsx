@@ -19,7 +19,6 @@ const App: React.FC = () => {
      * from whereever we need it.
      */
     Hub.listen('auth', (data) => {
-        console.log(data.payload);
         switch (data.payload.event) {
             case 'signIn':
                 setIsLoggedIn(true);
@@ -36,9 +35,18 @@ const App: React.FC = () => {
             case 'signIn_failure':
                 setIsLoggedIn(false);
                 break;
-
             case 'configured':
                 console.log('the Auth module is configured');
+        }
+    });
+    Hub.listen('identity', (data) => {
+        switch (data.payload.event) {
+            case 'hasAuthCustomer':
+                setIsLoggedIn(true);
+                break;
+            case 'noAuthCustomer':
+                setIsLoggedIn(false);
+                break;
         }
     });
 

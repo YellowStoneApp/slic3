@@ -55,7 +55,6 @@ const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty
         setShowProfileEdit(false);
     };
 
-    console.log(customerPublic);
     return (
         <>
             {isAuthorized ? (

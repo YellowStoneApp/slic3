@@ -104,7 +104,7 @@ const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
         if (idPayload !== undefined) {
             const customerId = idPayload.sub;
             const customer = await tamarakService.getRegisteredCustomer(customerId);
-            Hub.dispatch('auth', {
+            Hub.dispatch('identity', {
                 event: 'hasAuthCustomer',
                 data: customer,
                 message: '',
@@ -112,6 +112,11 @@ const getCurrentAuthCustomer = async (): Promise<iRegisteredCustomer> => {
             return customer;
         }
     }
+    Hub.dispatch('identity', {
+        event: 'noAuthCustomer',
+        data: {},
+        message: '',
+    });
     throw new Error('Could not load authenticated user');
 };
 

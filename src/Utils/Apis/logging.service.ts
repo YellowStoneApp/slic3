@@ -17,11 +17,6 @@ const options: logdna.ConstructorOptions = {
     sendUserAgent: true,
 };
 
-const getDeviceInfo = () => {
-    const device = navigator.userAgent;
-    console.log(device);
-};
-
 const logToConsole = true;
 
 const logger = logdna.createLogger(process.env.REACT_APP_LOG_DNA_INGESTION_KEY ?? '', options);

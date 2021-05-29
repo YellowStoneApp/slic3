@@ -35,7 +35,6 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
 
     const handleSubmit = async () => {
         try {
-            console.log('submit');
             if (customer) {
                 const toReturn = {
                     ...customer,
@@ -43,7 +42,6 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
                     name,
                     bio,
                 };
-                console.log(toReturn);
                 onClose(toReturn, imageSource);
                 resetValues();
             } else {
@@ -72,10 +70,8 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
         if (files && files.length > 0) {
             setImageSource(files[0]);
             const url = URL.createObjectURL(files[0]);
-            console.log(url);
             setAvatar(url);
         }
-        console.log(e.target.files);
     };
 
     const handleBioChange = (e: any) => {

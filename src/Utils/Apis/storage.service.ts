@@ -16,7 +16,6 @@ const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaw
  */
 const uploadImage = async (file: File, keyBase: string): Promise<string> => {
     try {
-        console.log(await identityService.getCurrentCustomer());
         validateImageFile(file);
         const key = uuidv4();
         const extension = getFileExtension(file.name);
