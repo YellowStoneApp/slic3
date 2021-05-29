@@ -18,13 +18,17 @@ if (!url) {
     throw new Error('Cannot load url from env variable');
 }
 
-export interface iGift {
+export interface iGiftRequest {
     url: string;
-    dateAdded: string;
     description: string;
     image: string;
-    price: number;
     title: string;
+    customDescription?: string;
+    quantity: number;
+}
+
+export interface iGift extends iGiftRequest {
+    dateAdded: string;
     affiliateUrl?: string;
     id: number;
 }
@@ -59,12 +63,14 @@ const getCustomerPublicProfile = async (customerId: string): Promise<iCustomerPu
     return customer;
 };
 
-const registerGift = async (giftUrl: string, preview: linkPreview) => {
+const registerGift = async (gift: iGiftRequest) => {
     const response = await secureClient.post(url, '/api/gift/register', {
-        url: giftUrl,
-        title: preview.title,
-        image: preview.image,
-        description: preview.description,
+        url: gift.url,
+        title: gift.title,
+        image: gift.image,
+        description: gift.description,
+        customDescription: gift.customDescription,
+        quantity: gift.quantity,
     });
 
     return response.data;

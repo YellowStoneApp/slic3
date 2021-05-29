@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { tamarakService, iGift } from '../../Utils/Apis/tamarak.service';
+import { tamarakService, iGift, iGiftRequest } from '../../Utils/Apis/tamarak.service';
 import { useRecoilState } from 'recoil';
 import { errorState } from '../../Hooks/error.hook';
 import { giftRegistry } from '../../Utils/Apis/Utils/gift.registry';
@@ -70,9 +70,9 @@ const GalleryContainer = () => {
         loadCustomerFromSearch();
     }, []);
 
-    const handleAddGift = async (url: string) => {
-        if (url !== '' && customerPublic) {
-            await giftRegistry.registerGift(url);
+    const handleAddGift = async (gift: iGiftRequest) => {
+        if (customerPublic) {
+            await tamarakService.registerGift(gift);
             await getGifts(customerPublic?.identityKey);
         }
     };

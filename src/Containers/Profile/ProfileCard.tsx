@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { iCustomerPublic, iRegisteredCustomer } from '../../Utils/Apis/Identity.service';
 import { storageService } from '../../Utils/Apis/storage.service';
-import { tamarakService } from '../../Utils/Apis/tamarak.service';
+import { iGift, iGiftRequest, tamarakService } from '../../Utils/Apis/tamarak.service';
+import { linkPreview } from '../../Utils/Apis/Utils/gift.registry';
 import AddGiftModal from './AddGiftModal';
 import './ProfileCard.scss';
 import ProfileEditModal from './ProfileEditModal';
@@ -10,7 +11,7 @@ interface ProfileCardProps {
     isAuthorized: boolean;
     customerPublic?: iCustomerPublic;
     setCustomerPublic: (customer: iCustomerPublic) => void;
-    addGifty: (url: string) => void;
+    addGifty: (gift: iGiftRequest) => void;
 }
 
 const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty }: ProfileCardProps) => {
@@ -32,9 +33,9 @@ const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty
         setShowAddGift(false);
     };
 
-    const handleAddGiftSubmit = (url: string) => {
+    const handleAddGiftSubmit = (gift: iGiftRequest) => {
         setShowAddGift(false);
-        addGifty(url);
+        addGifty(gift);
     };
 
     const handleProfileEditClosed = async (customerEdit: iRegisteredCustomer, imageSource?: File) => {

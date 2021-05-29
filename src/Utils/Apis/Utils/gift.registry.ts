@@ -10,26 +10,18 @@ export interface linkPreview {
     title: string;
 }
 
-const registerGift = async (url: string) => {
-    // validation
-
-    // get url meta data
-    try {
-        const response = await apiErrorHandlingWithLogs(
-            async () => {
-                return await axios.get(`https://api.linkpreview.net/?key=${apiKey}&q=${url}`);
-            },
-            url,
-            'https://api.linkpreview.net',
-            requestType.get
-        );
-        const preview: linkPreview = response.data;
-
-        // write to tamarak
-        const regResponse = await tamarakService.registerGift(url, preview);
-    } catch (error) {}
+const previewGift = async (url: string): Promise<linkPreview> => {
+    const response = await apiErrorHandlingWithLogs(
+        async () => {
+            return await axios.get(`https://api.linkpreview.net/?key=${apiKey}&q=${url}`);
+        },
+        url,
+        'https://api.linkpreview.net',
+        requestType.get
+    );
+    return response.data;
 };
 
 export const giftRegistry = {
-    registerGift,
+    previewGift,
 };

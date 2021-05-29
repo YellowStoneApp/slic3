@@ -69,7 +69,7 @@ const GiftItem = (props: GiftItemProps) => {
                 </a>
                 <div className="content">
                     <h4>{gift.title}</h4>
-                    <p>{gift.description}</p>
+                    <p>{gift.customDescription ?? gift.description}</p>
                     {/* <a
               href="#"
               className="icon icon-xxs shadow-m rounded-s bg-facebook"
