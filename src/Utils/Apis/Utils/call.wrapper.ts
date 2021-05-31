@@ -41,9 +41,11 @@ export const apiErrorHandlingWithLogs = async (callback: Function, functionName:
     const t0 = performance.now();
     try {
         const response = await callback();
+        if (response) {
+            message.response = response.data;
+        }
         message.requestTime = performance.now() - t0;
         message.successful = callSuccess.success;
-        message.response = response.data;
         logService.info(message);
         return response;
     } catch (error) {

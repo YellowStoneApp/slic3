@@ -109,7 +109,11 @@ const registerCustomer = async (customer: iCustomerSignUp): Promise<iRegisteredC
         email: customer.email,
         avatar: customer.avatar,
     });
+
     validateResponse(response.data);
+
+    await cacheRegisteredCustomer(response.data);
+
     return response.data;
 };
 
