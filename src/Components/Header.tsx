@@ -16,6 +16,7 @@ const Header = (props: HeaderProps) => {
     const handleSignOut = async () => {
         const response = await Auth.signOut({ global: true });
     };
+
     return (
         <div className="header header-fixed header-logo-app mb-3">
             <a href="index.html" className="header-title">
@@ -50,11 +51,13 @@ const Header = (props: HeaderProps) => {
                 </div>
             ) : (
                 <div id="header-icon-2-group">
-                    <a href={Routes.Login} type="button" id="header-3" className="header-icon header-icon-2">
-                        <i className="fas fa-user-plus"></i>
-                        {/* Put notifications here */}
-                        <span className="badge bg-highlight"></span>
-                    </a>
+                    <button className="header-icon header-icon-2">
+                        <a href={Routes.Login} style={{ color: '#1f1f1f' }}>
+                            <i className="fas fa-user-plus"></i>
+                            {/* Put notifications here */}
+                            <span className="badge bg-highlight"></span>
+                        </a>
+                    </button>
                 </div>
             )}
         </div>

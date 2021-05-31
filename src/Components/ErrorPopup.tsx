@@ -1,16 +1,16 @@
-import React from "react";
-import { useRecoilState } from "recoil";
-import { errorState } from "../Hooks/error.hook";
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { errorState } from '../Hooks/error.hook';
 
 const ErrorPopup = () => {
-  const [error, setError] = useRecoilState(errorState);
+    const [error, setError] = useRecoilState(errorState);
 
-  const classNameNotUp = "menu menu-box-bottom menu-box-detached";
-  const classNameUp = classNameNotUp + " menu-active";
+    const classNameNotUp = 'menu menu-box-bottom menu-box-detached';
+    const classNameUp = classNameNotUp + ' menu-active';
 
-  return (
-    <>
-      <div
+    return (
+        <>
+            {/* <div
         id="menu-error"
         className={error.message ? classNameUp : classNameNotUp}
       >
@@ -27,9 +27,9 @@ const ErrorPopup = () => {
         </div>
         <div className="divider divider-margins mb-n2"></div>
         <div className="content"></div>
-      </div>
-    </>
-  );
+      </div> */}
+        </>
+    );
 };
 
 export default ErrorPopup;
