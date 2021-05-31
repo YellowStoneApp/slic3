@@ -51,11 +51,11 @@ const Header = (props: HeaderProps) => {
                 </div>
             ) : (
                 <div id="header-icon-2-group">
-                    <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-2">
+                    <a href={Routes.Login} type="button" id="header-3" className="header-icon header-icon-2">
                         <i className="fas fa-user-plus"></i>
                         {/* Put notifications here */}
                         <span className="badge bg-highlight"></span>
-                    </button>
+                    </a>
                 </div>
             )}
         </div>

@@ -71,10 +71,6 @@ const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty
                     <div className="flex-grow-1">
                         <h1 className="font-700">{customerPublic?.name}</h1>
                         <p className="mb-2">{customerPublic?.bio}</p>
-                        <p className="font-10">
-                            <strong className="color-theme pe-1">1k</strong>Followers
-                            <strong className="color-theme ps-3 pe-1">342</strong>Following
-                        </p>
                     </div>
                     {/* <!-- right side of profile. increase image width to increase column size--> */}
                     {/* This wont reload until you hard reload the page.  */}
@@ -101,23 +97,7 @@ const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty
                         </div>
                     </div>
                 ) : (
-                    <div className="content mb-0">
-                        <div className="row mb-0">
-                            <div className="col-6">
-                                <a href="#" className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight">
-                                    Follow
-                                </a>
-                            </div>
-                            {/* <div className="col-6">
-                <a
-                  href="#"
-                  className="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-blue-dark"
-                >
-                  Message
-                </a>
-              </div> */}
-                        </div>
-                    </div>
+                    <div></div>
                 )}
                 <div className="divider mt-4 mb-0"></div>
             </div>

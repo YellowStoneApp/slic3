@@ -43,7 +43,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
             <Modal.Body>
                 <Container>
                     <Row>
-                        <Col xs={9} md={6}>
+                        <Col xs={18} md={6}>
                             {gift ? (
                                 <div style={{ marginTop: 20 }} className="card ms-3 rounded-m card-style">
                                     <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
@@ -55,7 +55,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                                 <div></div>
                             )}
                         </Col>
-                        <Col xs={9} md={6}>
+                        <Col xs={18} md={6}>
                             <div style={{ marginTop: 20 }}>
                                 <h1>{getFirstName(customerPublic?.name)} says... </h1>
                                 <p>{gift?.customDescription}</p>

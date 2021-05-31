@@ -32,7 +32,7 @@ const Landing = () => {
                             <p className="color-black opacity-50">More than the thought - Get what counts</p>
 
                             <p className="boxed-text-xl font-14 font-400 line-height-l color-black">Get what you want. It's that simple</p>
-                            <a href={Routes.Signup} data-back-button className="btn btn-m font-900 text-uppercase rounded-l btn-center-l bg-highlight">
+                            <a href={Routes.Login} data-back-button className="btn btn-m font-900 text-uppercase rounded-l btn-center-l bg-highlight">
                                 Get Started
                             </a>
                         </div>
@@ -44,7 +44,7 @@ const Landing = () => {
                             <p className="color-black opacity-50">More than the thought - Get what counts</p>
 
                             <p className="boxed-text-xl font-14 line-height-l color-white">Get what you want. It's that simple</p>
-                            <a href={Routes.Signup} data-back-button className="btn btn-m font-900 text-uppercase rounded-l btn-center-l bg-highlight">
+                            <a href={Routes.Login} data-back-button className="btn btn-m font-900 text-uppercase rounded-l btn-center-l bg-highlight">
                                 Get Started
                             </a>
                         </div>
