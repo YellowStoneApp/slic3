@@ -58,9 +58,14 @@ const getCustomerPublicProfile = async (customerId: string): Promise<iCustomerPu
     return customer;
 };
 
-const registerGiftPurchase = async (gift: iGift, email?: string) => {
+const registerGiftPurchase = async (gift: iGift, receiverIdentityKey?: string, email?: string) => {
+    if (!receiverIdentityKey || !email) {
+        logService.error(`Attempted to register gift purchase but id: ${receiverIdentityKey} or email: ${email} was null`);
+        return;
+    }
     const response = await standardClient.post(url, '/api/giftpublic/registerpurchase', {
         giftId: gift.id,
+        receiverIdentityKey: receiverIdentityKey,
         purchaserEmail: email,
     });
 };

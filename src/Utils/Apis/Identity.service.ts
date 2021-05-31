@@ -92,7 +92,27 @@ const signUp = async (firstName: string, lastName: string, email: string, passwo
     return response;
 };
 
+const getOAuthResponse = async (): Promise<iCustomerSignUp> => {
+    const cust = await Auth.currentAuthenticatedUser();
+    if (cust !== undefined && cust instanceof CognitoUser) {
+        const idPayload = cust.getSignInUserSession()?.getIdToken().payload;
+        if (idPayload !== undefined) {
+            const avatar = extractAvatar(idPayload);
+            const customer = {
+                name: idPayload.name,
+                avatar: avatar,
+                email: idPayload.email,
+                identityKey: idPayload.sub,
+            };
+            return customer;
+        }
+    }
+    throw new Error('Could not get authenticated customer');
+};
+
 /**
+ * This cannot be called if the customer isn't registered in tamarak
+ *
  * This should be used to access if the customer is authorized and to get the authorized customer profile information.
  *
  * this makes a call to tamarak service to get customer profile. Tamarak is source of truth for customer profile information.
@@ -163,6 +183,7 @@ export const identityService = {
     resetPassword,
     signOut,
     loginWithFacebook,
+    getOAuthResponse,
     getCurrentCustomer: getCurrentAuthCustomer,
 };
 

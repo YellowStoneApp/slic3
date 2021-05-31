@@ -109,7 +109,7 @@ const GalleryContainer = () => {
         // call tamarak here
         if (selectedGift) {
             try {
-                const response = await tamarakService.registerGiftPurchase(selectedGift, email);
+                const response = await tamarakService.registerGiftPurchase(selectedGift, customerPublic?.identityKey, email);
             } catch (error) {
                 // swallow this as error is already logged lower in call stack.  Nothing to show user other than we don fucked up.
             }

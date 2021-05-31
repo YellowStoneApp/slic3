@@ -1,6 +1,4 @@
 import Storage from '@aws-amplify/storage';
-import { identityService, iRegisteredCustomer } from './Identity.service';
-import { logService } from './logging.service';
 import { apiErrorHandlingWithLogs, requestType } from './Utils/call.wrapper';
 import { v4 as uuidv4 } from 'uuid';
 
