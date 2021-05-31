@@ -25,13 +25,12 @@ const Header = (props: HeaderProps) => {
           <i className="fas fa-arrow-left"></i>
         </a> */}
 
-            <div id="header-icon-3-group">
-                <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-3">
+            {/* <div id="header-icon-3-group">
+                <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <span className="input-group-text border-0" id="search-addon">
                     <i className="fas fa-search"></i>
-                    {/* Put notifications here */}
-                    <span className="badge bg-highlight"></span>
-                </button>
-            </div>
+                </span>
+            </div> */}
             {props.isLoggedIn ? (
                 <div id="header-icon-2-group">
                     <button type="button" id="header-3" data-bs-toggle="dropdown" className="header-icon header-icon-2">

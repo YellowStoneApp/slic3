@@ -75,14 +75,17 @@ const GiftItem = (props: GiftItemProps) => {
                 ) : (
                     <></>
                 )}
-                <a target="_blank" href={gift.affiliateUrl ? gift.affiliateUrl : gift.url} title={gift.title}>
-                    <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
-                </a>
+                <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
                 <div className="content">
                     <h4>{gift.title}</h4>
                     <p>{gift.customDescription ?? gift.description}</p>
                 </div>
-                <a href="#" onClick={(e) => handleBuy(e)} className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight">
+                <a
+                    href="#"
+                    style={{ margin: '10px' }}
+                    onClick={(e) => handleBuy(e)}
+                    className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight"
+                >
                     {gift.vendor ? <div>Buy At {gift.vendor}</div> : <div>Buy This</div>}
                 </a>
             </div>
