@@ -19,7 +19,16 @@ const previewGift = async (url: string): Promise<linkPreview> => {
         'https://api.linkpreview.net',
         requestType.get
     );
-    return response.data;
+    const preview: linkPreview = response.data;
+    console.log(preview);
+    if (preview.image && typeof preview.image === 'string') {
+        // replace http with https - for some reason shopify does this
+        if (preview.image.startsWith('http://')) {
+            preview.image = 'https://' + preview.image.slice(7, preview.image.length);
+        }
+    }
+    console.log(preview);
+    return preview;
 };
 
 export const giftRegistry = {
