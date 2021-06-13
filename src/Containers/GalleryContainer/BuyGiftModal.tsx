@@ -22,7 +22,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
         handleCancel();
     };
 
-    const handleBuyAttempt = () => {
+    const handleBuyAttempt = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         handleBuy(email);
     };
 
@@ -82,8 +82,8 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                                         <div className="col-6">
                                             <a
                                                 href={gift?.affiliateUrl ?? gift?.url}
-                                                onClick={handleBuyAttempt}
-                                                target="_blank"
+                                                //onClick={(e) => handleBuyAttempt(e)}
+                                                //target="_blank"
                                                 className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-highlight"
                                             >
                                                 buy this

@@ -12,15 +12,14 @@
       "AmplifyAppId": "d3agtx7dckui5h"
     },
     "categories": {
+      "auth": {
+        "mammotha3f31a25": {}
+      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d3agtx7dckui5h",
           "type": "cicd"
         }
-      },
-      "auth": {
-        "mammoth07e0c29d": {},
-        "mammotha3f31a25": {}
       }
     }
   }
