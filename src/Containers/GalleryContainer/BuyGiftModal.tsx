@@ -62,7 +62,16 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                         <Col xs={18} md={6}>
                             {gift ? (
                                 <div style={{ marginTop: 20 }} className="card ms-3 rounded-m card-style">
-                                    <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
+                                    <img
+                                        src={
+                                            gift.image === ''
+                                                ? 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80'
+                                                : gift.image
+                                        }
+                                        data-src={gift.image}
+                                        className="preload-img img-fluid round-m"
+                                        alt="img"
+                                    />
                                     <div className="content">
                                         <h4>{gift.title}</h4>
                                     </div>

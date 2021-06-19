@@ -17,6 +17,7 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
     const [quantity, setQuantity] = useState(1);
     const [error, setError] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
+    const [info, setInfo] = useState<string | undefined>(undefined);
 
     const swallowFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -66,6 +67,9 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
                 const preview = await giftRegistry.previewGift(url);
                 setUrl(url);
                 setGift(preview);
+                if (preview.image === '' && preview.title === '' && preview.description === '') {
+                    setInfo("We couldn't load information from the url provided. Enter a description to tell people what this is.");
+                }
             } catch (error) {
                 setError("Could not load link. Are you sure that's the right url?");
                 logService.error(error);
@@ -79,8 +83,15 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
     return (
         <Modal show={show}>
             {error ? (
-                <Alert style={{ margin: '10px' }} variant={'danger'}>
+                <Alert style={{ margin: '10px' }} variant="danger">
                     {error}
+                </Alert>
+            ) : (
+                <div></div>
+            )}
+            {info ? (
+                <Alert style={{ margin: '10px' }} variant="info">
+                    {info}
                 </Alert>
             ) : (
                 <div></div>
@@ -121,7 +132,16 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
                 {gift ? (
                     <div style={{ marginTop: 20 }} className="card ms-3 rounded-m card-style">
                         <a target="_blank" href="#" title={gift.title}>
-                            <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
+                            <img
+                                src={
+                                    gift.image === ''
+                                        ? 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80'
+                                        : gift.image
+                                }
+                                data-src={gift.image}
+                                className="preload-img img-fluid round-m"
+                                alt="img"
+                            />
                         </a>
                         <div className="content">
                             <h4>{gift.title}</h4>
