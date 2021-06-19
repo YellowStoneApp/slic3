@@ -4,7 +4,7 @@ import { identityService, iRegisteredCustomer } from '../../Utils/Apis/Identity.
 import { storageService } from '../../Utils/Apis/storage.service';
 
 interface ProfileEditModalProps {
-    onClose: (customer: iRegisteredCustomer, imageSource?: File) => void;
+    onClose: (customer: iRegisteredCustomer, imageSource?: File) => Promise<void>;
     onCancel: () => void;
     show: boolean;
 }
@@ -42,7 +42,7 @@ const ProfileEditModal = ({ onClose, onCancel, show }: ProfileEditModalProps) =>
                     name,
                     bio,
                 };
-                onClose(toReturn, imageSource);
+                await onClose(toReturn, imageSource);
                 resetValues();
             } else {
                 handleCancel();

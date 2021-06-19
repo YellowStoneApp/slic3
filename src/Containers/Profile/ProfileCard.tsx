@@ -39,14 +39,13 @@ const ProfileCard = ({ isAuthorized, customerPublic, setCustomerPublic, addGifty
     };
 
     const handleProfileEditClosed = async (customerEdit: iRegisteredCustomer, imageSource?: File) => {
-        setShowProfileEdit(false);
-
         if (imageSource) {
             customerEdit.avatar = await storageService.uploadImage(imageSource, customerEdit.identityKey);
         }
         // this needs to call tamarak with new params
         const response = await tamarakService.updateCustomerProfile(customerEdit);
 
+        setShowProfileEdit(false);
         setCustomerPublic(response);
         setCustomerRegistered(response);
     };

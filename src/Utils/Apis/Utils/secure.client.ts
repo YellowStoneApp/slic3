@@ -7,10 +7,7 @@
 
 import { Auth } from 'aws-amplify';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import axios from 'axios';
-import { AUTH_USER_ACCESS_TOKEN_KEY } from '../../constants';
 import { logService } from '../logging.service';
-import { apiErrorHandlingWithLogs, requestType } from './call.wrapper';
 import { standardClient } from './standard.client';
 
 const getAccessToken = async (): Promise<string> => {
@@ -30,22 +27,21 @@ const getAccessToken = async (): Promise<string> => {
     }
 };
 
+/**
+ * POST Request to any service using the auth token granted to customer
+ * @param baseUrl
+ * @param api
+ * @param payload
+ * @returns
+ */
 const post = async (baseUrl: string, api: string, payload: any) => {
     const authToken = await getAccessToken();
     if (authToken) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-        return await standardClient.post(baseUrl, api, payload);
-    } else {
-        logService.error('No Auth token present');
-        throw new Error('No Auth token present. You must login first.');
-    }
-};
-
-const get = async (baseUrl: string, api: string, data?: any) => {
-    const authToken = await getAccessToken();
-    if (authToken) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-        return await standardClient.get(baseUrl, api, data);
+        return await standardClient.post(baseUrl, api, payload, {
+            headers: {
+                Authorization: 'Bearer ' + authToken,
+            },
+        });
     } else {
         logService.error('No Auth token present');
         throw new Error('No Auth token present. You must login first.');
@@ -53,37 +49,30 @@ const get = async (baseUrl: string, api: string, data?: any) => {
 };
 
 /**
- *
+ * Get Request to any service using the auth token granted to customer
  * @param baseUrl
  * @param api
- * @param file
+ * @param data
  * @returns
  */
-const upload = async (baseUrl: string, api: string, file: File, name: string) => {
-    const authToken = localStorage.getItem(AUTH_USER_ACCESS_TOKEN_KEY);
+const get = async (baseUrl: string, api: string, data?: any) => {
+    const authToken = await getAccessToken();
     if (authToken) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-        const formData = new FormData();
-
-        formData.append(name, file, file.name);
-
-        const response = await apiErrorHandlingWithLogs(
-            async () => {
-                return await axios.post(`${baseUrl}${api}`, formData);
+        // !!! DONOT DO THIS - do not set global headers on axios. S3 Storage uses axios and if you set global properties on axios
+        // you will break the storage module!
+        //axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
+        return await standardClient.get(baseUrl, api, data, {
+            headers: {
+                Authorization: 'Bearer ' + authToken,
             },
-            api,
-            baseUrl,
-            requestType.post
-        );
-        return response;
+        });
     } else {
         logService.error('No Auth token present');
-        throw new Error('No Auth token present. You must log in to upload a file.');
+        throw new Error('No Auth token present. You must login first.');
     }
 };
 
 export const secureClient = {
     post,
     get,
-    upload,
 };
