@@ -1,13 +1,13 @@
 import Storage from '@aws-amplify/storage';
 import { apiErrorHandlingWithLogs, requestType } from './Utils/call.wrapper';
+import Resizer from 'react-image-file-resizer';
 import { v4 as uuidv4 } from 'uuid';
+import { logService } from './logging.service';
 
 const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaws.com/public/';
 
 /**
- * This function will fail on the second call. I'm not entirely sure why but this is a known bug in the program currently.
- *
- * The fix is hard reload CMD-R.
+ * Upload image file
  * @param file
  * @param keyBase
  * @returns
@@ -15,12 +15,13 @@ const BUCKET_URL = 'https://mammothstoragebucket200247-dev.s3-us-west-2.amazonaw
 const uploadImage = async (file: File, keyBase: string): Promise<string> => {
     try {
         validateImageFile(file);
+        const resized = await resizeImage(file);
         const key = uuidv4();
-        const extension = getFileExtension(file.name);
+        const extension = getFileExtension(resized.name);
         const fullImageName = key + '-full.' + extension;
         const result = await apiErrorHandlingWithLogs(
             async () => {
-                return await Storage.put(fullImageName, file, {
+                return await Storage.put(fullImageName, resized, {
                     contentType: 'image/jpeg', // this is problematic if you use file.type for some reason...
                 });
             },
@@ -30,6 +31,7 @@ const uploadImage = async (file: File, keyBase: string): Promise<string> => {
         );
         return await getImageUrlByKey(fullImageName);
     } catch (error) {
+        logService.error(error);
         throw error;
     }
 };
@@ -51,6 +53,7 @@ const validateImageFile = (file: File) => {
 };
 
 const getImageUrlByKey = async (key: string): Promise<string> => {
+    // just serve public urls from s3.
     // const fileAccessURL = await apiErrorHandlingWithLogs(
     //     async () => {
     //         return await Storage.get(key);
@@ -65,6 +68,27 @@ const getImageUrlByKey = async (key: string): Promise<string> => {
 
     // this could be pretty brittle if we change storage bucket...
     return BUCKET_URL + key;
+};
+
+const resizeImage = async (file: File): Promise<File> => {
+    return new Promise((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            200,
+            200,
+            'PNG',
+            100,
+            0,
+            (uri) => {
+                if (uri instanceof File) {
+                    resolve(uri);
+                } else {
+                    throw new Error('Returned uri is not instance of file. Resizing failed.');
+                }
+            },
+            'file'
+        );
+    });
 };
 
 export const storageService = {

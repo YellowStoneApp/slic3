@@ -2,11 +2,12 @@ import axios from 'axios';
 import { apiErrorHandlingWithLogs, requestType } from './call.wrapper';
 
 /**
- *  This class just wraps Axios. BUT you should use it because it wraps axios with logging and error handling / re throwing.
+ * These function calls just wrap Axios. BUT you should use it because it wraps axios with logging and error handling / re throwing.
  *
  * Use this class! Don't be a jackass!! Axios shouldn't be imported all over this project.
  *
  */
+
 const get = async (baseUrl: string, api: string, data?: any, config?: any) => {
     // config is used for passing in custom headers.
     // This is used by the secure client currently to pass in auth headers.
