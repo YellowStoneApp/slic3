@@ -7,12 +7,14 @@ interface BuyGiftModalProps {
     gift?: iGift;
     show: boolean;
     handleCancel: () => void;
+    isAuthorized: boolean;
     customerPublic: iCustomerPublic | undefined;
     handleBuy: (email?: string) => void;
+    handleRemoveGift: (giftId: number) => Promise<void>;
 }
 
 const BuyGiftModal = (props: BuyGiftModalProps) => {
-    const { show, gift, handleCancel, handleBuy, customerPublic } = props;
+    const { show, gift, handleCancel, handleBuy, handleRemoveGift, customerPublic, isAuthorized } = props;
     const [email, setEmail] = useState<string | undefined>(undefined);
 
     const handleClose = (e?: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -23,9 +25,21 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
     };
 
     const handleBuyAttempt = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        window.open(gift?.affiliateUrl ?? gift?.url, '_blank')
+        window.open(gift?.affiliateUrl ?? gift?.url, '_blank');
 
         handleBuy(email);
+    };
+
+    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+    };
+
+    const handleDelete = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        if (gift) {
+            await handleRemoveGift(gift.id);
+        }
+        handleCancel();
     };
 
     /**
@@ -56,6 +70,33 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                             ) : (
                                 <div></div>
                             )}
+                            {isAuthorized ? (
+                                <div className="content mb-0">
+                                    <div className="row mb-0">
+                                        {/* <div className="col-6">
+                                            <a
+                                                href="#"
+                                                onClick={(e) => handleEdit(e)}
+                                                className="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-blue-dark"
+                                            >
+                                                edit
+                                            </a>
+                                        </div> */}
+                                        <div className="col-6">
+                                            <a
+                                                // href={gift?.affiliateUrl ?? gift?.url}
+                                                onClick={(e) => handleDelete(e)}
+                                                target="_blank"
+                                                className="btn btn-full btn-s rounded-s text-uppercase font-900 bg-red-light"
+                                            >
+                                                delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
                         </Col>
                         <Col xs={18} md={6}>
                             <div style={{ marginTop: 20 }}>
@@ -65,7 +106,7 @@ const BuyGiftModal = (props: BuyGiftModalProps) => {
                                 <h2>Let us know</h2>
                                 <p>
                                     We want to make sure no one else buys this. Enter your email below and we'll follow up with you later to see if you bought
-                                    this thing. Until then we'll prevent anyone from buying this.
+                                    this. Until then we'll prevent anyone from buying this.
                                 </p>
                                 <Form.Group>
                                     <Form.Control id="purchaserEmail" type="email" placeholder="what's your email" onChange={(e) => setEmail(e.target.value)} />

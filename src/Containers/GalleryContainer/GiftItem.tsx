@@ -28,8 +28,7 @@ const cardsToClassName = {
 };
 
 const GiftItem = (props: GiftItemProps) => {
-    const { gift, position, numCardsInRow, removeGift, isAuthorized, handleBuyGift } = props;
-    const [showRemove, setShowRemove] = useState(false);
+    const { gift, position, numCardsInRow, removeGift, handleBuyGift } = props;
 
     const getRowPosition = (position: number, numCardsInRow: AllowedCardsPerRow) => {
         // left most in row
@@ -47,7 +46,7 @@ const GiftItem = (props: GiftItemProps) => {
         removeGift(gift.id);
     };
 
-    const handleBuy = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const handleBuy = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
         handleBuyGift(gift);
     };
@@ -58,25 +57,10 @@ const GiftItem = (props: GiftItemProps) => {
     }
 
     return (
-        <div
-            className={cardsToClassName[numCardsInRow] + ' ' + positionInRow}
-            onMouseEnter={() => setShowRemove(true)}
-            onMouseLeave={() => setShowRemove(false)}
-        >
+        <div className={cardsToClassName[numCardsInRow] + ' ' + positionInRow}>
             <div className="card ms-3 rounded-m card-style">
-                {isAuthorized && showRemove ? (
-                    <div className="card-top-right">
-                        <a href="#" onClick={handleRemoveGift}>
-                            <span className="icon icon-m rounded-circle bg-red-light ms-3 mt-3">
-                                <i className="fa color-white fa-trash"></i>
-                            </span>
-                        </a>
-                    </div>
-                ) : (
-                    <></>
-                )}
-                <img src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
-                <div className="content">
+                <img onClick={(e) => handleBuy(e)} src={gift.image} data-src={gift.image} className="preload-img img-fluid round-m" alt="img" />
+                <div onClick={(e) => handleBuy(e)} className="content">
                     <h4>{gift.title}</h4>
                     <p>{gift.customDescription ?? gift.description}</p>
                 </div>

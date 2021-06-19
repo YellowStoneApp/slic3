@@ -124,7 +124,15 @@ const GalleryContainer = () => {
         <>
             <div className="page-content header-clear-medium">
                 <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} setCustomerPublic={setCustomerPublic} />
-                <BuyGiftModal handleCancel={handleCancel} customerPublic={customerPublic} handleBuy={handleBuy} gift={selectedGift} show={showBuyGift} />
+                <BuyGiftModal
+                    handleCancel={handleCancel}
+                    handleRemoveGift={handleRemoveGift}
+                    customerPublic={customerPublic}
+                    isAuthorized={isAuthorized}
+                    handleBuy={handleBuy}
+                    gift={selectedGift}
+                    show={showBuyGift}
+                />
 
                 <div className="row text-center mb-0">
                     {gifts ? (

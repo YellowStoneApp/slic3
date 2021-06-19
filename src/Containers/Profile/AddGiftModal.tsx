@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Alert, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { logService } from '../../Utils/Apis/logging.service';
 import { iGiftRequest } from '../../Utils/Apis/tamarak.service';
 import { giftRegistry, linkPreview } from '../../Utils/Apis/Utils/gift.registry';
@@ -15,6 +15,8 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
     const [gift, setGift] = useState<linkPreview | undefined>(undefined);
     const [details, setDetails] = useState<string | undefined>(undefined);
     const [quantity, setQuantity] = useState(1);
+    const [error, setError] = useState<string | undefined>(undefined);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const swallowFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,18 +48,43 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
         resetState();
     };
 
-    const setUrlValue = async (url: string) => {
+    const isValidUrl = (url: string): boolean => {
         try {
-            const preview = await giftRegistry.previewGift(url);
-            setGift(preview);
-            setUrl(url);
-        } catch (error) {
-            logService.error(error);
+            new URL(url);
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+        return true;
+    };
+
+    const setUrlValue = async (url: string) => {
+        if (isValidUrl(url)) {
+            setError(undefined);
+            setLoading(true);
+            try {
+                const preview = await giftRegistry.previewGift(url);
+                setUrl(url);
+                setGift(preview);
+            } catch (error) {
+                setError("Could not load link. Are you sure that's the right url?");
+                logService.error(error);
+            }
+            setLoading(false);
+        } else {
+            setError('The URL entered is invalid.');
         }
     };
 
     return (
         <Modal show={show}>
+            {error ? (
+                <Alert style={{ margin: '10px' }} variant={'danger'}>
+                    {error}
+                </Alert>
+            ) : (
+                <div></div>
+            )}
             <Modal.Header>
                 <Modal.Title>Add A Gift</Modal.Title>
             </Modal.Header>
@@ -84,6 +111,13 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
                         </Form.Control>
                     </Form.Group>
                 </Form>
+                {loading ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Spinner style={{ margin: 20 }} animation="border" variant="primary" />
+                    </div>
+                ) : (
+                    <div></div>
+                )}
                 {gift ? (
                     <div style={{ marginTop: 20 }} className="card ms-3 rounded-m card-style">
                         <a target="_blank" href="#" title={gift.title}>
@@ -102,7 +136,7 @@ const AddGiftModal = ({ show, onCancel, onSubmit }: AddGiftModalProps) => {
                 <Button variant="secondary" onClick={handleCancel}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={gift ? false : true}>
                     Save Changes
                 </Button>
             </Modal.Footer>

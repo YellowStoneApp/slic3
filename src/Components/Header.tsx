@@ -19,7 +19,7 @@ const Header = (props: HeaderProps) => {
 
     return (
         <div className="header header-fixed header-logo-app mb-3">
-            <a href="index.html" className="header-title">
+            <a href={Routes.Landing} className="header-title">
                 More Than The Thought
             </a>
             {/* <a href="#" className="header-icon header-icon-1">
