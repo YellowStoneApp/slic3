@@ -122,7 +122,7 @@ const GalleryContainer = () => {
 
     return (
         <>
-            <div className="page-content header-clear-medium">
+            <div className="page-content">
                 <ProfileCard addGifty={handleAddGift} customerPublic={customerPublic} isAuthorized={isAuthorized} setCustomerPublic={setCustomerPublic} />
                 <BuyGiftModal
                     handleCancel={handleCancel}

@@ -13,7 +13,12 @@ export interface linkPreview {
 const previewGift = async (url: string): Promise<linkPreview> => {
     const response = await apiErrorHandlingWithLogs(
         async () => {
-            return await axios.get(`https://api.linkpreview.net/?key=${apiKey}&q=${url}`);
+            try {
+                const status = await axios.get(`https://api.linkpreview.net/?key=${apiKey}&q=${url}`);
+                return status;
+            } catch (error) {
+                console.log(error);
+            }
         },
         url,
         'https://api.linkpreview.net',

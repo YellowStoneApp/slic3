@@ -11,9 +11,12 @@ import ResetPasswordContainer from '../Containers/ResetPasswordContainer';
 import SearchContainer from '../Containers/SearchContainer';
 import Landing from '../Containers/LandingContainer';
 
+import Main from '../Layouts/Main';
+
 /** private route component */
 import SignInResponse from '../Containers/SignInResponse';
 import Signout from '../Containers/SignoutContainer';
+import WithLayout from './WithLayout';
 
 export enum Routes {
     Gallery = '/gallery',
@@ -35,9 +38,9 @@ class AppRouter extends React.Component {
         return (
             <Router>
                 <React.Fragment>
-                    <Route exact={true} path={Routes.Landing} component={Landing} />
+                    <Route exact path={Routes.Landing} render={(matchProps) => <WithLayout {...matchProps} component={Landing} layout={Main} />} />
                     <Route exact={true} path={Routes.Signout} component={Signout} />
-                    <Route exact={true} path={Routes.Gallery} component={GalleryContainer} />
+                    <Route exact path={Routes.Gallery} render={(matchProps) => <WithLayout {...matchProps} component={GalleryContainer} layout={Main} />} />
                     <Route exact={false} path={Routes.SignInResponse} component={SignInResponse} />
                     <Route exact={true} path={Routes.Search} component={SearchContainer} />
                     <Route exact={true} path={Routes.Login} component={LoginContainer} />
