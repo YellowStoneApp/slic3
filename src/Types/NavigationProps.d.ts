@@ -8,27 +8,27 @@ interface MenuGroupProps {
 }
 
 interface PagesProps {
-    landings: {
-        title: string;
-        id: string;
-        children: {
-            services: MenuItemProps;
-            apps: MenuItemProps;
-            web: MenuItemProps;
-        };
-    };
-    pages: {
-        title: string;
-        id: string;
-        children: {
-            career: MenuItemProps;
-            helpCenter: MenuItemProps;
-            company: MenuItemProps;
-            contact: MenuItemProps;
-            blog: MenuItemProps;
-            portfolio: MenuItemProps;
-        };
-    };
+    // landings: {
+    //     title: string;
+    //     id: string;
+    //     children: {
+    //         services: MenuItemProps;
+    //         apps: MenuItemProps;
+    //         web: MenuItemProps;
+    //     };
+    // };
+    // pages: {
+    //     title: string;
+    //     id: string;
+    //     children: {
+    //         career: MenuItemProps;
+    //         helpCenter: MenuItemProps;
+    //         company: MenuItemProps;
+    //         contact: MenuItemProps;
+    //         blog: MenuItemProps;
+    //         portfolio: MenuItemProps;
+    //     };
+    // };
     account: {
         title: string;
         id: string;

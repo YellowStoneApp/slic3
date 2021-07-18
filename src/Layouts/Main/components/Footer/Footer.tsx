@@ -95,8 +95,8 @@ interface Props {
 const Footer = ({ pages, className, ...rest }: Props): JSX.Element => {
     const classes = useStyles();
 
-    const landings = pages.landings;
-    const supportedPages = pages.pages;
+    // const landings = pages.landings;
+    // const supportedPages = pages.pages;
     const account = pages.account;
 
     const MenuGroup = ({ item }: MenuGroupProps): JSX.Element => (
@@ -116,40 +116,40 @@ const Footer = ({ pages, className, ...rest }: Props): JSX.Element => {
         </List>
     );
 
-    const LandingPages = (): JSX.Element => {
-        const { services, apps, web } = landings.children;
-        return (
-            <div className={classes.menu}>
-                <div>
-                    <MenuGroup item={services} />
-                    <MenuGroup item={apps} />
-                </div>
-                <div>
-                    <MenuGroup item={web} />
-                </div>
-            </div>
-        );
-    };
+    // const LandingPages = (): JSX.Element => {
+    //     const { services, apps, web } = landings.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div>
+    //                 <MenuGroup item={services} />
+    //                 <MenuGroup item={apps} />
+    //             </div>
+    //             <div>
+    //                 <MenuGroup item={web} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
-    const SupportedPages = (): JSX.Element => {
-        const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
-        return (
-            <div className={classes.menu}>
-                <div>
-                    <MenuGroup item={career} />
-                    <MenuGroup item={helpCenter} />
-                </div>
-                <div>
-                    <MenuGroup item={company} />
-                    <MenuGroup item={contact} />
-                </div>
-                <div>
-                    <MenuGroup item={blog} />
-                    <MenuGroup item={portfolio} />
-                </div>
-            </div>
-        );
-    };
+    // const SupportedPages = (): JSX.Element => {
+    //     const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div>
+    //                 <MenuGroup item={career} />
+    //                 <MenuGroup item={helpCenter} />
+    //             </div>
+    //             <div>
+    //                 <MenuGroup item={company} />
+    //                 <MenuGroup item={contact} />
+    //             </div>
+    //             <div>
+    //                 <MenuGroup item={blog} />
+    //                 <MenuGroup item={portfolio} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     const AccountPages = (): JSX.Element => {
         const { signout } = account.children;
@@ -198,12 +198,12 @@ const Footer = ({ pages, className, ...rest }: Props): JSX.Element => {
                     </Grid>
                     <Grid item xs={12} md={10} className={classes.menuListContainer}>
                         <Grid container spacing={0}>
-                            <Grid item>
+                            {/* <Grid item>
                                 <LandingPages />
                             </Grid>
                             <Grid item>
                                 <SupportedPages />
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
                                 <AccountPages />
                             </Grid>

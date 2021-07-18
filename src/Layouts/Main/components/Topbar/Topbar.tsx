@@ -170,8 +170,8 @@ const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, ...r
         }
     });
 
-    const landings = pages.landings;
-    const supportedPages = pages.pages;
+    // const landings = pages.landings;
+    // const supportedPages = pages.pages;
     const account = pages.account;
 
     const MenuGroup = ({ item }: MenuGroupProps): JSX.Element => (
@@ -198,40 +198,40 @@ const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, ...r
         </List>
     );
 
-    const LandingPages = (): JSX.Element => {
-        const { services, apps, web } = landings.children;
-        return (
-            <div className={classes.menu}>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={services} />
-                    <MenuGroup item={apps} />
-                </div>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={web} />
-                </div>
-            </div>
-        );
-    };
+    // const LandingPages = (): JSX.Element => {
+    //     const { services, apps, web } = landings.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={services} />
+    //                 <MenuGroup item={apps} />
+    //             </div>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={web} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
-    const SupportedPages = (): JSX.Element => {
-        const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
-        return (
-            <div className={classes.menu}>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={career} />
-                    <MenuGroup item={helpCenter} />
-                </div>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={company} />
-                    <MenuGroup item={contact} />
-                </div>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={blog} />
-                    <MenuGroup item={portfolio} />
-                </div>
-            </div>
-        );
-    };
+    // const SupportedPages = (): JSX.Element => {
+    //     const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={career} />
+    //                 <MenuGroup item={helpCenter} />
+    //             </div>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={company} />
+    //                 <MenuGroup item={contact} />
+    //             </div>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={blog} />
+    //                 <MenuGroup item={portfolio} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     const AccountPages = (): JSX.Element => {
         const { signout } = account.children;
@@ -323,7 +323,7 @@ const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, ...r
                 </List>
             </Hidden>
             <Hidden mdUp>
-                <DarkModeToggler themeMode={themeMode} onClick={() => themeToggler()} />
+                {/* <DarkModeToggler themeMode={themeMode} onClick={() => themeToggler()} /> */}
                 <IconButton className={classes.iconButton} onClick={() => onSidebarOpen()} aria-label="Menu">
                     <MenuIcon />
                 </IconButton>

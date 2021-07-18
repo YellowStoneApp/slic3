@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, Typography, ListItemIcon, Divider, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import { Routes } from '../../../../../../Navigation/Routes';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -53,8 +54,8 @@ interface Props {
 const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element => {
     const classes = useStyles();
 
-    const landings = pages.landings;
-    const supportedPages = pages.pages;
+    // const landings = pages.landings;
+    // const supportedPages = pages.pages;
     const account = pages.account;
 
     const MenuGroup = ({ item }: MenuGroupProps): JSX.Element => (
@@ -81,38 +82,38 @@ const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element 
         </List>
     );
 
-    const LandingPages = (): JSX.Element => {
-        const { services, apps, web } = landings.children;
-        return (
-            <div className={classes.menu}>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={services} />
-                    <MenuGroup item={apps} />
-                </div>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={web} />
-                </div>
-            </div>
-        );
-    };
+    // const LandingPages = (): JSX.Element => {
+    //     const { services, apps, web } = landings.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={services} />
+    //                 <MenuGroup item={apps} />
+    //             </div>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={web} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
-    const SupportedPages = (): JSX.Element => {
-        const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
-        return (
-            <div className={classes.menu}>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={career} />
-                    <MenuGroup item={helpCenter} />
-                    <MenuGroup item={company} />
-                </div>
-                <div className={classes.menuItem}>
-                    <MenuGroup item={contact} />
-                    <MenuGroup item={blog} />
-                    <MenuGroup item={portfolio} />
-                </div>
-            </div>
-        );
-    };
+    // const SupportedPages = (): JSX.Element => {
+    //     const { career, helpCenter, company, contact, blog, portfolio } = supportedPages.children;
+    //     return (
+    //         <div className={classes.menu}>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={career} />
+    //                 <MenuGroup item={helpCenter} />
+    //                 <MenuGroup item={company} />
+    //             </div>
+    //             <div className={classes.menuItem}>
+    //                 <MenuGroup item={contact} />
+    //                 <MenuGroup item={blog} />
+    //                 <MenuGroup item={portfolio} />
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     const AccountPages = (): JSX.Element => {
         const { signout } = account.children;
@@ -132,7 +133,7 @@ const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element 
                     <CloseIcon fontSize="small" />
                 </ListItemIcon>
             </ListItem>
-            <ListItem className={classes.listItem}>
+            {/* <ListItem className={classes.listItem}>
                 <Typography variant="h6" color="textPrimary" gutterBottom>
                     Landings
                 </Typography>
@@ -146,31 +147,24 @@ const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element 
                     Pages
                 </Typography>
                 <SupportedPages />
-            </ListItem>
-            <ListItem className={classes.listItem}>
+            </ListItem> */}
+            {/* <ListItem className={classes.listItem}>
                 <Divider className={classes.divider} />
-            </ListItem>
+            </ListItem> */}
             <ListItem className={classes.listItem}>
                 <Typography variant="h6" color="textPrimary" gutterBottom>
                     Account
                 </Typography>
                 <AccountPages />
             </ListItem>
-            <ListItem className={classes.listItem}>
+            {/* <ListItem className={classes.listItem}>
                 <Button variant="outlined" fullWidth component="a" href="/documentation">
                     Documentation
                 </Button>
-            </ListItem>
+            </ListItem> */}
             <ListItem className={classes.listItem}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    component="a"
-                    target="blank"
-                    href="https://material-ui.com/store/items/the-front-landing-page/"
-                >
-                    Buy Now
+                <Button variant="contained" color="primary" fullWidth component="a" target="blank" href={Routes.Login}>
+                    Get Started
                 </Button>
             </ListItem>
         </List>
