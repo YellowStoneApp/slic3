@@ -31,7 +31,6 @@ interface Props {
 const Sidebar = ({ pages, open, variant, onClose, className, isLoggedIn, ...rest }: Props): JSX.Element => {
     const classes = useStyles();
 
-    console.log(isLoggedIn, 'sidebar');
     return (
         <Drawer anchor="left" classes={{ paper: classes.drawer }} onClose={() => onClose()} open={open} variant={variant}>
             <div {...rest} className={clsx(classes.root, className)}>

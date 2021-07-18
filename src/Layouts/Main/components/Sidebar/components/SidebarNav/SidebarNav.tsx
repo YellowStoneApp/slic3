@@ -127,7 +127,6 @@ const SidebarNav = ({ pages, onClose, className, isLoggedIn, ...rest }: Props): 
         );
     };
 
-    console.log(isLoggedIn);
     return (
         <List {...rest} className={clsx(classes.root, className)}>
             <ListItem className={classes.closeIcon} onClick={() => onClose()}>

@@ -305,7 +305,6 @@ const Main = ({ children, themeToggler, themeMode }: Props): JSX.Element => {
                 break;
         }
     });
-    console.log(isLoggedIn);
 
     return (
         <div
