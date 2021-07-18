@@ -90,7 +90,7 @@ const Hero = ({ themeMode = 'light', className, ...rest }: ViewComponentProps): 
         </Typography>
     );
 
-    const subtitle = 'Make and share shoppable gift lists with anything you can buy online!  Never get a gift you don’t like again.';
+    const subtitle = 'Make and share free shoppable gift lists with anything you can buy online!  Never get a gift you don’t like again.';
 
     const buyButton = (
         <Button size="large" variant="contained" color="primary" component="a" href={Routes.Login}>

@@ -25,7 +25,7 @@ const IndexView = ({ themeMode }: IndexViewProps) => {
     return (
         <div>
             <Hero themeMode={themeMode} />
-            <Services />
+            {/* <Services />
             <SectionAlternate className={classes.sectionAlternateNoPaddingTop}>
                 <QuickStart />
             </SectionAlternate>
@@ -40,7 +40,7 @@ const IndexView = ({ themeMode }: IndexViewProps) => {
             </Section>
             <Section narrow>
                 <GetStarted />
-            </Section>
+            </Section> */}
         </div>
     );
 };

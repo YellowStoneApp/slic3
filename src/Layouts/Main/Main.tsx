@@ -318,7 +318,7 @@ const Main = ({ children, themeToggler, themeMode }: Props): JSX.Element => {
                 <Divider />
                 {children}
             </main>
-            <Footer pages={pages} />
+            {/* <Footer pages={pages} /> */}
         </div>
     );
 };
