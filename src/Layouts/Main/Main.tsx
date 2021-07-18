@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery, Divider } from '@material-ui/core';
 import { Topbar, Footer, Sidebar } from './components';
 import { Routes } from '../../Navigation/Routes';
+import { Hub } from 'aws-amplify';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,6 +20,7 @@ interface Props {
 
 const Main = ({ children, themeToggler, themeMode }: Props): JSX.Element => {
     const classes = useStyles();
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
     const theme = useTheme();
     const isMd = useMediaQuery(theme.breakpoints.up('md'), {
@@ -264,14 +266,55 @@ const Main = ({ children, themeToggler, themeMode }: Props): JSX.Element => {
 
     const open = isMd ? false : openSidebar;
 
+    /**
+     * This probably shouldn't be in the Topbar component...
+     *
+     * We also should probably not be passing state around like this with the UseState
+     *
+     * We could use recoil and set state that way and consume the recoil component
+     * from whereever we need it.
+     */
+    Hub.listen('auth', (data) => {
+        switch (data.payload.event) {
+            case 'signIn':
+                setIsLoggedIn(true);
+                break;
+            case 'signUp':
+                setIsLoggedIn(true);
+                break;
+            case 'hasAuthCustomer':
+                setIsLoggedIn(true);
+                break;
+            case 'signOut':
+                setIsLoggedIn(false);
+                break;
+            case 'signIn_failure':
+                setIsLoggedIn(false);
+                break;
+            case 'configured':
+                console.log('the Auth module is configured');
+        }
+    });
+    Hub.listen('identity', (data) => {
+        switch (data.payload.event) {
+            case 'hasAuthCustomer':
+                setIsLoggedIn(true);
+                break;
+            case 'noAuthCustomer':
+                setIsLoggedIn(false);
+                break;
+        }
+    });
+    console.log(isLoggedIn);
+
     return (
         <div
             className={clsx({
                 [classes.root]: true,
             })}
         >
-            <Topbar onSidebarOpen={handleSidebarOpen} pages={pages} themeMode={themeMode} themeToggler={themeToggler} />
-            <Sidebar onClose={handleSidebarClose} open={open} variant="temporary" pages={pages} />
+            <Topbar isLoggedIn={isLoggedIn} onSidebarOpen={handleSidebarOpen} pages={pages} themeMode={themeMode} themeToggler={themeToggler} />
+            <Sidebar onClose={handleSidebarClose} isLoggedIn={isLoggedIn} open={open} variant="temporary" pages={pages} />
             <main>
                 <Divider />
                 {children}

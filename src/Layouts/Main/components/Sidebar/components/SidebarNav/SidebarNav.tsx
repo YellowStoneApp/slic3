@@ -49,9 +49,10 @@ interface Props {
     className?: string;
     onClose: Function;
     pages: PagesProps;
+    isLoggedIn: boolean;
 }
 
-const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element => {
+const SidebarNav = ({ pages, onClose, className, isLoggedIn, ...rest }: Props): JSX.Element => {
     const classes = useStyles();
 
     // const landings = pages.landings;
@@ -126,6 +127,7 @@ const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element 
         );
     };
 
+    console.log(isLoggedIn);
     return (
         <List {...rest} className={clsx(classes.root, className)}>
             <ListItem className={classes.closeIcon} onClick={() => onClose()}>
@@ -151,22 +153,18 @@ const SidebarNav = ({ pages, onClose, className, ...rest }: Props): JSX.Element 
             {/* <ListItem className={classes.listItem}>
                 <Divider className={classes.divider} />
             </ListItem> */}
-            <ListItem className={classes.listItem}>
-                <Typography variant="h6" color="textPrimary" gutterBottom>
-                    Account
-                </Typography>
-                <AccountPages />
-            </ListItem>
-            {/* <ListItem className={classes.listItem}>
-                <Button variant="outlined" fullWidth component="a" href="/documentation">
-                    Documentation
-                </Button>
-            </ListItem> */}
-            <ListItem className={classes.listItem}>
-                <Button variant="contained" color="primary" fullWidth component="a" target="blank" href={Routes.Login}>
-                    Get Started
-                </Button>
-            </ListItem>
+
+            {isLoggedIn ? (
+                <ListItem className={classes.listItem}>
+                    <AccountPages />
+                </ListItem>
+            ) : (
+                <ListItem className={classes.listItem}>
+                    <Button variant="contained" color="primary" fullWidth component="a" target="blank" href={Routes.Login}>
+                        Get Started
+                    </Button>
+                </ListItem>
+            )}
         </List>
     );
 };

@@ -6,7 +6,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Image, DarkModeToggler } from '../../../../Components/Atoms';
 import { Routes } from '../../../../Navigation/Routes';
-import { Hub } from 'aws-amplify';
 
 const useStyles = makeStyles((theme) => ({
     flexGrow: {
@@ -111,14 +110,14 @@ interface Props {
     pages: PagesProps;
     themeMode: string;
     themeToggler: Function;
+    isLoggedIn: boolean;
 }
 
-const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, ...rest }: Props): JSX.Element => {
+const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, isLoggedIn, ...rest }: Props): JSX.Element => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = useState<any>(null);
     const [openedPopoverId, setOpenedPopoverId] = useState<string | null>(null);
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>, popoverId: string | null): void => {
         setAnchorEl(event.target);
@@ -129,46 +128,6 @@ const Topbar = ({ themeMode, themeToggler, onSidebarOpen, pages, className, ...r
         setAnchorEl(null);
         setOpenedPopoverId(null);
     };
-
-    /**
-     * This probably shouldn't be in the Topbar component...
-     *
-     * We also should probably not be passing state around like this with the UseState
-     *
-     * We could use recoil and set state that way and consume the recoil component
-     * from whereever we need it.
-     */
-    Hub.listen('auth', (data) => {
-        switch (data.payload.event) {
-            case 'signIn':
-                setIsLoggedIn(true);
-                break;
-            case 'signUp':
-                setIsLoggedIn(true);
-                break;
-            case 'hasAuthCustomer':
-                setIsLoggedIn(true);
-                break;
-            case 'signOut':
-                setIsLoggedIn(false);
-                break;
-            case 'signIn_failure':
-                setIsLoggedIn(false);
-                break;
-            case 'configured':
-                console.log('the Auth module is configured');
-        }
-    });
-    Hub.listen('identity', (data) => {
-        switch (data.payload.event) {
-            case 'hasAuthCustomer':
-                setIsLoggedIn(true);
-                break;
-            case 'noAuthCustomer':
-                setIsLoggedIn(false);
-                break;
-        }
-    });
 
     // const landings = pages.landings;
     // const supportedPages = pages.pages;
